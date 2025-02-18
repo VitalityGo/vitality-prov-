@@ -1,0 +1,72 @@
+/* profile.component.css */
+
+/* Contenedor principal */
+.profile-container {
+  max-width: 650px; /* Aumento del ancho máximo para más espacio */
+  margin: 30px auto; /* Centrado con más espacio alrededor */
+  padding: 25px; /* Espaciado interno más generoso */
+  border-radius: 12px; /* Bordes más redondeados */
+  background-color: #ffffff; /* Color de fondo blanco para mayor claridad */
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1); /* Sombra más profunda y suave */
+  transition: transform 0.3s ease, box-shadow 0.3s ease; /* Transición para interactividad */
+}
+
+/* Efecto hover para el contenedor */
+.profile-container:hover {
+  transform: scale(1.02); /* Aumenta ligeramente el tamaño al pasar el mouse */
+  box-shadow: 0 6px 30px rgba(0, 0, 0, 0.15); /* Sombra más intensa al interactuar */
+}
+
+/* Títulos */
+.profile-container h2 {
+  font-size: 2em; /* Aumenta el tamaño para mayor énfasis */
+  margin-bottom: 20px; /* Espaciado inferior */
+  color: #333; /* Color oscuro para el texto */
+  font-weight: 600; /* Negrita moderada para mayor legibilidad */
+  text-align: center; /* Centrado para más equilibrio visual */
+}
+
+/* Etiquetas */
+.profile-container label {
+  display: block; /* Hace que las etiquetas ocupen toda la línea */
+  margin-bottom: 8px; /* Espaciado inferior ligeramente mayor */
+  font-weight: 600; /* Negrita */
+  color: #333; /* Color oscuro para las etiquetas */
+}
+
+/* Inputs */
+.profile-container input[type="text"],
+.profile-container input[type="number"] {
+  width: 100%; /* Ancho completo */
+  padding: 12px; /* Aumenta el espaciado interno para mayor comodidad */
+  margin-bottom: 18px; /* Espaciado inferior más grande */
+  border: 1px solid #ccc; /* Borde gris suave */
+  border-radius: 8px; /* Bordes redondeados más grandes */
+  font-size: 16px; /* Tamaño de fuente cómodo */
+  transition: border-color 0.3s ease, box-shadow 0.3s ease; /* Transición suave al enfocarse */
+}
+
+/* Estilo en el foco de los inputs */
+.profile-container input[type="text"]:focus,
+.profile-container input[type="number"]:focus {
+  border-color: #007bff; /* Azul brillante cuando el input está en foco */
+  box-shadow: 0 0 8px rgba(0, 123, 255, 0.3); /* Sombra suave azul */
+}
+
+/* Resultados */
+.profile-container h3 {
+  margin-top: 30px; /* Más espacio superior */
+  font-size: 1.8em; /* Tamaño adecuado para subtítulos */
+  color: #444; /* Color oscuro y legible */
+  font-weight: 600;
+  text-align: center; /* Centrado para equilibrio visual */
+}
+
+/* Párrafos de resultados */
+.profile-container p {
+  font-size: 1.1em; /* Tamaño de fuente cómodo y legible */
+  margin: 12px 0; /* Espaciado vertical más grande */
+  color: #666; /* Gris suave para los párrafos */
+  line-height: 1.6; /* Mejora la legibilidad */
+  text-align: justify; /* Justificado para un aspecto limpio */
+}

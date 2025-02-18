@@ -1,0 +1,21 @@
+<div class="profile-container">
+  <h2>Perfil</h2>
+  <label>Nombre:</label>
+  <input type="text" [(ngModel)]="name" />
+
+  <label>Peso (kg):</label>
+  <input type="number" [(ngModel)]="weight" />
+
+  <label>Edad:</label>
+  <input type="number" [(ngModel)]="age" />
+
+  <label>Altura (cm):</label>
+  <input type="number" [(ngModel)]="height" />
+
+  <label>Porcentaje de Grasa (%):</label>
+  <input type="number" [(ngModel)]="bodyFatPercentage" />
+
+  <h3>Resultados</h3>
+  <p>IMC: {{ calculateBMI() | number:'1.1-1' }}</p> <!-- Formato de IMC -->
+  <p>Calorías diarias necesarias: {{ calculateDailyCalories() | number }} kcal</p> <!-- Formato de calorías -->
+</div>

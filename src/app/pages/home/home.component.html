@@ -1,0 +1,56 @@
+<div class="home-container">
+  <!-- Sección de Pasos -->
+  <section class="metric-card">
+      <div class="metric-header">
+          <i class="material-icons">directions_walk</i>
+          <h3>Pasos Diarios</h3>
+      </div>
+      <div class="metric-content">
+          <p class="metric-value">{{ steps }}</p>
+          <p class="metric-label">Pasos</p>
+          <div class="custom-input">
+            <br>
+              <input type="number" [(ngModel)]="customStepsAmount" placeholder="Cantidad de pasos" />
+              
+              <button (click)="addCustomSteps()">Agregar Pasos</button>
+          </div>
+      </div>
+  </section>
+
+  <!-- Sección de Agua -->
+  <section class="metric-card">
+      <div class="metric-header">
+          <i class="material-icons">water_drop</i>
+          <h3>Consumo de Agua</h3>
+      </div>
+      <div class="metric-content">
+          <p class="metric-value">{{ waterIntake }}</p>
+          <p class="metric-label">litros</p>
+          <div class="custom-input">
+              <input type="number" [(ngModel)]="customWaterAmount" placeholder="Cantidad en ml" />
+              
+              <button (click)="addCustomWaterIntake()">Agregar Agua (ml)</button>
+          </div>
+      </div>
+  </section>
+
+  <!-- Sección de Peso -->
+  <section class="metric-card weight-section">
+      <div class="metric-header">
+          <i class="material-icons">monitor_weight</i>
+          <h3>Registro de Peso</h3>
+      </div>
+      <div class="metric-content">
+          <div class="weight-input">
+              <input type="number" [(ngModel)]="weight" placeholder="Ingrese su peso (kg)" step="0.1" />
+              <button (click)="updateWeight()">
+                  <i class="material-icons">add</i>
+                  Registrar
+              </button>
+          </div>
+          <div class="chart-container">
+              <canvas baseChart [data]="lineChartData" [options]="lineChartOptions" [type]="'line'"></canvas>
+          </div>
+      </div>
+  </section>
+</div>

@@ -1,0 +1,86 @@
+/* Contenedor principal */
+.missions-container {
+  background-color: #ffffff; /* Blanco */
+  padding: 25px;
+  border-radius: 12px; /* Bordes más redondeados */
+  color: #333333; /* Color de texto oscuro para contraste */
+  max-width: 650px;
+  margin: 20px auto;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); /* Sombra suave para darle profundidad */
+}
+
+/* Títulos principales */
+.missions-container h2 {
+  text-align: center;
+  font-size: 2.2em;
+  margin-bottom: 30px;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: #333333; /* Título en color oscuro */
+}
+
+/* Estilo para los subtítulos de misiones */
+.missions-container h3 {
+  background-color: #f1f1f1; /* Fondo gris claro para subtítulos */
+  padding: 12px;
+  border-radius: 8px;
+  margin-bottom: 15px;
+  text-align: center;
+  font-size: 1.6em;
+  font-weight: 600;
+  letter-spacing: 1px;
+  color: #333333; /* Subtítulos en color oscuro */
+}
+
+/* Contenedor de misiones (diarias y semanales) */
+.missions-container ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+/* Elemento de lista de misiones */
+.missions-container li {
+  display: flex;
+  align-items: center;
+  padding: 15px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1); /* Línea divisoria suave */
+  background-color: #f9f9f9; /* Fondo muy claro */
+  border-radius: 8px;
+  margin-bottom: 10px;
+  transition: background-color 0.3s, transform 0.2s;
+}
+
+/* Efecto de hover para los elementos de la lista */
+.missions-container li:hover {
+  background-color: #e6e6e6; /* Fondo más oscuro al pasar el ratón */
+  transform: translateX(5px); /* Desplazamiento ligero al pasar el mouse */
+}
+
+/* Estilo para el texto de las misiones */
+.missions-container li span {
+  margin-left: 15px;
+  flex-grow: 1;
+  font-size: 1.1em;
+  color: #333333; /* Texto en color oscuro */
+}
+
+/* Estilo para misiones completadas */
+.missions-container li span.completed {
+  text-decoration: line-through;
+  color: #28a745; /* Verde para las misiones completadas */
+  font-weight: 600;
+}
+
+/* Estilo para los checkboxes */
+.missions-container input[type="checkbox"] {
+  accent-color: #28a745; /* Color verde para los checkboxes */
+  margin-right: 15px;
+  transform: scale(1.1); /* Aumenta ligeramente el tamaño del checkbox */
+  transition: transform 0.2s ease;
+}
+
+/* Efecto de hover en el checkbox */
+.missions-container input[type="checkbox"]:hover {
+  transform: scale(1.2);
+}

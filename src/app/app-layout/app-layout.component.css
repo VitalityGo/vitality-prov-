@@ -1,0 +1,26 @@
+.app-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+}
+
+main {
+  flex: 1;
+  overflow-y: auto;
+  padding: 56px 16px 56px 16px; /* top right bottom left */
+  position: relative;
+  height: calc(100% - 112px); /* Resta la altura de ambas barras */
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Prevenir el desbordamiento horizontal */
+main > * {
+  max-width: 100%;
+}

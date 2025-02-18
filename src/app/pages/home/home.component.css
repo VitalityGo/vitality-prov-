@@ -1,0 +1,142 @@
+/* Contenedor principal */
+.home-container {
+  padding: 25px;
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+  max-width: 1000px; /* Limita el ancho máximo */
+  margin: 0 auto; /* Centra el contenedor */
+}
+
+/* Tarjetas de métrica */
+.metric-card {
+  background: #fff; /* Fondo blanco */
+  border-radius: 15px; /* Bordes más redondeados */
+  padding: 25px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* Sombra suave */
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Efecto hover para las tarjetas */
+.metric-card:hover {
+  transform: translateY(-5px); /* Eleva la tarjeta ligeramente */
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15); /* Sombra más intensa */
+}
+
+/* Cabecera de la tarjeta */
+.metric-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 18px;
+}
+
+/* Icono en la cabecera */
+.metric-header i {
+  color: #3C8CE7;
+  font-size: 28px; /* Aumenta el tamaño */
+}
+
+/* Título de la cabecera */
+.metric-header h3 {
+  margin: 0;
+  color: #333;
+  font-size: 20px; /* Aumenta el tamaño */
+  font-weight: 600; /* Más énfasis en el título */
+}
+
+/* Contenido de la tarjeta */
+.metric-content {
+  text-align: center;
+}
+
+/* Valor de la métrica */
+.metric-value {
+  font-size: 36px; /* Aumenta el tamaño para más visibilidad */
+  font-weight: 700;
+  color: #3C8CE7;
+  margin: 0;
+}
+
+/* Etiqueta de la métrica */
+.metric-label {
+  color: #666;
+  margin: 8px 0 18px 0;
+  font-size: 16px;
+}
+
+/* Estilo de los botones */
+button {
+  background: #3C8CE7;
+  color: white;
+  border: none;
+  padding: 12px 25px; /* Aumenta el tamaño del botón */
+  border-radius: 8px; /* Bordes más redondeados */
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 15px; /* Espaciado mayor entre el texto y el ícono */
+  margin: 0 auto;
+  transition: background-color 0.3s, transform 0.3s;
+  font-size: 16px; /* Ajuste de tamaño de fuente */
+}
+
+/* Efecto hover para el botón */
+button:hover {
+  background: #357abd;
+  transform: translateY(-2px); /* Eleva el botón al pasar el mouse */
+}
+
+/* Contenedor de la entrada de peso */
+.weight-input {
+  display: flex;
+  gap: 15px;
+  margin-bottom: 25px; /* Espaciado inferior mayor */
+}
+
+/* Estilo de los campos de entrada */
+input {
+  flex: 1;
+  padding: 12px; /* Espaciado interno más cómodo */
+  border: 1px solid #ddd;
+  border-radius: 8px; /* Bordes redondeados */
+  font-size: 16px;
+  transition: border-color 0.3s;
+}
+
+/* Estilo en foco para los inputs */
+input:focus {
+  border-color: #3C8CE7; /* Color de borde azul en foco */
+  box-shadow: 0 0 6px rgba(60, 140, 231, 0.3); /* Sombra azul suave */
+  
+}
+
+/* Contenedor de la gráfica */
+.chart-container {
+  margin-top: 30px;
+  height: 350px; /* Aumenta la altura de la gráfica */
+  background: #f4f6f9; /* Fondo gris suave */
+  border-radius: 10px; /* Bordes redondeados */
+  padding: 15px; /* Espaciado interno */
+}
+
+/* Medios */
+@media (max-width: 600px) {
+  .weight-input {
+    flex-direction: column; /* Cambia a columna en pantallas pequeñas */
+  }
+
+  button {
+    width: 100%;
+    justify-content: center; /* Centra el botón */
+  }
+  
+  .metric-card {
+    padding: 20px; /* Reducir el padding en pantallas pequeñas */
+  }
+  
+  .metric-header {
+    flex-direction: column; /* Cambia a columna en pantallas pequeñas */
+    align-items: flex-start; /* Alineación izquierda */
+  }
+}

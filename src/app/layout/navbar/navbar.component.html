@@ -1,0 +1,26 @@
+<nav>
+  <div class="nav-left">
+    <!-- Botón de retorno -->
+    <button *ngIf="currentRoute !== '/home'" class="back-button" (click)="goBack()">
+      <i class="fas fa-arrow-left"></i>
+    </button>
+    
+    <div class="profile-section">
+      <div class="profile-pic">
+        <img [src]="userProfileImage || 'assets/profile-placeholder.jpg'" alt="Profile">
+      </div>
+      <span class="user-name">{{ userName || 'Usuario' }}</span>
+    </div>
+  </div>
+  
+  <div class="nav-right">
+    <div class="profile-menu">
+      <a routerLink="/settings" class="settings-link">Configuración</a>
+      <button (click)="onLogout()" class="logout-btn">Cerrar Sesión</button>
+    </div>
+    
+    <button class="settings-btn" routerLink="/settings">
+      <i class="material-icons">settings</i>
+    </button>
+  </div>
+</nav>
