@@ -12,10 +12,11 @@
   <label>Altura (cm):</label>
   <input type="number" [(ngModel)]="height" />
 
-  <label>Porcentaje de Grasa (%):</label>
-  <input type="number" [(ngModel)]="bodyFatPercentage" />
-
   <h3>Resultados</h3>
-  <p>IMC: {{ calculateBMI() | number:'1.1-1' }}</p> <!-- Formato de IMC -->
-  <p>Calorías diarias necesarias: {{ calculateDailyCalories() | number }} kcal</p> <!-- Formato de calorías -->
+  <p>IMC: {{ bmi | number:'1.1-1' }}</p> <!-- Correctamente usa el pipe 'number' -->
+
+  <p>Calorías diarias necesarias: {{ calculateDailyCalories() | number }} kcal</p> <!-- Calorías calculadas -->
+
+  <!-- Botón para recalcular IMC -->
+  <button (click)="calculateBMI()">Calcular IMC</button>
 </div>

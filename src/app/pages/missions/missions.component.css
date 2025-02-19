@@ -84,3 +84,35 @@
 .missions-container input[type="checkbox"]:hover {
   transform: scale(1.2);
 }
+
+.completed {
+  text-decoration: line-through;
+  color: #808080;
+}
+/* missions.component.css */
+.missions-container {
+  padding: 20px;
+}
+
+h3 {
+  margin-top: 20px;
+}
+
+ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+li {
+  margin: 10px 0;
+}
+
+input[type="checkbox"] {
+  margin-right: 10px;
+}
+
+span.completed {
+  text-decoration: line-through;
+  color: #6c757d;
+}
+

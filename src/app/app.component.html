@@ -1,4 +1,7 @@
 <div class="container">
   <app-login ></app-login>
-  
+  <!-- app.component.html -->
+<app-profile (imcChanged)="imcCategory = $event"></app-profile>
+<app-missions [imcCategory]="imcCategory"></app-missions>
+
 </div>

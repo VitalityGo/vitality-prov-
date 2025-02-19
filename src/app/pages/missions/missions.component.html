@@ -1,3 +1,4 @@
+<!-- missions.component.html -->
 <div class="missions-container">
   <h2>Misiones</h2>
 
@@ -16,6 +17,7 @@
       <span [class.completed]="mission.completed">{{ mission.title }}</span>
     </li>
   </ul>
+
   <h3>Misiones Especiales</h3>
   <ul>
     <li *ngFor="let mission of especialMissions">
@@ -23,4 +25,7 @@
       <span [class.completed]="mission.completed">{{ mission.title }}</span>
     </li>
   </ul>
+
+  <!-- Mapa -->
+  <div id="map" style="height: 400px; width: 100%;"></div>
 </div>

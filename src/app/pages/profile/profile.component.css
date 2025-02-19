@@ -70,3 +70,25 @@
   line-height: 1.6; /* Mejora la legibilidad */
   text-align: justify; /* Justificado para un aspecto limpio */
 }
+
+/* Estilo de los botones */
+button {
+  background: #3C8CE7;
+  color: white;
+  border: none;
+  padding: 12px 25px; /* Aumenta el tamaño del botón */
+  border-radius: 8px; /* Bordes más redondeados */
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 15px; /* Espaciado mayor entre el texto y el ícono */
+  margin: 0 auto;
+  transition: background-color 0.3s, transform 0.3s;
+  font-size: 16px; /* Ajuste de tamaño de fuente */
+}
+
+/* Efecto hover para el botón */
+button:hover {
+  background: #357abd;
+  transform: translateY(-2px); /* Eleva el botón al pasar el mouse */
+}
