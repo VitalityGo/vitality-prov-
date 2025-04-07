@@ -1,118 +1,104 @@
+/* missions.component.css - Estilo premium y lujoso */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap');
+
+body {
+  font-family: 'Poppins', sans-serif;
+  background: #121212;
+  color: #fff;
+  margin: 0;
+  padding: 0;
+}
+
 /* Contenedor principal */
 .missions-container {
-  background-color: #ffffff; /* Blanco */
-  padding: 25px;
-  border-radius: 12px; /* Bordes más redondeados */
-  color: #333333; /* Color de texto oscuro para contraste */
-  max-width: 650px;
-  margin: 20px auto;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); /* Sombra suave para darle profundidad */
+  background: linear-gradient(135deg, #1f1f1f, #292929);
+  padding: 30px;
+  border-radius: 16px;
+  color: #fff;
+  max-width: 700px;
+  margin: 40px auto;
+  box-shadow: 0 8px 24px rgba(255, 255, 255, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.missions-container:hover {
+  transform: scale(1.03);
+  box-shadow: 0 10px 30px rgba(255, 255, 255, 0.15);
 }
 
 /* Títulos principales */
 .missions-container h2 {
   text-align: center;
-  font-size: 2.2em;
+  font-size: 2.4em;
   margin-bottom: 30px;
   font-weight: 700;
   text-transform: uppercase;
-  color: #333333; /* Título en color oscuro */
+  color: #ffcc00;
 }
 
-/* Estilo para los subtítulos de misiones */
+/* Subtítulos */
 .missions-container h3 {
-  background-color: #f1f1f1; /* Fondo gris claro para subtítulos */
-  padding: 12px;
-  border-radius: 8px;
-  margin-bottom: 15px;
+  background: rgba(255, 204, 0, 0.2);
+  padding: 14px;
+  border-radius: 10px;
+  margin-bottom: 20px;
   text-align: center;
-  font-size: 1.6em;
+  font-size: 1.8em;
   font-weight: 600;
   letter-spacing: 1px;
-  color: #333333; /* Subtítulos en color oscuro */
+  color: #ffcc00;
 }
 
-/* Contenedor de misiones (diarias y semanales) */
+/* Lista de misiones */
 .missions-container ul {
   list-style-type: none;
   padding: 0;
   margin: 0;
 }
 
-/* Elemento de lista de misiones */
 .missions-container li {
   display: flex;
   align-items: center;
-  padding: 15px;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.1); /* Línea divisoria suave */
-  background-color: #f9f9f9; /* Fondo muy claro */
-  border-radius: 8px;
-  margin-bottom: 10px;
+  padding: 18px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 10px;
+  margin-bottom: 12px;
   transition: background-color 0.3s, transform 0.2s;
 }
 
-/* Efecto de hover para los elementos de la lista */
 .missions-container li:hover {
-  background-color: #e6e6e6; /* Fondo más oscuro al pasar el ratón */
-  transform: translateX(5px); /* Desplazamiento ligero al pasar el mouse */
+  background: rgba(255, 204, 0, 0.1);
+  transform: translateX(8px);
 }
 
-/* Estilo para el texto de las misiones */
 .missions-container li span {
   margin-left: 15px;
   flex-grow: 1;
-  font-size: 1.1em;
-  color: #333333; /* Texto en color oscuro */
+  font-size: 1.2em;
+  color: #fff;
 }
 
-/* Estilo para misiones completadas */
 .missions-container li span.completed {
   text-decoration: line-through;
-  color: #28a745; /* Verde para las misiones completadas */
+  color: #28a745;
   font-weight: 600;
 }
 
-/* Estilo para los checkboxes */
+/* Checkboxes */
 .missions-container input[type="checkbox"] {
-  accent-color: #28a745; /* Color verde para los checkboxes */
+  accent-color: #ffcc00;
   margin-right: 15px;
-  transform: scale(1.1); /* Aumenta ligeramente el tamaño del checkbox */
+  transform: scale(1.2);
   transition: transform 0.2s ease;
 }
 
-/* Efecto de hover en el checkbox */
 .missions-container input[type="checkbox"]:hover {
-  transform: scale(1.2);
+  transform: scale(1.3);
 }
 
 .completed {
   text-decoration: line-through;
   color: #808080;
 }
-/* missions.component.css */
-.missions-container {
-  padding: 20px;
-}
-
-h3 {
-  margin-top: 20px;
-}
-
-ul {
-  list-style-type: none;
-  padding: 0;
-}
-
-li {
-  margin: 10px 0;
-}
-
-input[type="checkbox"] {
-  margin-right: 10px;
-}
-
-span.completed {
-  text-decoration: line-through;
-  color: #6c757d;
-}
-

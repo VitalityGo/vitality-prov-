@@ -1,3 +1,4 @@
+/* Estilos generales */
 * {
   margin: 0;
   padding: 0;
@@ -11,6 +12,56 @@ body {
   overflow: hidden;
   width: 100vw;
   height: 100vh;
-  background: linear-gradient(135deg, #3C8CE7, #00EAFF);
+  background: linear-gradient(135deg, #1f1f1f, #292929); /* Fondo oscuro de lujo */
+  animation: gradientShift 8s ease infinite; /* Animación del gradiente de fondo */
+}
+
+/* Animación de cambio de gradiente */
+@keyframes gradientShift {
+  0% {
+    background: linear-gradient(135deg, #1f1f1f, #292929); /* Color oscuro inicial */
+  }
+  50% {
+    background: linear-gradient(135deg, #292929, #1f1f1f); /* Cambio sutil en los tonos */
+  }
+  100% {
+    background: linear-gradient(135deg, #1f1f1f, #292929); /* Regreso al gradiente inicial */
+  }
+}
+
+/* Animaciones para los textos */
+h1, h2, p {
+  opacity: 0;
+  animation: fadeInUp 2s ease-out forwards; /* Animación de desvanecimiento y ascenso */
+}
+
+/* Animación de desvanecimiento y ascenso */
+@keyframes fadeInUp {
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Estilo del texto con detalles dorados */
+h1 span, h2 {
+  color: #ffcc00; /* Detalle en dorado para resaltar el lujo */
+}
+
+/* Diseño responsivo */
+@media (max-width: 768px) {
+  body {
+    animation: gradientShift 8s ease infinite;
+  }
+}
+
+@media (max-width: 480px) {
+  body {
+    animation: gradientShift 8s ease infinite;
+  }
 }
 

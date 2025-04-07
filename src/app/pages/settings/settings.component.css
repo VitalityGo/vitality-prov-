@@ -1,37 +1,37 @@
-/* settings.component.css */
+/* settings.component.css - Estilo premium y lujoso */
 .settings-container {
-  max-width: 600px;
-  margin: 0 auto;
-  padding: 20px;
-  font-family: 'Poppins', sans-serif;
-  background-color: #f9f9f9; /* Fondo suave para el contenedor */
-  border-radius: 8px; /* Bordes redondeados */
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Sombra más pronunciada */
+  max-width: 700px;
+  margin: 40px auto;
+  padding: 30px;
+  background: linear-gradient(135deg, #1f1f1f, #292929);
+  border-radius: 16px;
+  box-shadow: 0 8px 24px rgba(255, 255, 255, 0.1);
+  color: #fff;
 }
 
 .settings-section {
-  background-color: #ffffff;
-  border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(255, 255, 255, 0.1);
   padding: 20px;
   margin-bottom: 20px;
-  transition: transform 0.2s; /* Efecto de hover */
+  transition: transform 0.3s ease;
 }
 
 .settings-section:hover {
-  transform: translateY(-2px); /* Levantar ligeramente al pasar el mouse */
+  transform: scale(1.02);
 }
 
 h2 {
-  color: #00bcd4; /* Azul brillante */
+  color: #ffcc00;
+  text-align: center;
+  font-size: 2em;
   margin-bottom: 20px;
-  font-size: 1.8em; /* Aumentar tamaño del encabezado */
-  text-align: center; /* Centrar el texto */
 }
 
 h3 {
-  color: #333;
-  font-size: 1.4em;
+  color: #fff;
+  font-size: 1.6em;
   margin-bottom: 20px;
   font-weight: 600;
 }
@@ -42,52 +42,39 @@ h3 {
 }
 
 .profile-image {
-  width: 120px;
-  height: 120px;
+  width: 130px;
+  height: 130px;
   border-radius: 50%;
   object-fit: cover;
-  border: 4px solid #00bcd4; /* Borde más grueso */
-  transition: transform 0.3s; /* Efecto de zoom */
+  border: 4px solid #ffcc00;
+  transition: transform 0.3s;
 }
 
 .profile-image:hover {
-  transform: scale(1.05); /* Efecto de zoom al pasar el mouse */
+  transform: scale(1.1);
 }
 
 input[type="file"] {
-  display: none; /* Ocultar el input file real */
+  display: none;
 }
 
 .file-upload-btn {
-  background-color: #00bcd4; /* Azul brillante */
-  color: white;
+  background: #ffcc00;
+  color: #121212;
   padding: 12px 30px;
   border-radius: 8px;
   cursor: pointer;
   font-size: 1.1em;
-  transition: background-color 0.3s, transform 0.2s;
+  transition: background 0.3s, transform 0.2s;
   text-transform: uppercase;
-  margin-top: 10px;
+  display: block;
+  text-align: center;
+  margin: 10px auto;
 }
 
 .file-upload-btn:hover {
-  background-color: #0097a7; /* Azul más oscuro al pasar el ratón */
+  background: #e6b800;
   transform: scale(1.05);
-}
-
-.file-upload-btn:focus {
-  outline: none;
-}
-
-.form-group {
-  margin-bottom: 20px; /* Aumentar el margen inferior */
-}
-
-label {
-  display: block;
-  margin-bottom: 5px;
-  color: #333;
-  font-weight: 600; /* Negrita para mayor énfasis */
 }
 
 input[type="text"],
@@ -95,20 +82,21 @@ input[type="email"],
 input[type="password"],
 select {
   width: 100%;
-  padding: 12px; /* Aumentar padding */
-  border: 1px solid #ddd;
-  border-radius: 5px; /* Bordes más redondeados */
+  padding: 12px;
+  border: 1px solid #444;
+  border-radius: 6px;
   font-size: 1em;
-  transition: border-color 0.3s; /* Transición suave */
+  background: #1f1f1f;
+  color: #fff;
+  transition: border-color 0.3s;
 }
 
 input:focus {
-  border-color: #00bcd4; /* Color de borde en foco */
-  box-shadow: 0 0 5px rgba(0, 188, 212, 0.2); /* Sombra en foco */
+  border-color: #ffcc00;
+  box-shadow: 0 0 5px rgba(255, 204, 0, 0.5);
 }
 
 button {
-  font-family: 'Poppins', sans-serif;
   padding: 14px 28px;
   border-radius: 8px;
   cursor: pointer;
@@ -120,33 +108,26 @@ button {
   text-align: center;
 }
 
-button:focus {
-  outline: none;
-}
-
-/* Botón de Guardar Perfil y Guardar Configuración */
 .save-btn {
-  background-color: #00bcd4; /* Azul brillante */
-  color: white;
+  background: #ffcc00;
+  color: #121212;
 }
 
 .save-btn:hover {
-  background-color: #0097a7; /* Azul más oscuro */
+  background: #e6b800;
   transform: scale(1.05);
 }
 
-/* Botón de Eliminar Cuenta */
 .delete-btn {
-  background-color: #ff4081; /* Rosa brillante */
+  background: #ff4081;
   color: white;
 }
 
 .delete-btn:hover {
-  background-color: #ff3366; /* Rosa más fuerte */
+  background: #ff3366;
   transform: scale(1.05);
 }
 
-/* Mensajes de éxito y error */
 .success-message,
 .error-message {
   padding: 16px;
@@ -156,51 +137,26 @@ button:focus {
 }
 
 .success-message {
-  background-color: #a5d6a7; /* Verde suave */
-  color: #388e3c; /* Verde oscuro para contraste */
+  background: #388e3c;
+  color: #fff;
   border: 1px solid #81c784;
 }
 
 .error-message {
-  background-color: #ffccbc; /* Rojo suave */
-  color: #d32f2f; /* Rojo intenso */
+  background: #d32f2f;
+  color: #fff;
   border: 1px solid #ff7043;
 }
 
-/* Responsive */
 @media (max-width: 600px) {
   .settings-container {
-      padding: 10px;
+    padding: 15px;
   }
-
-  .settings-section {
-      padding: 15px;
-  }
-
-  h2 {
-      font-size: 1.5em;
-  }
-
   .profile-image {
-      width: 90px;
-      height: 90px;
+    width: 100px;
+    height: 100px;
   }
-
-  .save-btn,
-  .delete-btn {
-      font-size: 0.9em;
+  .save-btn, .delete-btn {
+    font-size: 1em;
   }
-
-  .file-upload-btn {
-      font-size: 1em;
-  }
-}
-.close-btn {
-  background-color: #84c6f3; /* Rosa brillante */
-  color: white;
-}
-
-.close-btn:hover {
-  background-color: #338bff; /* Rosa más fuerte */
-  transform: scale(1.05);
 }

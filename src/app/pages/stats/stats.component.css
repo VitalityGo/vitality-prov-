@@ -1,93 +1,179 @@
-.stats-container {
-    width: 100%;
-    padding: 20px;
-    background-color: #f7f8fa;
-    border-radius: 10px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-  }
-  
-  header {
-    text-align: center;
-    margin-bottom: 20px;
-  }
-  
-  h1 {
-    color: #3C8CE7;
-    font-size: 32px;
-  }
-  
-  .subheading {
-    color: #666;
-    font-size: 16px;
-  }
-  
-  .stats-cards {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-    gap: 20px;
-    margin-bottom: 30px;
-  }
-  
-  .stat-card {
-    background: white;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    text-align: center;
-  }
-  
-  .stat-card h2 {
-    font-size: 18px;
-    color: #3C8CE7;
-  }
-  
-  .stat-value {
-    font-size: 24px;
-    font-weight: bold;
-    color: #333;
-  }
-  
-  .charts {
-    background: #fff;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  }
-  
-  .charts h2 {
-    text-align: center;
-    color: #3C8CE7;
-  }
+/* missions.component.css - Estilo premium y lujoso */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap');
 
-  .stats-container {
-    max-width: 800px;
-    margin: 0 auto;
-    padding: 20px;
-    font-family: Arial, sans-serif;
+body {
+  font-family: 'Poppins', sans-serif;
+  background: #121212;
+  color: #fff;
+  margin: 0;
+  padding: 0;
+}
+
+/* Contenedor principal */
+.missions-container {
+  background: linear-gradient(135deg, #1f1f1f, #292929);
+  padding: 30px;
+  border-radius: 16px;
+  color: #fff;
+  max-width: 700px;
+  margin: 40px auto;
+  box-shadow: 0 8px 24px rgba(255, 255, 255, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.missions-container:hover {
+  transform: scale(1.03);
+  box-shadow: 0 10px 30px rgba(255, 255, 255, 0.15);
+}
+
+/* Títulos principales */
+.missions-container h2 {
+  text-align: center;
+  font-size: 2.4em;
+  margin-bottom: 30px;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: #ffcc00;
+}
+
+/* Subtítulos */
+.missions-container h3 {
+  background: rgba(255, 204, 0, 0.2);
+  padding: 14px;
+  border-radius: 10px;
+  margin-bottom: 20px;
+  text-align: center;
+  font-size: 1.8em;
+  font-weight: 600;
+  letter-spacing: 1px;
+  color: #ffcc00;
+}
+
+/* Lista de misiones */
+.missions-container ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+.missions-container li {
+  display: flex;
+  align-items: center;
+  padding: 18px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 10px;
+  margin-bottom: 12px;
+  transition: background-color 0.3s, transform 0.2s;
+}
+
+.missions-container li:hover {
+  background: rgba(255, 204, 0, 0.1);
+  transform: translateX(8px);
+}
+
+.missions-container li span {
+  margin-left: 15px;
+  flex-grow: 1;
+  font-size: 1.2em;
+  color: #fff;
+}
+
+.missions-container li span.completed {
+  text-decoration: line-through;
+  color: #28a745;
+  font-weight: 600;
+}
+
+/* Checkboxes */
+.missions-container input[type="checkbox"] {
+  accent-color: #ffcc00;
+  margin-right: 15px;
+  transform: scale(1.2);
+  transition: transform 0.2s ease;
+}
+
+.missions-container input[type="checkbox"]:hover {
+  transform: scale(1.3);
+}
+
+.completed {
+  text-decoration: line-through;
+  color: #808080;
+}
+
+/* stats.component.css - Estilo premium y lujoso */
+.stats-container {
+  width: 100%;
+  max-width: 900px;
+  margin: 40px auto;
+  padding: 30px;
+  background: linear-gradient(135deg, #1f1f1f, #292929);
+  border-radius: 16px;
+  box-shadow: 0 8px 24px rgba(255, 255, 255, 0.1);
+  color: #fff;
+}
+
+header {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+h1 {
+  color: #ffcc00;
+  font-size: 36px;
+}
+
+.subheading {
+  color: #ccc;
+  font-size: 18px;
 }
 
 .stats-cards {
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 20px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 20px;
+  margin-bottom: 30px;
 }
 
 .stat-card {
-    background-color: #f0f0f0;
-    border-radius: 8px;
-    padding: 20px;
-    flex: 1;
-    margin: 0 10px;
-    text-align: center;
+  background: rgba(255, 255, 255, 0.05);
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(255, 255, 255, 0.1);
+  text-align: center;
+  transition: transform 0.3s ease;
+}
+
+.stat-card:hover {
+  transform: scale(1.05);
+}
+
+.stat-card h2 {
+  font-size: 20px;
+  color: #ffcc00;
+}
+
+.stat-value {
+  font-size: 28px;
+  font-weight: bold;
+  color: #fff;
 }
 
 .charts {
-    margin-top: 20px;
+  background: rgba(255, 255, 255, 0.05);
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(255, 255, 255, 0.1);
+  text-align: center;
+}
+
+.charts h2 {
+  color: #ffcc00;
 }
 
 canvas {
-    border: 1px solid #ccc;
-    margin-top: 20px;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(255, 255, 255, 0.1);
 }

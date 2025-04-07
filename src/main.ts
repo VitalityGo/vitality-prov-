@@ -6,3 +6,5 @@ import Chart from 'chart.js/auto';  // Añade esta línea
 
 bootstrapApplication(AppComponent, appConfig)
   .catch(err => console.error(err));
+
+  

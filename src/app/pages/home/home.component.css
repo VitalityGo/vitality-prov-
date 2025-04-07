@@ -1,26 +1,38 @@
+/* Fuente elegante y moderna */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap');
+
+body {
+  font-family: 'Poppins', sans-serif;
+  background: #121212; /* Fondo oscuro de lujo */
+  color: #fff;
+  margin: 0;
+  padding: 0;
+}
+
 /* Contenedor principal */
 .home-container {
   padding: 25px;
   display: flex;
   flex-direction: column;
   gap: 25px;
-  max-width: 1000px; /* Limita el ancho máximo */
-  margin: 0 auto; /* Centra el contenedor */
+  max-width: 1000px;
+  margin: 0 auto;
 }
 
 /* Tarjetas de métrica */
 .metric-card {
-  background: #fff; /* Fondo blanco */
-  border-radius: 15px; /* Bordes más redondeados */
+  background: linear-gradient(135deg, #1f1f1f, #292929);
+  border-radius: 18px;
   padding: 25px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* Sombra suave */
+  box-shadow: 0 8px 24px rgba(255, 255, 255, 0.1);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
+  border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 /* Efecto hover para las tarjetas */
 .metric-card:hover {
-  transform: translateY(-5px); /* Eleva la tarjeta ligeramente */
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15); /* Sombra más intensa */
+  transform: translateY(-5px);
+  box-shadow: 0 10px 30px rgba(255, 255, 255, 0.15);
 }
 
 /* Cabecera de la tarjeta */
@@ -33,110 +45,102 @@
 
 /* Icono en la cabecera */
 .metric-header i {
-  color: #3C8CE7;
-  font-size: 28px; /* Aumenta el tamaño */
+  color: #ffcc00;
+  font-size: 30px;
 }
 
 /* Título de la cabecera */
 .metric-header h3 {
   margin: 0;
-  color: #333;
-  font-size: 20px; /* Aumenta el tamaño */
-  font-weight: 600; /* Más énfasis en el título */
-}
-
-/* Contenido de la tarjeta */
-.metric-content {
-  text-align: center;
+  color: #fff;
+  font-size: 22px;
+  font-weight: 600;
 }
 
 /* Valor de la métrica */
 .metric-value {
-  font-size: 36px; /* Aumenta el tamaño para más visibilidad */
+  font-size: 42px;
   font-weight: 700;
-  color: #3C8CE7;
+  color: #ffcc00;
   margin: 0;
 }
 
 /* Etiqueta de la métrica */
 .metric-label {
-  color: #666;
+  color: #bbb;
   margin: 8px 0 18px 0;
   font-size: 16px;
 }
 
-/* Estilo de los botones */
+/* Botones */
 button {
-  background: #3C8CE7;
-  color: white;
+  background: linear-gradient(135deg, #ffcc00, #ff9900);
+  color: #121212;
   border: none;
-  padding: 12px 25px; /* Aumenta el tamaño del botón */
-  border-radius: 8px; /* Bordes más redondeados */
+  padding: 14px 28px;
+  border-radius: 12px;
   cursor: pointer;
   display: flex;
   align-items: center;
-  gap: 15px; /* Espaciado mayor entre el texto y el ícono */
+  gap: 15px;
   margin: 0 auto;
-  transition: background-color 0.3s, transform 0.3s;
-  font-size: 16px; /* Ajuste de tamaño de fuente */
+  transition: background 0.3s, transform 0.3s;
+  font-size: 18px;
+  font-weight: 600;
+  box-shadow: 0 4px 12px rgba(255, 204, 0, 0.4);
 }
 
 /* Efecto hover para el botón */
 button:hover {
-  background: #357abd;
-  transform: translateY(-2px); /* Eleva el botón al pasar el mouse */
+  background: linear-gradient(135deg, #ff9900, #ff6600);
+  transform: translateY(-3px);
+  box-shadow: 0 6px 16px rgba(255, 153, 0, 0.5);
 }
 
-/* Contenedor de la entrada de peso */
-.weight-input {
-  display: flex;
-  gap: 15px;
-  margin-bottom: 25px; /* Espaciado inferior mayor */
-}
-
-/* Estilo de los campos de entrada */
+/* Campos de entrada */
 input {
   flex: 1;
-  padding: 12px; /* Espaciado interno más cómodo */
-  border: 1px solid #ddd;
-  border-radius: 8px; /* Bordes redondeados */
+  padding: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 10px;
   font-size: 16px;
-  transition: border-color 0.3s;
+  background: rgba(255, 255, 255, 0.1);
+  color: #fff;
+  transition: border-color 0.3s, box-shadow 0.3s;
 }
 
-/* Estilo en foco para los inputs */
 input:focus {
-  border-color: #3C8CE7; /* Color de borde azul en foco */
-  box-shadow: 0 0 6px rgba(60, 140, 231, 0.3); /* Sombra azul suave */
-  
+  border-color: #ffcc00;
+  box-shadow: 0 0 8px rgba(255, 204, 0, 0.5);
 }
 
 /* Contenedor de la gráfica */
 .chart-container {
   margin-top: 30px;
-  height: 350px; /* Aumenta la altura de la gráfica */
-  background: #f4f6f9; /* Fondo gris suave */
-  border-radius: 10px; /* Bordes redondeados */
-  padding: 15px; /* Espaciado interno */
+  height: 350px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 12px;
+  padding: 15px;
+  box-shadow: 0 4px 12px rgba(255, 255, 255, 0.1);
 }
 
-/* Medios */
+/* Estilos responsivos */
 @media (max-width: 600px) {
   .weight-input {
-    flex-direction: column; /* Cambia a columna en pantallas pequeñas */
+    flex-direction: column;
   }
 
   button {
     width: 100%;
-    justify-content: center; /* Centra el botón */
+    justify-content: center;
   }
   
   .metric-card {
-    padding: 20px; /* Reducir el padding en pantallas pequeñas */
+    padding: 20px;
   }
   
   .metric-header {
-    flex-direction: column; /* Cambia a columna en pantallas pequeñas */
-    align-items: flex-start; /* Alineación izquierda */
+    flex-direction: column;
+    align-items: flex-start;
   }
 }

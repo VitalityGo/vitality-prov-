@@ -7,30 +7,32 @@
   padding: 20px;
   text-align: center;
   font-family: 'Poppins', sans-serif;
-  animation: fadeIn 1s ease-out; /* Animación de aparición suave */
+  background: linear-gradient(135deg, #1a1a1a, #292929); /* Fondo oscuro elegante */
+  animation: fadeIn 1s ease-out;
 }
 
 h1 span {
-  color: #3C8CE7;
-  animation: bounceIn 1.5s ease; /* Animación de rebote */
+  color: #ffcc00; /* Dorado para un toque premium */
+  animation: bounceIn 1.5s ease;
 }
 
 .login-form {
-  background: white;
-  padding: 2rem;
-  border-radius: 10px;
-  box-shadow: 0 0 20px rgba(0,0,0,0.1);
+  background: #222;
+  padding: 2.5rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.2); /* Sombra más suave y profunda */
   width: 100%;
   max-width: 400px;
   margin: 0 auto;
-  animation: slideUp 1s ease-out; /* Animación de deslizamiento hacia arriba */
+  animation: slideUp 1s ease-out;
 }
 
 h2 {
-  color: #3C8CE7;
+  color: #ffcc00;
   margin-bottom: 2rem;
-  font-size: 24px;
-  animation: fadeInUp 0.8s ease-out; /* Animación de desvanecimiento y subida */
+  font-size: 26px;
+  font-weight: 600;
+  animation: fadeInUp 0.8s ease-out;
 }
 
 .form-group {
@@ -39,36 +41,39 @@ h2 {
 
 input {
   width: 100%;
-  padding: 12px;
-  border: 1px solid #ddd;
-  border-radius: 5px;
+  padding: 14px;
+  border: 1px solid #444;
+  border-radius: 8px; /* Bordes redondeados para un toque suave */
   font-size: 16px;
+  background: #333;
+  color: #fff;
   transition: border-color 0.3s ease, box-shadow 0.3s ease;
-  animation: fadeIn 1s ease-out; /* Animación de aparición suave */
+  animation: fadeIn 1s ease-out;
 }
 
 input:focus {
   outline: none;
-  border-color: #3C8CE7;
-  box-shadow: 0 0 5px rgba(60,140,231,0.2);
+  border-color: #ffcc00; /* Dorado en el borde al hacer foco */
+  box-shadow: 0 0 8px rgba(255, 204, 0, 0.3);
 }
 
 button {
   width: 100%;
-  padding: 12px;
-  background: #3C8CE7;
-  color: white;
+  padding: 14px;
+  background: #ffcc00;
+  color: #121212;
   border: none;
-  border-radius: 5px;
+  border-radius: 8px; /* Bordes más redondeados */
   cursor: pointer;
-  transition: background 0.3s ease, transform 0.2s ease;
+  transition: background 0.3s ease, transform 0.3s ease;
   font-size: 16px;
-  font-weight: 500;
-  animation: fadeInUp 1s ease-out; /* Animación de aparición hacia arriba */
+  font-weight: 600;
+  animation: fadeInUp 1s ease-out;
 }
 
 button:hover {
-  background: #357abd;
+  background: #e6b800;
+  transform: scale(1.05);
 }
 
 button:active {
@@ -80,7 +85,7 @@ button:active {
   font-size: 14px;
   margin-bottom: 1rem;
   text-align: center;
-  animation: shake 0.5s ease; /* Animación de sacudida para errores */
+  animation: shake 0.5s ease;
 }
 
 .additional-options {
@@ -91,14 +96,14 @@ button:active {
 }
 
 .additional-options a {
-  color: #3C8CE7;
+  color: #ffcc00;
   text-decoration: none;
   transition: color 0.3s ease;
-  animation: fadeIn 1s ease-out; /* Animación de aparición suave */
+  animation: fadeIn 1s ease-out;
 }
 
 .additional-options a:hover {
-  color: #357abd;
+  color: #e6b800; /* Dorado más suave */
   text-decoration: underline;
 }
 
@@ -167,9 +172,9 @@ button:active {
 }
 
 /* Diseño responsivo */
-@media (max-width: 768px) { 
+@media (max-width: 768px) {
   .login-form {
-    max-width: 90%; /* Ocupa el 90% del ancho de la pantalla */
+    max-width: 90%;
   }
 }
 

@@ -1,94 +1,106 @@
-/* profile.component.css */
+/* profile.component.css - Estilo premium y lujoso */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap');
+
+body {
+  font-family: 'Poppins', sans-serif;
+  background: #121212;
+  color: #fff;
+  margin: 0;
+  padding: 0;
+}
 
 /* Contenedor principal */
 .profile-container {
-  max-width: 650px; /* Aumento del ancho máximo para más espacio */
-  margin: 30px auto; /* Centrado con más espacio alrededor */
-  padding: 25px; /* Espaciado interno más generoso */
-  border-radius: 12px; /* Bordes más redondeados */
-  background-color: #ffffff; /* Color de fondo blanco para mayor claridad */
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1); /* Sombra más profunda y suave */
-  transition: transform 0.3s ease, box-shadow 0.3s ease; /* Transición para interactividad */
+  max-width: 700px;
+  margin: 40px auto;
+  padding: 30px;
+  border-radius: 16px;
+  background: linear-gradient(135deg, #1f1f1f, #292929);
+  box-shadow: 0 8px 24px rgba(255, 255, 255, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-/* Efecto hover para el contenedor */
+/* Efecto hover */
 .profile-container:hover {
-  transform: scale(1.02); /* Aumenta ligeramente el tamaño al pasar el mouse */
-  box-shadow: 0 6px 30px rgba(0, 0, 0, 0.15); /* Sombra más intensa al interactuar */
+  transform: scale(1.03);
+  box-shadow: 0 10px 30px rgba(255, 255, 255, 0.15);
 }
 
 /* Títulos */
 .profile-container h2 {
-  font-size: 2em; /* Aumenta el tamaño para mayor énfasis */
-  margin-bottom: 20px; /* Espaciado inferior */
-  color: #333; /* Color oscuro para el texto */
-  font-weight: 600; /* Negrita moderada para mayor legibilidad */
-  text-align: center; /* Centrado para más equilibrio visual */
+  font-size: 2.2em;
+  margin-bottom: 25px;
+  color: #ffcc00;
+  font-weight: 700;
+  text-align: center;
 }
 
 /* Etiquetas */
 .profile-container label {
-  display: block; /* Hace que las etiquetas ocupen toda la línea */
-  margin-bottom: 8px; /* Espaciado inferior ligeramente mayor */
-  font-weight: 600; /* Negrita */
-  color: #333; /* Color oscuro para las etiquetas */
+  display: block;
+  margin-bottom: 10px;
+  font-weight: 600;
+  color: #fff;
 }
 
 /* Inputs */
 .profile-container input[type="text"],
 .profile-container input[type="number"] {
-  width: 100%; /* Ancho completo */
-  padding: 12px; /* Aumenta el espaciado interno para mayor comodidad */
-  margin-bottom: 18px; /* Espaciado inferior más grande */
-  border: 1px solid #ccc; /* Borde gris suave */
-  border-radius: 8px; /* Bordes redondeados más grandes */
-  font-size: 16px; /* Tamaño de fuente cómodo */
-  transition: border-color 0.3s ease, box-shadow 0.3s ease; /* Transición suave al enfocarse */
+  width: 100%;
+  padding: 14px;
+  margin-bottom: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 10px;
+  font-size: 16px;
+  background: rgba(255, 255, 255, 0.1);
+  color: #fff;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
-/* Estilo en el foco de los inputs */
-.profile-container input[type="text"]:focus,
-.profile-container input[type="number"]:focus {
-  border-color: #007bff; /* Azul brillante cuando el input está en foco */
-  box-shadow: 0 0 8px rgba(0, 123, 255, 0.3); /* Sombra suave azul */
+/* Estilo en foco */
+.profile-container input:focus {
+  border-color: #ffcc00;
+  box-shadow: 0 0 8px rgba(255, 204, 0, 0.5);
 }
 
 /* Resultados */
 .profile-container h3 {
-  margin-top: 30px; /* Más espacio superior */
-  font-size: 1.8em; /* Tamaño adecuado para subtítulos */
-  color: #444; /* Color oscuro y legible */
-  font-weight: 600;
-  text-align: center; /* Centrado para equilibrio visual */
+  margin-top: 35px;
+  font-size: 2em;
+  color: #ffcc00;
+  font-weight: 700;
+  text-align: center;
 }
 
-/* Párrafos de resultados */
 .profile-container p {
-  font-size: 1.1em; /* Tamaño de fuente cómodo y legible */
-  margin: 12px 0; /* Espaciado vertical más grande */
-  color: #666; /* Gris suave para los párrafos */
-  line-height: 1.6; /* Mejora la legibilidad */
-  text-align: justify; /* Justificado para un aspecto limpio */
+  font-size: 1.2em;
+  margin: 15px 0;
+  color: #bbb;
+  line-height: 1.7;
+  text-align: justify;
 }
 
-/* Estilo de los botones */
+/* Botones */
 button {
-  background: #3C8CE7;
-  color: white;
+  background: linear-gradient(135deg, #ffcc00, #ff9900);
+  color: #121212;
   border: none;
-  padding: 12px 25px; /* Aumenta el tamaño del botón */
-  border-radius: 8px; /* Bordes más redondeados */
+  padding: 14px 30px;
+  border-radius: 12px;
   cursor: pointer;
   display: flex;
   align-items: center;
-  gap: 15px; /* Espaciado mayor entre el texto y el ícono */
+  gap: 15px;
   margin: 0 auto;
-  transition: background-color 0.3s, transform 0.3s;
-  font-size: 16px; /* Ajuste de tamaño de fuente */
+  transition: background 0.3s, transform 0.3s;
+  font-size: 18px;
+  font-weight: 600;
+  box-shadow: 0 4px 12px rgba(255, 204, 0, 0.4);
 }
 
-/* Efecto hover para el botón */
 button:hover {
-  background: #357abd;
-  transform: translateY(-2px); /* Eleva el botón al pasar el mouse */
+  background: linear-gradient(135deg, #ff9900, #ff6600);
+  transform: translateY(-3px);
+  box-shadow: 0 6px 16px rgba(255, 153, 0, 0.5);
 }
