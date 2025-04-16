@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { ImcService } from '../../services/imc.service'; // Importar el servicio
+import { ImcService } from '../../services/imc.service';
+import { DataService } from '../../services/data.service';
 
 @Component({
   selector: 'app-profile',
@@ -18,23 +19,42 @@ export class ProfileComponent implements OnInit {
   bodyFatPercentage: number = 0;
   bmi: number = 0;
 
-  constructor(private imcService: ImcService) { }
+  constructor(
+    private imcService: ImcService,
+    private dataService: DataService
+  ) {}
 
-  ngOnInit(): void {
-    this.calculateBMI(); // Recalcular IMC cuando el componente se cargue
+  async ngOnInit() {
+    await this.dataService.loadData();
+    const profile = this.dataService.getProfile();
+    this.name = profile.name;
+    this.weight = profile.weight;
+    this.age = profile.age;
+    this.height = profile.height;
+    this.bodyFatPercentage = profile.bodyFatPercentage;
+    this.bmi = profile.bmi;
+    this.calculateBMI();
   }
 
-  calculateBMI(): void {
+  async calculateBMI() {
     if (this.height > 0) {
       const heightInMeters = this.height / 100;
       this.bmi = this.weight / (heightInMeters * heightInMeters);
-      this.setImc(); // Actualizar el IMC en el servicio después de calcularlo
+      this.setImc();
+      await this.dataService.setProfile({
+        name: this.name,
+        weight: this.weight,
+        age: this.age,
+        height: this.height,
+        bodyFatPercentage: this.bodyFatPercentage,
+        bmi: this.bmi
+      });
     } else {
       this.bmi = 0;
     }
   }
 
-  setImc(): void {
+  setImc() {
     if (this.bmi < 18.5) {
       this.imcService.changeImc('bajo');
     } else if (this.bmi >= 18.5 && this.bmi <= 24.9) {
@@ -46,13 +66,15 @@ export class ProfileComponent implements OnInit {
 
   calculateDailyCalories(): number {
     let bmr: number;
-    const isMale = true; // Cambiar según el género
+    const isMale = true; // Puedes reemplazarlo por una propiedad si el usuario define género
+
     if (isMale) {
       bmr = 88.362 + (13.397 * this.weight) + (4.799 * this.height) - (5.677 * this.age);
     } else {
       bmr = 447.593 + (9.247 * this.weight) + (3.098 * this.height) - (4.330 * this.age);
     }
-    const activityLevel = 1.2; // Sedentario
+
+    const activityLevel = 1.2; // Puedes hacer esto dinámico según preferencia
     return Math.round(bmr * activityLevel);
   }
 }
