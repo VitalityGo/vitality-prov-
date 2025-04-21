@@ -3,72 +3,71 @@
 
 body {
   font-family: 'Poppins', sans-serif;
-  background: #121212; /* Fondo oscuro de lujo */
+  background: #121212;
   color: #fff;
   margin: 0;
   padding: 0;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
 }
 
 /* Contenedor principal */
 .home-container {
-  padding: 25px;
+  padding: 30px 20px;
   display: flex;
   flex-direction: column;
-  gap: 25px;
+  gap: 30px;
   max-width: 1000px;
   margin: 0 auto;
 }
 
 /* Tarjetas de métrica */
 .metric-card {
-  background: linear-gradient(135deg, #1f1f1f, #292929);
-  border-radius: 18px;
-  padding: 25px;
-  box-shadow: 0 8px 24px rgba(255, 255, 255, 0.1);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: linear-gradient(135deg, #1a1a1a, #252525);
+  border-radius: 20px;
+  padding: 28px;
+  box-shadow: 0 10px 30px rgba(255, 255, 255, 0.06);
+  transition: transform 0.35s ease, box-shadow 0.35s ease;
+  border: 1px solid rgba(255, 255, 255, 0.08);
 }
 
-/* Efecto hover para las tarjetas */
 .metric-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 10px 30px rgba(255, 255, 255, 0.15);
+  transform: translateY(-6px);
+  box-shadow: 0 12px 34px rgba(255, 255, 255, 0.12);
 }
 
 /* Cabecera de la tarjeta */
 .metric-header {
   display: flex;
   align-items: center;
-  gap: 12px;
-  margin-bottom: 18px;
+  gap: 14px;
+  margin-bottom: 20px;
 }
 
-/* Icono en la cabecera */
 .metric-header i {
   color: #ffcc00;
-  font-size: 30px;
+  font-size: 32px;
 }
 
-/* Título de la cabecera */
 .metric-header h3 {
   margin: 0;
-  color: #fff;
-  font-size: 22px;
+  font-size: 24px;
   font-weight: 600;
 }
 
 /* Valor de la métrica */
 .metric-value {
-  font-size: 42px;
+  font-size: 46px;
   font-weight: 700;
   color: #ffcc00;
   margin: 0;
+  letter-spacing: 1px;
 }
 
-/* Etiqueta de la métrica */
+/* Etiqueta */
 .metric-label {
-  color: #bbb;
-  margin: 8px 0 18px 0;
+  color: #aaa;
+  margin-top: 6px;
   font-size: 16px;
 }
 
@@ -77,70 +76,80 @@ button {
   background: linear-gradient(135deg, #ffcc00, #ff9900);
   color: #121212;
   border: none;
-  padding: 14px 28px;
-  border-radius: 12px;
+  padding: 14px 32px;
+  border-radius: 14px;
   cursor: pointer;
   display: flex;
   align-items: center;
-  gap: 15px;
-  margin: 0 auto;
-  transition: background 0.3s, transform 0.3s;
+  gap: 14px;
+  margin: 24px auto 0 auto; /* Espacio superior añadido */
+  transition: all 0.3s ease;
   font-size: 18px;
   font-weight: 600;
-  box-shadow: 0 4px 12px rgba(255, 204, 0, 0.4);
+  box-shadow: 0 6px 18px rgba(255, 204, 0, 0.35);
 }
 
-/* Efecto hover para el botón */
 button:hover {
   background: linear-gradient(135deg, #ff9900, #ff6600);
   transform: translateY(-3px);
-  box-shadow: 0 6px 16px rgba(255, 153, 0, 0.5);
+  box-shadow: 0 8px 20px rgba(255, 153, 0, 0.5);
 }
 
 /* Campos de entrada */
 input {
   flex: 1;
-  padding: 14px;
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  padding: 14px 16px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
   border-radius: 10px;
   font-size: 16px;
-  background: rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.07);
   color: #fff;
-  transition: border-color 0.3s, box-shadow 0.3s;
+  transition: all 0.3s ease;
 }
 
 input:focus {
   border-color: #ffcc00;
-  box-shadow: 0 0 8px rgba(255, 204, 0, 0.5);
+  box-shadow: 0 0 10px rgba(255, 204, 0, 0.45);
+  outline: none;
 }
 
 /* Contenedor de la gráfica */
 .chart-container {
-  margin-top: 30px;
+  margin-top: 32px;
   height: 350px;
-  background: rgba(255, 255, 255, 0.05);
-  border-radius: 12px;
-  padding: 15px;
-  box-shadow: 0 4px 12px rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.04);
+  border-radius: 14px;
+  padding: 20px;
+  box-shadow: 0 6px 16px rgba(255, 255, 255, 0.08);
 }
 
-/* Estilos responsivos */
+/* Responsividad */
 @media (max-width: 600px) {
+  .home-container {
+    padding: 20px 16px;
+  }
+
   .weight-input {
     flex-direction: column;
+    gap: 14px;
   }
 
   button {
     width: 100%;
     justify-content: center;
   }
-  
+
   .metric-card {
-    padding: 20px;
+    padding: 22px;
   }
-  
+
   .metric-header {
     flex-direction: column;
     align-items: flex-start;
   }
+
+  .metric-value {
+    font-size: 38px;
+  }
 }
+

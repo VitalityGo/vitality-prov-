@@ -63,9 +63,9 @@ export class SettingsComponent implements OnInit {
       this.settings = { ...JSON.parse(savedSettings) };
     }
     // Aplicar el modo oscuro si está activado en localStorage
-  if (this.settings.darkMode) {
-    document.body.classList.add('dark-mode');
-  }
+    if (this.settings.darkMode) {
+      document.body.classList.add('dark-mode');
+    }
   }
 
   onFileSelected(event: any) {
@@ -81,41 +81,24 @@ export class SettingsComponent implements OnInit {
   }
 
   async saveProfile() {
-
     try {
-
       if (this.selectedFile) {
-
         this.user.profileImage = await this.getBase64(this.selectedFile);
-
       }
-
-      
-
       await this.authService.updateUserProfile(this.user.name, this.user.profileImage || '');
-
       this.successMessage = 'Perfil actualizado correctamente';
-
       setTimeout(() => this.successMessage = '', 3000);
-
     } catch (error) {
-
       this.errorMessage = 'Error al actualizar el perfil: ' + (error instanceof Error ? error.message : String(error));
-
       setTimeout(() => this.errorMessage = '', 3000);
-
     }
-
   }
 
   saveSettings() {
     localStorage.setItem('userSettings', JSON.stringify(this.settings));
-  
-  
     this.successMessage = 'Configuración guardada correctamente';
     setTimeout(() => this.successMessage = '', 3000);
   }
-  
 
   changePassword() {
     if (this.newPassword !== this.confirmPassword) {
@@ -136,9 +119,14 @@ export class SettingsComponent implements OnInit {
     }
   }
 
+  logout() {
+    this.authService.logout();
+    this.router.navigate(['/login']);
+  }
+
   deleteAccount() {
     if (confirm('¿Estás seguro de que quieres eliminar tu cuenta? Esta acción no se puede deshacer.')) {
-      this.authService.logout();
+      this.authService.deleteAccount(); // Lógica de eliminación de cuenta
       this.router.navigate(['/login']);
     }
   }

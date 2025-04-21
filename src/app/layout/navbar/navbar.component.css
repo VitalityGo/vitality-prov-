@@ -254,6 +254,11 @@ nav {
 
 .settings-btn
   {
-background: #ffcc00;
+background: #ffcc00 ;
 color: #121212;
   }
+
+.user-name
+{
+  color: #ffcc00;
+}

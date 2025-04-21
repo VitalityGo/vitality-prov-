@@ -2,65 +2,43 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 
 interface User {
-
   email: string;
-
   password: string;
-
-  name?: string;  // Añade esta línea
-
-  profileImage?: string;  // Añade esta línea
-
+  name?: string;
+  profileImage?: string;
 }
 
 @Injectable({
   providedIn: 'root'
 })
-
-
 export class AuthService {
   private isAuthenticated = new BehaviorSubject<boolean>(false);
   private users: User[] = [];
 
   constructor() {
-    
+    const savedUsers = localStorage.getItem('users');
+    if (savedUsers) {
+      this.users = JSON.parse(savedUsers);
+    }
 
-  const savedUsers = localStorage.getItem('users');
-
-  if (savedUsers) {
-
-    this.users = JSON.parse(savedUsers);
-
-  }
-
-
-  // Cargar usuario actual
-
-  const currentUser = localStorage.getItem('currentUser');
-
-  if (currentUser) {
-
-    this.currentUserSubject.next(JSON.parse(currentUser));
-
-  }
+    // Cargar usuario actual
+    const currentUser = localStorage.getItem('currentUser');
+    if (currentUser) {
+      this.currentUserSubject.next(JSON.parse(currentUser));
+    }
   }
 
   register(email: string, password: string): boolean {
-    // Verificar si el usuario ya existe
     if (this.users.some(user => user.email === email)) {
       return false;
     }
-
-    // Agregar nuevo usuario
     this.users.push({ email, password });
-    // Guardar en localStorage
     localStorage.setItem('users', JSON.stringify(this.users));
     return true;
   }
 
   login(email: string, password: string): boolean {
     const user = this.users.find(u => u.email === email && u.password === password);
-    
     if (user) {
       this.isAuthenticated.next(true);
       this.currentUserSubject.next(user);
@@ -77,6 +55,7 @@ export class AuthService {
     localStorage.removeItem('token');
     localStorage.removeItem('currentUser');
   }
+
   isAuthenticated$(): Observable<boolean> {
     return this.isAuthenticated.asObservable();
   }
@@ -93,48 +72,47 @@ export class AuthService {
   }
 
   private currentUserSubject = new BehaviorSubject<User | null>(null);
-currentUser$ = this.currentUserSubject.asObservable();
+  currentUser$ = this.currentUserSubject.asObservable();
 
-updateUserProfile(name: string, profileImage: string): Promise<void> {
+  updateUserProfile(name: string, profileImage: string): Promise<void> {
+    return new Promise((resolve, reject) => {
+      const currentUser = this.getCurrentUser();
+      if (currentUser) {
+        currentUser.name = name;
+        currentUser.profileImage = profileImage;
+        this.currentUserSubject.next(currentUser);
+        localStorage.setItem('currentUser', JSON.stringify(currentUser));
 
-  return new Promise((resolve, reject) => {
-
-    const currentUser = this.getCurrentUser();
-
-    if (currentUser) {
-
-      currentUser.name = name;
-
-      currentUser.profileImage = profileImage;
-
-      this.currentUserSubject.next(currentUser);
-
-      localStorage.setItem('currentUser', JSON.stringify(currentUser));
-
-      
-
-      // Actualizar también en la lista de usuarios
-
-      const userIndex = this.users.findIndex(u => u.email === currentUser.email);
-
-      if (userIndex !== -1) {
-
-        this.users[userIndex] = currentUser;
-
-        localStorage.setItem('users', JSON.stringify(this.users));
-
+        // Actualizar también en la lista de usuarios
+        const userIndex = this.users.findIndex(u => u.email === currentUser.email);
+        if (userIndex !== -1) {
+          this.users[userIndex] = currentUser;
+          localStorage.setItem('users', JSON.stringify(this.users));
+        }
+        resolve();
+      } else {
+        reject(new Error('No hay usuario autenticado'));
       }
+    });
+  }
 
-      resolve();
+  // Método para eliminar la cuenta
+  deleteAccount(): void {
+    const currentUser = this.getCurrentUser();
+    if (currentUser) {
+      // Eliminar el usuario de la lista de usuarios
+      this.users = this.users.filter(u => u.email !== currentUser.email);
+      localStorage.setItem('users', JSON.stringify(this.users));
 
+      // Eliminar el usuario actual de localStorage
+      localStorage.removeItem('currentUser');
+      localStorage.removeItem('token');
+
+      // Actualizar el estado de autenticación
+      this.isAuthenticated.next(false);
+      this.currentUserSubject.next(null);
     } else {
-
-      reject(new Error('No hay usuario autenticado'));
-
+      console.error('No hay usuario autenticado para eliminar');
     }
-
-  });
-
-}
-  
+  }
 }
