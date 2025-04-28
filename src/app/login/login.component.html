@@ -1,40 +1,39 @@
 <div class="login-container">
-    <form (ngSubmit)="onSubmit()" class="login-form">
-        <h1>Vitality <span>Go</span></h1>
+  <form (ngSubmit)="onSubmit()" class="login-form">
+    <h1>Vitality <span>Go</span></h1>
 
-          <img src="assets/logo.png" alt="Login-icon" class="logo">
-  
-        
-      <h2>Iniciar Sesión</h2>
-      
-      <div class="form-group">
-        <input 
-          type="email" 
-          [(ngModel)]="email" 
-          name="email" 
-          placeholder="Email"
-          required >
-      </div>
-      
-      <div class="form-group">
-        <input 
-          type="password" 
-          [(ngModel)]="password" 
-          name="password" 
-          placeholder="Password"
-          required >
-      </div>
-  
-      <div *ngIf="errorMessage" class="error-message">
-        {{ errorMessage }}
-      </div>
-  
-      <button type="submit">Iniciar Sesión</button>
-  
-      <div class="additional-options">
-        <a href="/forgot-password">¿Olvidaste tu contraseña?</a>
-        <a routerLink="/register">Crear Cuenta</a>
-      </div>
-      
-    </form>
-  </div>
+    <img [src]="logoUrl" alt="Login-icon" class="logo">  <!-- Usamos logoUrl aquí -->
+
+    <h2>Iniciar Sesión</h2>
+
+    <div class="form-group">
+      <input 
+        type="email" 
+        [(ngModel)]="email" 
+        name="email" 
+        placeholder="Email"
+        required>
+    </div>
+
+    <div class="form-group">
+      <input 
+        type="password" 
+        [(ngModel)]="password" 
+        name="password" 
+        placeholder="Password"
+        required>
+    </div>
+
+    <div *ngIf="errorMessage" class="error-message">
+      {{ errorMessage }}
+    </div>
+
+    <button type="submit">Iniciar Sesión</button>
+
+    <div class="additional-options">
+      <a href="/forgot-password">¿Olvidaste tu contraseña?</a>
+      <a routerLink="/register">Crear Cuenta</a>
+    </div>
+    
+  </form>
+</div>

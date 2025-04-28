@@ -15,6 +15,7 @@ export class LoginComponent {
   email: string = '';
   password: string = '';
   errorMessage: string = '';
+  logoUrl: string = '../../assets/persona.png';  // Aquí defines la ruta de la imagen
 
   constructor(
     private router: Router,
