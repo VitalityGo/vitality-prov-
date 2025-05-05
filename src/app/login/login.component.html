@@ -2,7 +2,7 @@
   <form (ngSubmit)="onSubmit()" class="login-form">
     <h1>Vitality <span>Go</span></h1>
 
-    <img [src]="logoUrl" alt="Login-icon" class="logo">  <!-- Usamos logoUrl aquí -->
+    <img [src]="logoUrl" alt="Login-icon" class="logo">
 
     <h2>Iniciar Sesión</h2>
 
@@ -30,10 +30,17 @@
 
     <button type="submit">Iniciar Sesión</button>
 
+    <div class="google-login">
+      <p>O ingresa con:</p> 
+      <img src="../../assets/logoG.png"
+        alt="Google Sign-In" 
+        class="google-logo" 
+        (click)="loginWithGoogle()">
+    </div>
+
     <div class="additional-options">
       <a href="/forgot-password">¿Olvidaste tu contraseña?</a>
       <a routerLink="/register">Crear Cuenta</a>
     </div>
-    
   </form>
 </div>

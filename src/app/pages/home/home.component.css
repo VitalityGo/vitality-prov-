@@ -12,7 +12,7 @@ body {
 }
 
 /* Contenedor principal */
-.home-container {
+.container {
   padding: 30px 20px;
   display: flex;
   flex-direction: column;
@@ -22,7 +22,7 @@ body {
 }
 
 /* Tarjetas de métrica */
-.metric-card {
+.card {
   background: linear-gradient(135deg, #1a1a1a, #252525);
   border-radius: 20px;
   padding: 28px;
@@ -31,32 +31,27 @@ body {
   border: 1px solid rgba(255, 255, 255, 0.08);
 }
 
-.metric-card:hover {
+.card:hover {
   transform: translateY(-6px);
   box-shadow: 0 12px 34px rgba(255, 255, 255, 0.12);
 }
 
 /* Cabecera de la tarjeta */
-.metric-header {
-  display: flex;
-  align-items: center;
-  gap: 14px;
-  margin-bottom: 20px;
-}
-
-.metric-header i {
-  color: #ffcc00;
-  font-size: 32px;
-}
-
-.metric-header h3 {
+.card h2 {
   margin: 0;
   font-size: 24px;
   font-weight: 600;
 }
 
-/* Valor de la métrica */
-.metric-value {
+/* Contenedor de la métrica */
+.steps-counter, .water-counter {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-top: 20px;
+}
+
+.value {
   font-size: 46px;
   font-weight: 700;
   color: #ffcc00;
@@ -64,38 +59,18 @@ body {
   letter-spacing: 1px;
 }
 
-/* Etiqueta */
-.metric-label {
+.label {
   color: #aaa;
-  margin-top: 6px;
   font-size: 16px;
 }
 
-/* Botones */
-button {
-  background: linear-gradient(135deg, #ffcc00, #ff9900);
-  color: #121212;
-  border: none;
-  padding: 14px 32px;
-  border-radius: 14px;
-  cursor: pointer;
+/* Input y botón */
+.input-group {
   display: flex;
-  align-items: center;
-  gap: 14px;
-  margin: 24px auto 0 auto; /* Espacio superior añadido */
-  transition: all 0.3s ease;
-  font-size: 18px;
-  font-weight: 600;
-  box-shadow: 0 6px 18px rgba(255, 204, 0, 0.35);
+  gap: 16px;
+  margin-top: 20px;
 }
 
-button:hover {
-  background: linear-gradient(135deg, #ff9900, #ff6600);
-  transform: translateY(-3px);
-  box-shadow: 0 8px 20px rgba(255, 153, 0, 0.5);
-}
-
-/* Campos de entrada */
 input {
   flex: 1;
   padding: 14px 16px;
@@ -113,8 +88,27 @@ input:focus {
   outline: none;
 }
 
-/* Contenedor de la gráfica */
-.chart-container {
+button {
+  background: linear-gradient(135deg, #ffcc00, #ff9900);
+  color: #121212;
+  border: none;
+  padding: 14px 32px;
+  border-radius: 14px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 18px;
+  font-weight: 600;
+  box-shadow: 0 6px 18px rgba(255, 204, 0, 0.35);
+}
+
+button:hover {
+  background: linear-gradient(135deg, #ff9900, #ff6600);
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px rgba(255, 153, 0, 0.5);
+}
+
+/* Gráfica de peso */
+.weight-chart {
   margin-top: 32px;
   height: 350px;
   background: rgba(255, 255, 255, 0.04);
@@ -125,11 +119,11 @@ input:focus {
 
 /* Responsividad */
 @media (max-width: 600px) {
-  .home-container {
+  .container {
     padding: 20px 16px;
   }
 
-  .weight-input {
+  .input-group {
     flex-direction: column;
     gap: 14px;
   }
@@ -139,17 +133,16 @@ input:focus {
     justify-content: center;
   }
 
-  .metric-card {
+  .card {
     padding: 22px;
   }
 
-  .metric-header {
+  .steps-counter, .water-counter {
     flex-direction: column;
     align-items: flex-start;
   }
 
-  .metric-value {
+  .value {
     font-size: 38px;
   }
 }
-

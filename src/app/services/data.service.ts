@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Storage } from '@capacitor/storage';
+import { Preferences } from '@capacitor/preferences'; // Corrección en la importación
 
 @Injectable({ providedIn: 'root' })
 export class DataService {
@@ -24,14 +24,17 @@ export class DataService {
   }
 
   async loadData() {
-    const result = await Storage.get({ key: this.storageKey });
+    const result = await Preferences.get({ key: this.storageKey }); // Usar Preferences directamente
     if (result.value) {
       this.data = JSON.parse(result.value);
     }
   }
 
   private async save() {
-    await Storage.set({ key: this.storageKey, value: JSON.stringify(this.data) });
+    await Preferences.set({ // Corrección aquí
+      key: this.storageKey,
+      value: JSON.stringify(this.data)
+    });
   }
 
   // Steps

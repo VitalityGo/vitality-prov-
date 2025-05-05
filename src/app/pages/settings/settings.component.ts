@@ -1,22 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { Router } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
-
-// Definir interfaces para mejor tipado
-interface User {
-  name: string;
-  email: string;
-  profileImage?: string;
-}
-
-interface UserSettings {
-  notifications: boolean;
-  darkMode: boolean;
-  language: string;
-  units: string;
-}
+import { FirestoreService, UserData, UserSettings } from '../../services/firestore.service';
+import { Langs } from '../../../assets/i18n/en';
+import { LanguageService } from '../../services/language.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-settings',
@@ -26,117 +15,177 @@ interface UserSettings {
   styleUrls: ['./settings.component.css']
 })
 export class SettingsComponent implements OnInit {
-  user: User = {
-    name: '',
-    email: '',
-    profileImage: ''
-  };
-  
-  settings: UserSettings = {
+  public lang = Langs;
+  currentLanguage: 'en' | 'es' = 'es';
+  userData: Partial<UserData> = {};
+  currentUser: any;
+
+  // Configuración de la aplicación
+  appConfig: UserSettings = {
     notifications: true,
-    darkMode: false,
     language: 'es',
     units: 'metric'
   };
 
-  currentPassword: string = '';
-  newPassword: string = '';
-  confirmPassword: string = '';
-  errorMessage: string = '';
-  successMessage: string = '';
-  selectedFile: File | null = null;
+  // Cambio de contraseña
+  passwordData = {
+    current: '',
+    new: '',
+    confirm: ''
+  };
 
-  constructor(private authService: AuthService, private router: Router) {}
+  constructor(
+    private authService: AuthService,
+    private firestoreService: FirestoreService,
+    private languageService: LanguageService
+  ) {}
 
-  ngOnInit() {
-    const currentUser = this.authService.getCurrentUser();
-    if (currentUser) {
-      this.user = {
-        name: currentUser.name || '',
-        email: currentUser.email || '',
-        profileImage: currentUser.profileImage || ''
-      };
-    }
-    
-    const savedSettings = localStorage.getItem('userSettings');
-    if (savedSettings) {
-      this.settings = { ...JSON.parse(savedSettings) };
-    }
-    // Aplicar el modo oscuro si está activado en localStorage
-    if (this.settings.darkMode) {
-      document.body.classList.add('dark-mode');
+  async ngOnInit(): Promise<void> {
+    this.languageService.currentLang$.subscribe(lang => {
+      this.currentLanguage = lang;
+    });
+
+    this.currentUser = this.authService.getCurrentUser();
+    if (this.currentUser?.uid) {
+      await this.loadUserData();
     }
   }
 
-  onFileSelected(event: any) {
-    const file = event.target.files[0];
-    if (file) {
-      this.selectedFile = file;
-      const reader = new FileReader();
-      reader.onload = (e: any) => {
-        this.user.profileImage = e.target.result;
-      };
-      reader.readAsDataURL(file);
-    }
+  getTranslation(pair: { en: string; es: string }): string {
+    return pair[this.currentLanguage];
   }
 
-  async saveProfile() {
+  async loadUserData(): Promise<void> {
     try {
-      if (this.selectedFile) {
-        this.user.profileImage = await this.getBase64(this.selectedFile);
+      // Cargar datos del usuario desde Firestore
+      const data = await this.firestoreService.getUserDataAsync(this.currentUser.uid);
+      if (data) {
+        this.userData = data;
       }
-      await this.authService.updateUserProfile(this.user.name, this.user.profileImage || '');
-      this.successMessage = 'Perfil actualizado correctamente';
-      setTimeout(() => this.successMessage = '', 3000);
+      
+      // Cargar configuración existente si existe
+      if (this.userData?.settings) {
+        this.appConfig = { ...this.appConfig, ...this.userData.settings };
+      }
     } catch (error) {
-      this.errorMessage = 'Error al actualizar el perfil: ' + (error instanceof Error ? error.message : String(error));
-      setTimeout(() => this.errorMessage = '', 3000);
+      console.error('Error loading user data:', error);
+      await this.showError('Error loading settings');
     }
   }
 
-  saveSettings() {
-    localStorage.setItem('userSettings', JSON.stringify(this.settings));
-    this.successMessage = 'Configuración guardada correctamente';
-    setTimeout(() => this.successMessage = '', 3000);
+  async saveProfile(): Promise<void> {
+    try {
+      if (!this.currentUser?.uid) return;
+      
+      // Actualizar en AuthService
+      await this.authService.updateUserProfile(
+        this.userData.name || '',
+        this.userData.profileImage || ''
+      );
+      
+      // Actualizar en Firestore
+      await this.firestoreService.updateUserData(this.currentUser.uid, {
+        name: this.userData.name,
+        profileImage: this.userData.profileImage
+      });
+      
+      await this.showSuccess('Profile saved successfully');
+    } catch (error) {
+      console.error('Error saving profile:', error);
+      await this.showError('Error saving profile');
+    }
   }
 
-  changePassword() {
-    if (this.newPassword !== this.confirmPassword) {
-      this.errorMessage = 'Las contraseñas no coinciden';
+  async saveAppSettings(): Promise<void> {
+    try {
+      if (!this.currentUser?.uid) return;
+      
+      // Asegurarnos de que language sea de tipo 'en' | 'es'
+      if (this.appConfig.language !== 'en' && this.appConfig.language !== 'es') {
+        this.appConfig.language = 'es';
+      }
+      
+      await this.firestoreService.updateUserData(this.currentUser.uid, {
+        settings: this.appConfig
+      });
+      
+      this.languageService.setLanguage(this.appConfig.language);
+      await this.showSuccess('Settings saved successfully');
+    } catch (error) {
+      console.error('Error saving settings:', error);
+      await this.showError('Error saving settings');
+    }
+  }
+
+  async changePassword(): Promise<void> {
+    if (this.passwordData.new !== this.passwordData.confirm) {
+      await this.showError('New passwords do not match');
       return;
     }
-    
+
     try {
-      // Aquí iría la lógica para cambiar la contraseña
-      this.successMessage = 'Contraseña actualizada correctamente';
-      this.newPassword = '';
-      this.confirmPassword = '';
-      this.currentPassword = '';
-      setTimeout(() => this.successMessage = '', 3000);
+      await this.authService.changePassword(
+        this.passwordData.current,
+        this.passwordData.new
+      );
+      this.passwordData = { current: '', new: '', confirm: '' };
+      await this.showSuccess('Password changed successfully');
     } catch (error) {
-      this.errorMessage = 'Error al cambiar la contraseña';
-      setTimeout(() => this.errorMessage = '', 3000);
+      console.error('Error changing password:', error);
+      await this.showError(error instanceof Error ? error.message : 'Error changing password');
     }
   }
 
-  logout() {
-    this.authService.logout();
-    this.router.navigate(['/login']);
-  }
-
-  deleteAccount() {
-    if (confirm('¿Estás seguro de que quieres eliminar tu cuenta? Esta acción no se puede deshacer.')) {
-      this.authService.deleteAccount(); // Lógica de eliminación de cuenta
-      this.router.navigate(['/login']);
+  async logout(): Promise<void> {
+    try {
+      await this.authService.signOutUser();
+    } catch (error) {
+      console.error('Error logging out:', error);
+      await this.showError('Error logging out');
     }
   }
 
-  private getBase64(file: File): Promise<string> {
-    return new Promise((resolve, reject) => {
-      const reader = new FileReader();
-      reader.readAsDataURL(file);
-      reader.onload = () => resolve(reader.result as string);
-      reader.onerror = error => reject(error);
+  async deleteAccount(): Promise<void> {
+    const result = await Swal.fire({
+      title: this.getTranslation(this.lang.SETTINGS.DELETE_ACCOUNT.TITLE),
+      text: this.getTranslation(this.lang.SETTINGS.DELETE_ACCOUNT.CONFIRM),
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: this.getTranslation(this.lang.COMMON.DELETE),
+      cancelButtonText: this.getTranslation(this.lang.COMMON.CANCEL)
+    });
+
+    if (result.isConfirmed) {
+      try {
+        // Eliminar datos de Firestore primero
+        if (this.currentUser?.uid) {
+          await this.firestoreService.deleteUserData(this.currentUser.uid);
+        }
+        
+        // Luego eliminar la cuenta de autenticación
+        await this.authService.deleteUserAccount();
+      } catch (error) {
+        console.error('Error deleting account:', error);
+        await this.showError('Error deleting account');
+      }
+    }
+  }
+
+  private async showSuccess(message: string): Promise<void> {
+    await Swal.fire({
+      icon: 'success',
+      title: this.getTranslation(this.lang.COMMON.SAVE),
+      text: message,
+      confirmButtonText: 'OK'
+    });
+  }
+
+  private async showError(message: string): Promise<void> {
+    await Swal.fire({
+      icon: 'error',
+      title: 'Error',
+      text: message,
+      confirmButtonText: 'OK'
     });
   }
 }

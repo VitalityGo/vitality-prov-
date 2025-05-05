@@ -1,40 +1,64 @@
-<!-- missions.component.html -->
 <div class="missions-container">
-  <h2>Misiones</h2>
-
-  
-
-  <h3>Misiones Diarias</h3>
-  
-  <br>
-
-  <ul>
-    <li *ngFor="let mission of dailyMissions">
-      <input type="checkbox" [(ngModel)]="mission.completed" />
-      <span [class.completed]="mission.completed">{{ mission.title }}</span>
-    </li>
-  </ul>
-
-  <br>
-  <h3>Misiones Semanales</h3>
-  <br>
-  <ul>
-    <li *ngFor="let mission of weeklyMissions">
-      <input type="checkbox" [(ngModel)]="mission.completed" />
-      <span [class.completed]="mission.completed">{{ mission.title }}</span>
-    </li>
-  </ul>
-
-  <br>
-  <h3>Misiones Especiales</h3>
-  <br>
-  <ul>
-    <li *ngFor="let mission of especialMissions">
-      <input type="checkbox" [(ngModel)]="mission.completed" />
-      <span [class.completed]="mission.completed">{{ mission.title }}</span>
-    </li>
-  </ul>
-
   <!-- Mapa -->
-  <div id="map" style="height: 400px; width: 100%;"></div>
+  <div class="map-container">
+    <div id="map"></div>
+    <div class="map-controls">
+      <button class="map-button" (click)="centerMapOnUser()" [title]="getTranslation(lang.MISSIONS.MAP.CENTER_USER)">
+        <span class="material-icons">my_location</span>
+      </button>
+      <button class="map-button" (click)="toggleFollowUser()" [class.active]="followUser" [title]="getTranslation(lang.MISSIONS.MAP.FOLLOW_USER)">
+        <span class="material-icons">{{ followUser ? 'gps_fixed' : 'gps_not_fixed' }}</span>
+      </button>
+      <button class="map-button" (click)="centerMapOnFixedPoint()" [title]="getTranslation(lang.MISSIONS.MAP.CENTER_DESTINATION)">
+        <span class="material-icons">place</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Misiones -->
+  <div class="missions-section">
+    <h2>{{ getTranslation(lang.MISSIONS.DAILY) }}</h2>
+    <ul class="missions-list">
+      <li *ngFor="let mission of dailyMissions; let i = index">
+        <label>
+          <input type="checkbox" [(ngModel)]="mission.completed" (change)="onMissionChange('dailyMissions', i)" />
+          {{ mission.title }} - {{ mission.completed ? getTranslation(lang.MISSIONS.COMPLETED) : getTranslation(lang.MISSIONS.PENDING) }}
+        </label>
+      </li>
+    </ul>
+  </div>
+
+  <div class="missions-section">
+    <h2>{{ getTranslation(lang.MISSIONS.WEEKLY) }}</h2>
+    <ul class="missions-list">
+      <li *ngFor="let mission of weeklyMissions; let i = index">
+        <label>
+          <input type="checkbox" [(ngModel)]="mission.completed" (change)="onMissionChange('weeklyMissions', i)" />
+          {{ mission.title }} - {{ mission.completed ? getTranslation(lang.MISSIONS.COMPLETED) : getTranslation(lang.MISSIONS.PENDING) }}
+        </label>
+      </li>
+    </ul>
+  </div>
+
+  <div class="missions-section">
+    <h2>{{ getTranslation(lang.MISSIONS.SPECIAL) }}</h2>
+    <ul class="missions-list">
+      <li *ngFor="let mission of specialMissions; let i = index">
+        <label>
+          <input type="checkbox" [(ngModel)]="mission.completed" (change)="onMissionChange('specialMissions', i)" />
+          {{ mission.title }} - {{ mission.completed ? getTranslation(lang.MISSIONS.COMPLETED) : getTranslation(lang.MISSIONS.PENDING) }}
+        </label>
+      </li>
+    </ul>
+  </div>
+
+  <!-- Distancia -->
+  <div class="distance-info" *ngIf="userLocation && fixedLocation">
+    <p>{{ getTranslation(lang.MISSIONS.DISTANCE) }}: {{ calculateDistanceToFixedPoint() | number:'1.0-0' }} {{ getTranslation(lang.MISSIONS.METERS) }}</p>
+  </div>
+
+  <!-- Botón -->
+  <button class="save-button" (click)="saveMissionsToFirestore()" [disabled]="!hasChanges">
+    {{ getTranslation(lang.MISSIONS.SAVE_BUTTON) }}
+  </button>
 </div>

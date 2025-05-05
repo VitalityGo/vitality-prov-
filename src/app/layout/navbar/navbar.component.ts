@@ -1,57 +1,47 @@
-// navbar.component.ts
 import { Component, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { Router, NavigationEnd, RouterLink } from '@angular/router';
-import { AuthService } from '../../services/auth.service';
+import { Router, NavigationEnd } from '@angular/router';
 import { filter } from 'rxjs/operators';
+import { AuthService } from '../../services/auth.service';
+import { FirestoreService, UserData } from '../../services/firestore.service';
+import { CommonModule, AsyncPipe } from '@angular/common';
+import { RouterModule } from '@angular/router';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-navbar',
   standalone: true,
   imports: [
     CommonModule,
-    RouterLink
+    RouterModule,
+    AsyncPipe
   ],
   templateUrl: './navbar.component.html',
   styleUrls: ['./navbar.component.css']
 })
 export class NavbarComponent implements OnInit {
-  userName: string = '';
-  userProfileImage: string = '';
-  currentRoute: string = '';
+  userData$: Observable<UserData | null>;
+  currentRoute = '';
 
   constructor(
     private router: Router,
-    private authService: AuthService
-  ) {}
+    private authService: AuthService,
+    private firestoreService: FirestoreService
+  ) {
+    this.authService.user$.subscribe(u => {
+      if (u?.uid) {
+        this.firestoreService.getUserData(u.uid).subscribe();
+      }
+    });
+    this.userData$ = this.firestoreService.userData$;
+  }
 
   ngOnInit() {
     this.router.events.pipe(
-      filter((event): event is NavigationEnd => event instanceof NavigationEnd)
-    ).subscribe((event) => {
-      this.currentRoute = event.url;
-    });
-
-    const currentUser = this.authService.getCurrentUser();
-    if (currentUser) {
-      this.userName = currentUser.name || 'Usuario';
-      this.userProfileImage = currentUser.profileImage || 'assets/profile-placeholder.jpg';
-    }
-
-    this.authService.currentUser$.subscribe(user => {
-      if (user) {
-        this.userName = user.name || 'Usuario';
-        this.userProfileImage = user.profileImage || 'assets/profile-placeholder.jpg';
-      }
-    });
+      filter((e): e is NavigationEnd => e instanceof NavigationEnd)
+    ).subscribe(e => this.currentRoute = e.url);
   }
 
-  goBack() {
-    this.router.navigate(['/home']);
-  }
-
-  onLogout() {
-    this.authService.logout();
-    this.router.navigate(['/login']);
+  goSettings() {
+    this.router.navigate(['/settings']);
   }
 }

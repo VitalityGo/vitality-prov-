@@ -1,22 +1,67 @@
-<div class="profile-container">
-  <h2>Perfil</h2>
-  <label>Nombre:</label>
-  <input type="text" [(ngModel)]="name" />
+<div class="container">
+  <!-- Profile Information Section -->
+  <div class="card">
+    <h2>{{ getTranslation(lang.PROFILE.TITLE) }}</h2>
+    
+    <div class="input-group">
+      <label>{{ getTranslation(lang.PROFILE.NAME) }}</label>
+      <input 
+        type="text" 
+        [(ngModel)]="name" 
+        placeholder="Enter your name"
+      />
+    </div>
 
-  <label>Peso (kg):</label>
-  <input type="number" [(ngModel)]="weight" />
+    <div class="input-group">
+      <label>{{ getTranslation(lang.PROFILE.AGE) }}</label>
+      <input 
+        type="number" 
+        [(ngModel)]="age" 
+        placeholder="Enter your age"
+        min="0"
+      />
+    </div>
 
-  <label>Edad:</label>
-  <input type="number" [(ngModel)]="age" />
+    <div class="input-group">
+      <label>{{ getTranslation(lang.PROFILE.HEIGHT) }}</label>
+      <input 
+        type="number" 
+        [(ngModel)]="height" 
+        placeholder="Enter your height (cm)"
+        min="0"
+        (input)="calculateBMI()"
+      />
+    </div>
 
-  <label>Altura (cm):</label>
-  <input type="number" [(ngModel)]="height" />
+    <div class="input-group">
+      <label>{{ getTranslation(lang.PROFILE.WEIGHT) }}</label>
+      <input 
+        type="number" 
+        [(ngModel)]="weight" 
+        placeholder="Enter your weight (kg)"
+        min="0"
+        step="0.1"
+        (input)="calculateBMI()"
+      />
+    </div>
 
-  <h3>Resultados</h3>
-  <p>IMC: {{ bmi | number:'1.1-1' }}</p> <!-- Correctamente usa el pipe 'number' -->
+    <button class="save-button" (click)="saveProfile()">
+      {{ getTranslation(lang.PROFILE.SAVE_BUTTON) }}
+    </button>
+  </div>
 
-  <p>Calorías diarias necesarias: {{ calculateDailyCalories() | number }} kcal</p> <!-- Calorías calculadas -->
+  <!-- BMI Results Section -->
+  <div class="card">
+    <h2>{{ getTranslation(lang.PROFILE.RESULTS) }}</h2>
+    
+    <div class="result-item">
+      <span class="label">{{ getTranslation(lang.PROFILE.BMI) }}</span>
+      <span class="value">{{ bmi | number:'1.1-1' }}</span>
+    </div>
 
-  <!-- Botón para recalcular IMC -->
-  <button (click)="calculateBMI()">Calcular IMC</button>
+    <div class="result-item">
+      <span class="label">{{ getTranslation(lang.PROFILE.STATUS) }}</span>
+      <span class="value">{{ imcCategory.description }}</span>
+    </div>
+  </div>
 </div>
