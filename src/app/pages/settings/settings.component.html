@@ -1,96 +1,94 @@
 <div class="settings-container">
-  <h2>Configuración</h2>
-
-  <!-- Perfil del usuario -->
+  <!-- Sección de Perfil -->
   <div class="settings-section">
-    <h3>Perfil</h3>
-
-    <div class="profile-image-container">
-      <!-- Imagen de perfil -->
-      <img [src]="user.profileImage || 'assets/profile-placeholder.jpg'" alt="Profile" class="profile-image">
+    <h2>{{ getTranslation(lang.SETTINGS.PROFILE.TITLE) }}</h2>
     
-      <!-- Input de tipo file (oculto) -->
-      <input type="file" (change)="onFileSelected($event)" accept="image/*" id="profileImageInput">
-      
-      <!-- Botón personalizado para cargar imagen -->
-      <label for="profileImageInput" class="file-upload-btn">Cambiar Foto</label>
+    <div class="form-group">
+      <label>{{ getTranslation(lang.SETTINGS.PROFILE.NAME) }}</label>
+      <input type="text" [(ngModel)]="userData.name" />
     </div>
 
     <div class="form-group">
-      <label for="name">Nombre</label>
-      <input type="text" id="name" [(ngModel)]="user.name" name="name">
+      <label>{{ getTranslation(lang.SETTINGS.PROFILE.EMAIL) }}</label>
+      <input type="email" [ngModel]="currentUser?.email" disabled />
     </div>
 
     <div class="form-group">
-      <label for="email">Email</label>
-      <input type="email" id="email" [ngModel]="user.email" name="email" disabled>
+      <label>{{ getTranslation(lang.SETTINGS.PROFILE.CHANGE_PHOTO) }}</label>
+      <input type="text" [(ngModel)]="userData.profileImage" placeholder="Image URL" />
     </div>
 
-    <button class="save-btn" (click)="saveProfile()">Guardar Perfil</button>
+    <button class="save-button" (click)="saveProfile()">
+      {{ getTranslation(lang.SETTINGS.PROFILE.SAVE_BUTTON) }}
+    </button>
   </div>
 
-  <!-- Configuración de la aplicación -->
-  <section class="settings-section">
-    <h3>Configuración de la aplicación</h3>
-    <form (ngSubmit)="saveSettings()">
-      <div class="form-group">
-        <label>
-          <input type="checkbox" [(ngModel)]="settings.notifications" name="notifications">
-          Activar notificaciones
-        </label>
-      </div>
-      
-      <div class="form-group">
-        <label for="language">Idioma:</label>
-        <select id="language" [(ngModel)]="settings.language" name="language">
-          <option value="es">Español</option>
-          <option value="en">English</option>
-        </select>
-      </div>
-      <div class="form-group">
-        <label for="units">Unidades:</label>
-        <select id="units" [(ngModel)]="settings.units" name="units">
-          <option value="metric">Métrico</option>
-          <option value="imperial">Imperial</option>
-        </select>
-      </div>
-      <button type="submit" class="save-btn">Guardar configuración</button>
-    </form>
-  </section>
+  <!-- Configuración de la Aplicación -->
+  <div class="settings-section">
+    <h2>{{ getTranslation(lang.SETTINGS.APP_CONFIG.TITLE) }}</h2>
+    
+    <div class="form-group">
+      <label>
+        <input type="checkbox" [(ngModel)]="appConfig.notifications" />
+        {{ getTranslation(lang.SETTINGS.APP_CONFIG.NOTIFICATIONS) }}
+      </label>
+    </div>
 
-  <!-- Cambio de contraseña -->
-  <section class="settings-section">
-    <h3>Cambiar contraseña</h3>
-    <form (ngSubmit)="changePassword()">
-      <div class="form-group">
-        <label for="currentPassword">Contraseña actual:</label>
-        <input type="password" id="currentPassword" [(ngModel)]="currentPassword" name="currentPassword">
-      </div>
-      <div class="form-group">
-        <label for="newPassword">Nueva contraseña:</label>
-        <input type="password" id="newPassword" [(ngModel)]="newPassword" name="newPassword">
-      </div>
-      <div class="form-group">
-        <label for="confirmPassword">Confirmar nueva contraseña:</label>
-        <input type="password" id="confirmPassword" [(ngModel)]="confirmPassword" name="confirmPassword">
-      </div>
-      <button type="submit" class="save-btn">Cambiar contraseña</button>
-    </form>
-  </section>
+    <div class="form-group">
+      <label>{{ getTranslation(lang.SETTINGS.APP_CONFIG.LANGUAGE) }}</label>
+      <select [(ngModel)]="appConfig.language">
+        <option value="es">{{ getTranslation(lang.SETTINGS.APP_CONFIG.METRIC) }}</option>
+        <option value="en">English</option>
+      </select>
+    </div>
 
-  <!-- Cerrar Sesión -->
-  <section class="settings-section">
-    <h3>Cerrar Sesión</h3>
-    <button class="close-btn" (click)="logout()">Cerrar Sesión</button>
-  </section>
+    <div class="form-group">
+      <label>{{ getTranslation(lang.SETTINGS.APP_CONFIG.UNITS) }}</label>
+      <select [(ngModel)]="appConfig.units">
+        <option value="metric">{{ getTranslation(lang.SETTINGS.APP_CONFIG.METRIC) }}</option>
+        <option value="imperial">{{ getTranslation(lang.SETTINGS.APP_CONFIG.IMPERIAL) }}</option>
+      </select>
+    </div>
 
-  <!-- Eliminar cuenta -->
-  <section class="settings-section">
-    <h3>Eliminar cuenta</h3>
-    <button class="delete-btn" (click)="deleteAccount()">Eliminar mi cuenta</button>
-  </section>
+    <button class="save-button" (click)="saveAppSettings()">
+      {{ getTranslation(lang.SETTINGS.APP_CONFIG.SAVE_BUTTON) }}
+    </button>
+  </div>
 
-  <!-- Mensajes de éxito y error -->
-  <div *ngIf="successMessage" class="success-message">{{ successMessage }}</div>
-  <div *ngIf="errorMessage" class="error-message">{{ errorMessage }}</div>
+  <!-- Cambio de Contraseña -->
+  <div class="settings-section">
+    <h2>{{ getTranslation(lang.SETTINGS.PASSWORD.TITLE) }}</h2>
+    
+    <div class="form-group">
+      <label>{{ getTranslation(lang.SETTINGS.PASSWORD.CURRENT) }}</label>
+      <input type="password" [(ngModel)]="passwordData.current" />
+    </div>
+
+    <div class="form-group">
+      <label>{{ getTranslation(lang.SETTINGS.PASSWORD.NEW) }}</label>
+      <input type="password" [(ngModel)]="passwordData.new" />
+    </div>
+
+    <div class="form-group">
+      <label>{{ getTranslation(lang.SETTINGS.PASSWORD.CONFIRM) }}</label>
+      <input type="password" [(ngModel)]="passwordData.confirm" />
+    </div>
+
+    <button class="save-button" (click)="changePassword()">
+      {{ getTranslation(lang.SETTINGS.PASSWORD.SAVE_BUTTON) }}
+    </button>
+  </div>
+
+  <!-- Cerrar Sesión y Eliminar Cuenta -->
+  <div class="settings-section danger-zone">
+    <h2>{{ getTranslation(lang.SETTINGS.LOGOUT.TITLE) }}</h2>
+    <button class="logout-button" (click)="logout()">
+      {{ getTranslation(lang.SETTINGS.LOGOUT.BUTTON) }}
+    </button>
+
+    <h2>{{ getTranslation(lang.SETTINGS.DELETE_ACCOUNT.TITLE) }}</h2>
+    <button class="delete-button" (click)="deleteAccount()">
+      {{ getTranslation(lang.SETTINGS.DELETE_ACCOUNT.BUTTON) }}
+    </button>
+  </div>
 </div>

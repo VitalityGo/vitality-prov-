@@ -1,80 +1,123 @@
 import { Component, OnInit } from '@angular/core';
-import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { ImcService } from '../../services/imc.service';
-import { DataService } from '../../services/data.service';
+import { FormsModule } from '@angular/forms';
+import { FirestoreService } from '../../services/firestore.service';
+import { AuthService } from '../../services/auth.service';
+import { ImcService, ImcCategory } from '../../services/imc.service';
+import { Langs } from '../../../assets/i18n/en';
+import { LanguageService } from '../../services/language.service';
+import Swal from 'sweetalert2';
+import { firstValueFrom } from 'rxjs';
 
 @Component({
   selector: 'app-profile',
   standalone: true,
-  imports: [FormsModule, CommonModule],
+  imports: [CommonModule, FormsModule],
   templateUrl: './profile.component.html',
   styleUrls: ['./profile.component.css']
 })
 export class ProfileComponent implements OnInit {
-  name: string = '';
-  weight: number = 0;
-  age: number = 0;
-  height: number = 0;
-  bodyFatPercentage: number = 0;
-  bmi: number = 0;
+  lang = Langs;
+  currentLanguage: 'en' | 'es' = 'es';
+
+  userId: string | null = null;
+  name = '';
+  weight = 0;
+  age = 0;
+  height = 0;
+  bmi = 0;
+  imcCategory: ImcCategory = { category: 'normal', description: 'Peso saludable' };
 
   constructor(
+    private firestoreService: FirestoreService,
+    private authService: AuthService,
     private imcService: ImcService,
-    private dataService: DataService
+    private languageService: LanguageService
   ) {}
 
-  async ngOnInit() {
-    await this.dataService.loadData();
-    const profile = this.dataService.getProfile();
-    this.name = profile.name;
-    this.weight = profile.weight;
-    this.age = profile.age;
-    this.height = profile.height;
-    this.bodyFatPercentage = profile.bodyFatPercentage;
-    this.bmi = profile.bmi;
-    this.calculateBMI();
+  ngOnInit() {
+    this.languageService.currentLang$.subscribe(lang => {
+      this.currentLanguage = lang;
+    });
+
+    this.userId = this.authService.getCurrentUser()?.uid ?? null;
+    if (this.userId) {
+      this.loadUserData();
+    }
   }
 
-  async calculateBMI() {
-    if (this.height > 0) {
-      const heightInMeters = this.height / 100;
-      this.bmi = this.weight / (heightInMeters * heightInMeters);
-      this.setImc();
-      await this.dataService.setProfile({
+  getTranslation(pair: { en: string; es: string }): string {
+    return pair[this.currentLanguage];
+  }
+
+  private async loadUserData() {
+    if (!this.userId) return;
+    try {
+      // Resolvemos el Observable
+      const userData = await firstValueFrom(
+        this.firestoreService.getUserData(this.userId)
+      );
+      if (userData) {
+        this.name = userData.name ?? '';
+        this.weight = userData.weightData?.at(-1) ?? 0;
+        this.age = userData.age ?? 0;
+        this.height = userData.height ?? 0;
+        this.calculateBMI();
+      }
+    } catch (error) {
+      console.error('Error loading user data:', error);
+    }
+  }
+
+  calculateBMI() {
+    this.bmi = this.imcService.calculateIMC(this.weight, this.height);
+    this.imcCategory = this.imcService.determineImcCategory(this.bmi);
+  }
+
+  async saveProfile() {
+    if (!this.userId) return;
+
+    if (!this.name || !this.age || !this.height || !this.weight) {
+      await Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: 'Please fill in all required fields',
+        confirmButtonText: 'OK'
+      });
+      return;
+    }
+
+    try {
+      // También resolvemos Observable para existingData
+      const existingData = await firstValueFrom(
+        this.firestoreService.getUserData(this.userId)
+      );
+      const previousWeights = existingData?.weightData ?? [];
+
+      await this.firestoreService.updateUserData(this.userId, {
         name: this.name,
-        weight: this.weight,
         age: this.age,
         height: this.height,
-        bodyFatPercentage: this.bodyFatPercentage,
-        bmi: this.bmi
+        weightData: [...previousWeights, this.weight]
       });
-    } else {
-      this.bmi = 0;
+
+      this.imcService.updateImcCategory(this.weight, this.height);
+      this.calculateBMI();
+
+      await Swal.fire({
+        icon: 'success',
+        title: 'Success',
+        text: 'Profile saved successfully',
+        confirmButtonText: 'OK'
+      });
+    } catch (error) {
+      console.error('Error saving profile:', error);
+      await Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: 'Failed to save profile',
+        confirmButtonText: 'OK'
+      });
     }
-  }
-
-  setImc() {
-    if (this.bmi < 18.5) {
-      this.imcService.changeImc('bajo');
-    } else if (this.bmi >= 18.5 && this.bmi <= 24.9) {
-      this.imcService.changeImc('medio');
-    } else {
-      this.imcService.changeImc('alto');
-    }
-  }
-
-  calculateDailyCalories(): number {
-    let bmr: number;
-    const isMale = true; // Puedes reemplazarlo por una propiedad si el usuario define género
-
-    if (isMale) {
-      bmr = 88.362 + (13.397 * this.weight) + (4.799 * this.height) - (5.677 * this.age);
-    } else {
-      bmr = 447.593 + (9.247 * this.weight) + (3.098 * this.height) - (4.330 * this.age);
-    }
-
-    const activityLevel = 1.2; // Puedes hacer esto dinámico según preferencia
-    return Math.round(bmr * activityLevel);
   }
 }

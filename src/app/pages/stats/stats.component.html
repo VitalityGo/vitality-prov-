@@ -1,15 +1,28 @@
 <div class="stats-container">
-    <header>
-        <h1>Panel de Estadísticas</h1>
-        <p class="subheading">Visión general de las métricas clave</p>
-    </header>
-
-   
-
-    <section class="charts">
-        <h2>Gráficas</h2>
-        <canvas id="myStepsChart" width="400" height="200"></canvas>
-        <canvas id="myWaterChart" width="400" height="200"></canvas>
-        <canvas id="myWeightChart" width="400" height="200"></canvas>
+    <section class="chart-card">
+      <h3>{{ getTranslation(lang.STATS.STEPS) }}</h3>
+      <canvas baseChart
+        [data]="stepsChartData"
+        [options]="chartOptions"
+        type="bar">
+      </canvas>
     </section>
-</div>
+  
+    <section class="chart-card">
+      <h3>{{ getTranslation(lang.STATS.WATER) }}</h3>
+      <canvas baseChart
+        [data]="waterChartData"
+        [options]="chartOptions"
+        type="line">
+      </canvas>
+    </section>
+  
+    <section class="chart-card">
+      <h3>{{ getTranslation(lang.STATS.WEIGHT) }}</h3>
+      <canvas baseChart
+        [data]="weightChartData"
+        [options]="chartOptions"
+        type="line">
+      </canvas>
+    </section>
+  </div>

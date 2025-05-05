@@ -1,26 +1,23 @@
-<nav>
-  <div class="nav-left">
-    <!-- Botón de retorno -->
-    <button *ngIf="currentRoute !== '/home'" class="back-button" (click)="goBack()">
-      <i class="fas fa-arrow-left"></i>
-    </button>
-    
-    <div class="profile-section">
-      <div class="profile-pic">
-        <img [src]="userProfileImage || 'assets/profile-placeholder.jpg'" alt="Profile">
-      </div>
-      <span class="user-name">{{ userName || 'Usuario' }}</span>
-    </div>
+<nav class="navbar">
+  <!-- Marca / logo -->
+  <div class="brand">
+    <a routerLink="/home">VitalityGo</a>
   </div>
-  
-  <div class="nav-right">
-    <div class="profile-menu">
-      <a routerLink="/settings" class="settings-link">Configuración</a>
-      <button (click)="onLogout()" class="logout-btn">Cerrar Sesión</button>
-    </div>
-    
-    <button class="settings-btn" routerLink="/settings">
-      <i class="material-icons">settings</i>
-    </button>
+
+  <!-- Icono Settings (tuerca) -->
+  <button class="btn-settings" (click)="goSettings()" title="Ajustes">
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+      <path d="M12 15.5A3.5 3.5 0 1 0 12 8a3.5 3.5 0 0 0 0 7.5zm7.43-2.5c.04.33.07.66.07 1s-.03.67-.07 1l2.11 1.65a.5.5 0 0 1 .12.63l-2 3.46a.5.5 0 0 1-.6.22l-2.49-1a8.12 8.12 0 0 1-1.73 1l-.38 2.65a.5.5 0 0 1-.5.42h-4a.5.5 0 0 1-.5-.42l-.38-2.65a8.12 8.12 0 0 1-1.73-1l-2.49 1a.5.5 0 0 1-.6-.22l-2-3.46a.5.5 0 0 1 .12-.63L4.57 14.5c-.04-.33-.07-.66-.07-1s.03-.67.07-1L2.46 10.85a.5.5 0 0 1-.12-.63l2-3.46a.5.5 0 0 1 .6-.22l2.49 1c.54-.4 1.13-.73 1.73-1l.38-2.65a.5.5 0 0 1 .5-.42h4a.5.5 0 0 1 .5.42l.38 2.65c.6.27 1.19.6 1.73 1l2.49-1a.5.5 0 0 1 .6.22l2 3.46a.5.5 0 0 1-.12.63L19.43 12z" fill="currentColor"/>
+    </svg>
+  </button>
+
+  <!-- Info de usuario -->
+  <div class="user-info" *ngIf="userData$ | async as user">
+    <img
+      [src]="user.profileImage || 'assets/profile-placeholder.jpg'"
+      alt="Perfil"
+      class="avatar"
+    >
+    <span class="username">{{ user.name || 'Usuario' }}</span>
   </div>
 </nav>
