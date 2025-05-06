@@ -13,7 +13,7 @@ body {
 /* Contenedor principal de estadísticas */
 .stats-container {
   width: 100%;
-  padding: 20px;
+  padding: 25px;
   background: linear-gradient(135deg, #1f1f1f, #292929);
   border-radius: 20px;
   box-shadow: 0 8px 24px rgba(255, 255, 255, 0.1);
@@ -21,6 +21,8 @@ body {
   display: flex;
   flex-direction: column;
   gap: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
 }
 
 /* Sección de gráficos */
@@ -30,6 +32,9 @@ body {
   border-radius: 10px;
   box-shadow: 0 8px 24px rgba(255, 255, 255, 0.15);
   transition: box-shadow 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
 }
 
 .chart-card:hover {
@@ -47,6 +52,9 @@ body {
   padding: 10px;
   border-radius: 8px;
   text-transform: uppercase;
+  width: fit-content;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 /* Estilo para el gráfico */
@@ -59,11 +67,11 @@ canvas {
 /* Estilo adaptado para móviles */
 @media (max-width: 768px) {
   .stats-container {
-    padding: 15px;
+    padding: 20px;
   }
 
   .chart-card {
-    padding: 15px;
+    padding: 18px;
   }
 
   .chart-card h3 {
@@ -72,7 +80,7 @@ canvas {
   
   canvas {
     width: 100% !important;
-    height: 200px !important; /* Ajusta el tamaño de los gráficos en móviles */
+    height: 220px !important; /* Ajusta el tamaño de los gráficos en móviles */
   }
 
   .chart-card {
@@ -80,18 +88,18 @@ canvas {
   }
 }
 
-/* Ajuste adicional para pantallas pequeñas */
+/* Ajuste adicional para pantallas más pequeñas */
 @media (max-width: 480px) {
   .chart-card h3 {
     font-size: 1.2em;
   }
 
   .stats-container {
-    padding: 10px;
+    padding: 15px;
   }
 
   .chart-card {
-    padding: 12px;
+    padding: 15px;
   }
 
   canvas {

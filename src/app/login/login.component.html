@@ -2,14 +2,14 @@
   <form (ngSubmit)="onSubmit()" class="login-form">
     <div class="brand">
       <h1>Vitality <span>Go</span></h1>
-      <img src="assets/images/logo.png" alt="Vitality Go logo" class="logo">
+      <span class="material-icons logo">directions_run</span>
     </div>
 
     <h2>Iniciar Sesión</h2>
 
     <div class="form-group">
       <div class="input-icon">
-        <i class="material-icons">email</i>
+        <span class="material-icons">email</span>
         <input 
           type="email" 
           [(ngModel)]="email" 
@@ -21,23 +21,23 @@
 
     <div class="form-group">
       <div class="input-icon">
-        <i class="material-icons">lock</i>
+        <span class="material-icons">lock</span>
         <input 
           type="password" 
           [(ngModel)]="password" 
           name="password" 
-          placeholder="Password"
+          placeholder="Contraseña"
           required>
       </div>
     </div>
 
     <div *ngIf="errorMessage" class="error-message">
-      <i class="material-icons">error_outline</i>
+      <span class="material-icons">error_outline</span>
       {{ errorMessage }}
     </div>
 
     <button type="submit">
-      <i class="material-icons">login</i>
+      <span class="material-icons">login</span>
       Iniciar Sesión
     </button>
 
@@ -47,7 +47,7 @@
 
     <div class="social-login">
       <button type="button" class="google-button" (click)="loginWithGoogle()">
-        <img src="../../assets/imgs/logoG.png" alt="Google" class="google-logo">
+        <span class="material-icons google-icon">account_circle</span>
         Continuar con Google
       </button>
     </div>

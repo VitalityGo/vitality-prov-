@@ -28,6 +28,8 @@ export class HomeComponent implements OnInit {
   private lastY = 0;
   private lastZ = 0;
   private threshold = 12;
+  private stepCooldown = false; // Para evitar múltiples conteos por un solo paso
+  private stepCooldownTime = 300; // Tiempo mínimo entre pasos en milisegundos
 
   waterIntake = 0;
   weightData: number[] = [];
@@ -149,12 +151,31 @@ export class HomeComponent implements OnInit {
   }
 
   private async trackSteps(x: number, y: number, z: number) {
+    // Si estamos en periodo de enfriamiento, ignoramos el movimiento
+    if (this.stepCooldown) return;
+    
     const delta = Math.abs(x + y + z - this.lastX - this.lastY - this.lastZ);
+    
     if (delta > this.threshold) {
+      // Incrementamos solo 1 paso
       this.steps++;
+      
+      // Activamos el periodo de enfriamiento
+      this.stepCooldown = true;
+      
+      // Guardamos los datos
       await this.saveData();
+      
+      // Después del tiempo de enfriamiento, permitimos contar nuevos pasos
+      setTimeout(() => {
+        this.stepCooldown = false;
+      }, this.stepCooldownTime);
     }
-    this.lastX = x; this.lastY = y; this.lastZ = z;
+    
+    // Actualizamos los valores previos
+    this.lastX = x;
+    this.lastY = y;
+    this.lastZ = z;
   }
 
   async addCustomWaterIntake() {

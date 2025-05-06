@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/icon?family=Material+Icons');
+
 .login-container {
   display: flex;
   justify-content: center;
@@ -40,11 +42,9 @@
 }
 
 .logo {
-  width: 100px;
-  height: 100px;
-  object-fit: contain;
+  font-size: 64px;
+  color: #f3b71b;
   margin: 20px auto;
-  display: block;
   animation: fadeIn 1s ease;
 }
 
@@ -67,12 +67,12 @@ h2 {
   align-items: center;
 }
 
-.input-icon i {
+.input-icon .material-icons {
   position: absolute;
   left: 12px;
   color: #888;
   font-size: 20px;
-  z-index: 1; /* Asegura que el ícono esté sobre el input */
+  pointer-events: none;
 }
 
 .form-group input {
@@ -84,7 +84,6 @@ h2 {
   color: white;
   font-size: 16px;
   transition: all 0.3s ease;
-  position: relative; /* Asegura que el input esté detrás del ícono */
 }
 
 .form-group input:focus {
@@ -105,7 +104,7 @@ h2 {
   margin-bottom: 10px;
 }
 
-.error-message i {
+.error-message .material-icons {
   margin-right: 8px;
   font-size: 18px;
 }
@@ -131,10 +130,6 @@ button:hover {
   background-color: #e0a70f;
   transform: translateY(-2px);
   box-shadow: 0 4px 12px rgba(243, 183, 27, 0.3);
-}
-
-button i {
-  font-size: 20px;
 }
 
 .separator {
@@ -170,12 +165,6 @@ button i {
   z-index: 1;
 }
 
-.social-login {
-  display: flex;
-  justify-content: center;
-  margin-top: 10px;
-}
-
 .google-button {
   background-color: white;
   color: #444;
@@ -196,10 +185,9 @@ button i {
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-.google-logo {
-  width: 24px; /* Aumenté un poco el tamaño para mejor visibilidad */
-  height: 24px;
-  object-fit: contain;
+.google-icon {
+  font-size: 24px;
+  color: #4285f4;
 }
 
 .additional-options {
@@ -222,14 +210,8 @@ button i {
 }
 
 @keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(-10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
 @keyframes shake {
@@ -238,74 +220,35 @@ button i {
   20%, 40%, 60%, 80% { transform: translateX(5px); }
 }
 
-/* Estilos responsivos */
 @media (max-width: 480px) {
   .login-form {
     padding: 20px;
   }
-  
+
   .brand h1 {
-    font-size: 24px; /* Texto más compacto en móviles */
+    font-size: 24px;
   }
-  
+
   .logo {
-    width: 80px;
-    height: 80px;
+    font-size: 48px;
   }
-  
+
   h2 {
     font-size: 20px;
   }
-  
-  .form-group input,
-  button {
+
+  .form-group input, button {
     padding: 12px;
     font-size: 14px;
   }
-  
+
   .additional-options {
     flex-direction: column;
     align-items: center;
     gap: 10px;
   }
 
-  .google-logo {
-    width: 20px;
-    height: 20px;
+  .google-icon {
+    font-size: 20px;
   }
-}
-.input-icon i {
-  position: absolute;
-  left: 12px;
-  color: #888;
-  font-size: 20px;
-  z-index: 2; /* Asegura que el ícono esté sobre el input */
-  pointer-events: none; /* Permite hacer clic a través del ícono */
-}
-
-.form-group input {
-  width: 100%;
-  padding: 14px 14px 14px 45px; /* Más espacio a la izquierda */
-  /* ... (mantén el resto de propiedades) */
-}
-
-/* Corrección específica para móviles */
-@media (max-width: 480px) {
-  .input-icon i {
-    font-size: 18px; /* Reduce tamaño de íconos */
-    left: 10px;
-  }
-  
-  .form-group input {
-    padding: 12px 12px 12px 40px; /* Ajuste de padding para móviles */
-    font-size: 14px;
-  }
-}
-
-/* Corrección logo de Google */
-.google-logo {
-  width: 24px;
-  height: 24px;
-  object-fit: contain;
-  display: block; /* Asegura que la imagen se muestre */
 }

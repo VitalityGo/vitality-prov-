@@ -3,88 +3,148 @@
   justify-content: center;
   align-items: center;
   height: 100vh;
+  background: linear-gradient(135deg, #111, #1a1a1a); /* Gradiente oscuro con un toque suave */
   padding: 20px;
-  text-align: center;
   font-family: 'Poppins', sans-serif;
-  background: linear-gradient(135deg, #1a1a1a, #292929); /* Fondo oscuro para contraste */
 }
 
 .register-form {
-  background: #222; /* Fondo oscuro para la forma */
-  padding: 2.5rem;
-  border-radius: 12px;
-  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.2); /* Sombra más suave y profunda */
+  background: rgba(30, 30, 30, 0.95); /* Fondo suave con transparencia */
+  padding: 3rem 2rem;
+  border-radius: 16px; /* Bordes más redondeados para dar una sensación de suavidad */
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.2); /* Sombra profunda para resaltar */
   width: 100%;
   max-width: 450px;
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+h1 {
+  font-size: 36px;
+  font-weight: 700;
+  color: #f3b71b; /* Dorado brillante para el logo */
+  text-align: center;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin-bottom: 0.5rem;
 }
 
 h1 span {
-  color: #ffcc00; /* Dorado para el toque premium */
+  color: #fff; /* Resaltar "Go" en blanco */
 }
 
 h2 {
-  color: #ffcc00;
-  margin-bottom: 2rem;
-  font-size: 26px; /* Aumento del tamaño para el título */
+  font-size: 24px;
   font-weight: 600;
+  color: #f3b71b;
+  text-align: center;
+  letter-spacing: 0.5px;
 }
 
 .form-group {
-  margin-bottom: 1.8rem;
+  position: relative;
+  margin-bottom: 1.5rem;
 }
 
 input {
   width: 100%;
-  padding: 14px;
-  border: 1px solid #444; /* Borde más oscuro y elegante */
-  border-radius: 8px; /* Borde redondeado para un toque suave */
-  font-size: 16px;
-  background: #333;
+  padding: 16px 14px 16px 45px; /* Padding más amplio para mayor comodidad */
+  border: 1px solid #444; /* Borde oscuro y elegante */
+  border-radius: 10px; /* Bordes suavizados */
+  background: rgba(40, 40, 40, 0.8); /* Fondo oscuro con ligera transparencia */
   color: #fff;
-  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  font-size: 16px;
+  font-weight: 400;
+  transition: all 0.3s ease;
 }
 
 input:focus {
   outline: none;
-  border-color: #ffcc00; /* Borde dorado para el enfoque */
-  box-shadow: 0 0 8px rgba(255, 204, 0, 0.3);
+  border-color: #f3b71b; /* Borde dorado brillante cuando está enfocado */
+  box-shadow: 0 0 8px rgba(243, 183, 27, 0.3);
+}
+
+input::placeholder {
+  color: #888; /* Texto de placeholder más tenue */
 }
 
 button {
-  width: 100%;
-  padding: 14px;
-  background: #ffcc00; /* Dorado para los botones */
+  padding: 16px;
+  background: #f3b71b;
   color: #121212;
   border: none;
-  border-radius: 8px; /* Bordes más redondeados para los botones */
+  border-radius: 10px; /* Bordes redondeados para suavizar */
   cursor: pointer;
-  transition: background 0.3s ease, transform 0.3s ease;
   font-size: 16px;
   font-weight: 600;
+  letter-spacing: 1px;
+  transition: background 0.3s ease, transform 0.3s ease;
 }
 
 button:hover {
-  background: #e6b800; /* Dorado más suave en hover */
-  transform: scale(1.05); /* Leve aumento de tamaño en hover */
+  background: #e0a70f; /* Cambio de color al hacer hover */
+  transform: scale(1.05); /* Efecto sutil de aumento */
 }
 
 .error-message {
-  color: #dc3545;
-  margin-bottom: 1.5rem;
+  color: #ff4d4d;
   font-weight: 500;
+  background-color: rgba(255, 77, 77, 0.1);
+  border-radius: 10px;
+  padding: 12px;
+  margin-bottom: 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 12px;
 }
 
-.additional-options {
-  margin-top: 1.8rem;
+.error-message .material-icons {
+  font-size: 20px;
+}
+
+.mt-2 {
+  margin-top: 2rem;
   text-align: center;
 }
 
-.additional-options a {
-  color: #ffcc00;
+.mt-2 a {
+  color: #f3b71b;
   text-decoration: none;
   font-weight: 500;
+  transition: color 0.3s ease;
 }
 
-.additional-options a:hover {
+.mt-2 a:hover {
+  color: #e0a70f; /* Cambio de color en hover */
   text-decoration: underline;
+}
+
+@media (max-width: 480px) {
+  .register-form {
+    padding: 2rem 1.5rem; /* Ajuste para pantallas más pequeñas */
+  }
+
+  h1 {
+    font-size: 32px;
+  }
+
+  h2 {
+    font-size: 22px;
+  }
+
+  input {
+    padding: 14px 12px 14px 40px; /* Ajuste en padding */
+    font-size: 14px;
+  }
+
+  button {
+    padding: 14px;
+    font-size: 14px;
+  }
+
+  .mt-2 a {
+    font-size: 14px;
+  }
 }

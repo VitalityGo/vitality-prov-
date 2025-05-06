@@ -23,14 +23,10 @@ export class LoginComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    // Verificar si ya hay sesión activa al cargar el componente
     this.authService.initAuthListener();
-    
-    // Suscribirse al estado de autenticación
     this.authService.user$.subscribe(user => {
       this.loading = false;
       if (user) {
-        console.log('Usuario ya autenticado, redirigiendo a home');
         this.router.navigate(['/home']);
       }
     });
@@ -67,9 +63,5 @@ export class LoginComponent implements OnInit {
       this.errorMessage = 'Error al iniciar sesión con Google';
       console.error(error);
     }
-  }
-
-  goToRegister() {
-    this.router.navigate(['/register']);
   }
 }
