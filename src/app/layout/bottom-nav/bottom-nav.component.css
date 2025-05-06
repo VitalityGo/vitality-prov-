@@ -1,45 +1,155 @@
-nav {
+.bottom-nav {
   display: flex;
-  justify-content: space-evenly;
+  justify-content: space-around;
   align-items: center;
-  background-color: #1a1a1a; /* Oscuro y sofisticado */
+  background-color: #121212;
+  color: #b3b3b3;
   position: fixed;
   bottom: 0;
   left: 0;
   right: 0;
-  height: 56px;
-  box-shadow: 0 -2px 10px rgba(255, 255, 255, 0.2); /* Sombra más suave y prominente */
+  height: 60px;
   z-index: 1000;
+  padding: 0;
+  margin: 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
 }
 
 .nav-item {
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 6px 0;
+  justify-content: center;
   flex: 1;
-  transition: transform 0.2s ease; /* Efecto suave al pasar el mouse */
+  height: 100%;
+  text-align: center;
+  padding: 5px 0;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
 }
 
-.nav-item:hover {
-  transform: scale(1.05); /* Aumento de tamaño para la interactividad */
+.icon-container {
+  position: relative;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 3px;
 }
 
 .nav-item i {
-  font-size: 22px; /* Iconos más grandes y visibles */
-  color: #b3b3b3; /* Gris claro elegante */
-  transition: color 0.3s ease, transform 0.3s ease; /* Transición suave */
+  font-size: 22px;
+  color: rgba(255, 255, 255, 0.6);
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
 .nav-item span {
-  font-size: 12px; /* Un poco más grande para mejorar la legibilidad */
-  color: #b3b3b3;
-  margin-top: 4px;
-  transition: color 0.3s ease;
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.6);
+  transition: all 0.3s ease;
+  font-weight: 500;
+  letter-spacing: 0.3px;
+  opacity: 0.8;
+  transform: translateY(0);
 }
 
-.nav-item.active i,
+/* Estilo para el elemento activo */
+.nav-item.active {
+  color: #f3b71b;
+}
+
+.nav-item.active .icon-container {
+  transform: translateY(-2px);
+}
+
+.nav-item.active i {
+  color: #f3b71b;
+  transform: scale(1.2);
+}
+
 .nav-item.active span {
-  color: #ffcc00; /* Dorado para resaltar elementos activos */
-  transform: scale(1.1); /* Aumento sutil al estar activo */
+  color: #f3b71b;
+  opacity: 1;
+  font-weight: 600;
+}
+
+/* Indicador activo */
+.nav-item.active::before {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  width: 50%;
+  height: 3px;
+  background-color: #f3b71b;
+  border-radius: 3px 3px 0 0;
+  animation: slideIn 0.3s forwards;
+}
+
+@keyframes slideIn {
+  from {
+    width: 0;
+    opacity: 0;
+  }
+  to {
+    width: 50%;
+    opacity: 1;
+  }
+}
+
+/* Efecto al hacer hover */
+.nav-item:hover:not(.active) i {
+  color: rgba(255, 255, 255, 0.9);
+  transform: translateY(-2px);
+}
+
+.nav-item:hover:not(.active) span {
+  color: rgba(255, 255, 255, 0.9);
+}
+
+/* Efecto al hacer click */
+.nav-item:active i {
+  transform: scale(0.9);
+}
+
+/* Media queries para responsive */
+@media (max-width: 360px) {
+  .nav-item i {
+    font-size: 20px;
+  }
+  
+  .nav-item span {
+    font-size: 10px;
+  }
+}
+
+@media (min-width: 768px) {
+  .bottom-nav {
+    max-width: 600px;
+    margin: 0 auto;
+    border-radius: 20px 20px 0 0;
+    height: 65px;
+  }
+  
+  .nav-item i {
+    font-size: 24px;
+  }
+  
+  .nav-item span {
+    font-size: 12px;
+  }
+}
+
+/* Animación de entrada para la barra completa */
+@keyframes slideUp {
+  from {
+    transform: translateY(100%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
+.bottom-nav {
+  animation: slideUp 0.5s ease-out;
 }

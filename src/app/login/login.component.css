@@ -1,209 +1,311 @@
-/* Estilos generales */
 .login-container {
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100vh;
+  min-height: 100vh;
+  background-color: #121212;
   padding: 20px;
-  text-align: center;
-  font-family: 'Poppins', sans-serif;
-  background: linear-gradient(135deg, #1a1a1a, #292929); /* Fondo oscuro elegante */
-  animation: fadeIn 1s ease-out;
-}
-
-h1 span {
-  color: #ffcc00; /* Dorado para un toque premium */
-  animation: bounceIn 1.5s ease;
 }
 
 .login-form {
-  background: #222;
-  padding: 2.5rem;
-  border-radius: 12px;
-  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.2); /* Sombra más suave y profunda */
   width: 100%;
-  max-width: 400px;
-  margin: 0 auto;
-  animation: slideUp 1s ease-out;
+  max-width: 420px;
+  padding: 30px;
+  background-color: rgba(30, 30, 30, 0.95);
+  border-radius: 16px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+  color: white;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.brand {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.brand h1 {
+  font-size: 32px;
+  font-weight: 700;
+  color: white;
+  text-align: center;
+  margin: 0;
+}
+
+.brand h1 span {
+  color: #f3b71b;
 }
 
 .logo {
-  width: 120px;
-  height: auto;
-  display: block;
+  width: 100px;
+  height: 100px;
+  object-fit: contain;
   margin: 20px auto;
-  border-radius: 16px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
-  animation: fadeIn 1s ease-out;
+  display: block;
+  animation: fadeIn 1s ease;
 }
 
 h2 {
-  color: #ffcc00;
-  margin-bottom: 2rem;
-  font-size: 26px;
+  font-size: 24px;
   font-weight: 600;
-
+  text-align: center;
+  margin: 0;
+  color: #f3b71b;
 }
 
 .form-group {
-  margin-bottom: 1.5rem;
+  position: relative;
+  margin-bottom: 15px;
 }
 
-input {
+.input-icon {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.input-icon i {
+  position: absolute;
+  left: 12px;
+  color: #888;
+  font-size: 20px;
+  z-index: 1; /* Asegura que el ícono esté sobre el input */
+}
+
+.form-group input {
   width: 100%;
-  padding: 14px;
-  border: 1px solid #444;
+  padding: 14px 14px 14px 45px;
+  background-color: rgba(20, 20, 20, 0.5);
+  border: 1px solid rgba(100, 100, 100, 0.7);
   border-radius: 8px;
+  color: white;
   font-size: 16px;
-  background: #333;
-  color: #fff;
-  transition: border-color 0.3s ease, box-shadow 0.3s ease;
-  animation: fadeIn 1s ease-out;
+  transition: all 0.3s ease;
+  position: relative; /* Asegura que el input esté detrás del ícono */
 }
 
-input:focus {
+.form-group input:focus {
   outline: none;
-  border-color: #ffcc00;
-  box-shadow: 0 0 8px rgba(255, 204, 0, 0.3);
+  border-color: #f3b71b;
+  box-shadow: 0 0 0 2px rgba(243, 183, 27, 0.25);
+}
+
+.error-message {
+  display: flex;
+  align-items: center;
+  color: #ff4d4d;
+  font-size: 14px;
+  padding: 10px;
+  border-radius: 8px;
+  background-color: rgba(255, 77, 77, 0.1);
+  animation: shake 0.5s ease;
+  margin-bottom: 10px;
+}
+
+.error-message i {
+  margin-right: 8px;
+  font-size: 18px;
 }
 
 button {
   width: 100%;
   padding: 14px;
-  background: #ffcc00;
-  color: #121212;
+  background-color: #f3b71b;
+  color: black;
   border: none;
   border-radius: 8px;
-  cursor: pointer;
-  transition: background 0.3s ease, transform 0.3s ease;
   font-size: 16px;
   font-weight: 600;
-  animation: fadeInUp 1s ease-out;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  transition: all 0.3s ease;
 }
 
 button:hover {
-  background: #e6b800;
-  transform: scale(1.05);
+  background-color: #e0a70f;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(243, 183, 27, 0.3);
 }
 
-button:active {
-  transform: scale(0.98);
+button i {
+  font-size: 20px;
 }
 
-.error-message {
-  color: #dc3545;
-  font-size: 14px;
-  margin-bottom: 1rem;
+.separator {
+  position: relative;
   text-align: center;
-  animation: shake 0.5s ease;
+  margin: 15px 0;
+  color: #888;
+}
+
+.separator::before,
+.separator::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  width: 45%;
+  height: 1px;
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+.separator::before {
+  left: 0;
+}
+
+.separator::after {
+  right: 0;
+}
+
+.separator span {
+  background-color: rgba(30, 30, 30, 0.95);
+  padding: 0 10px;
+  font-size: 14px;
+  position: relative;
+  z-index: 1;
+}
+
+.social-login {
+  display: flex;
+  justify-content: center;
+  margin-top: 10px;
+}
+
+.google-button {
+  background-color: white;
+  color: #444;
+  border: 1px solid #ddd;
+  padding: 12px 15px;
+  border-radius: 8px;
+  font-weight: 500;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+}
+
+.google-button:hover {
+  background-color: #f5f5f5;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.google-logo {
+  width: 24px; /* Aumenté un poco el tamaño para mejor visibilidad */
+  height: 24px;
+  object-fit: contain;
 }
 
 .additional-options {
-  margin-top: 1.5rem;
   display: flex;
   justify-content: space-between;
   font-size: 14px;
+  margin-top: 10px;
 }
 
 .additional-options a {
-  color: #ffcc00;
+  color: #f3b71b;
   text-decoration: none;
-  transition: color 0.3s ease;
-  animation: fadeIn 1s ease-out;
+  transition: all 0.3s ease;
+  padding: 5px 0;
 }
 
 .additional-options a:hover {
-  color: #e6b800;
+  color: #e0a70f;
   text-decoration: underline;
 }
 
-/* Animaciones clave */
 @keyframes fadeIn {
-  0% {
+  from {
     opacity: 0;
+    transform: translateY(-10px);
   }
-  100% {
+  to {
     opacity: 1;
-  }
-}
-
-@keyframes slideUp {
-  0% {
-    transform: translateY(30px);
-    opacity: 0;
-  }
-  100% {
     transform: translateY(0);
-    opacity: 1;
-  }
-}
-
-@keyframes fadeInUp {
-  0% {
-    transform: translateY(20px);
-    opacity: 0;
-  }
-  100% {
-    transform: translateY(0);
-    opacity: 1;
-  }
-}
-
-@keyframes bounceIn {
-  0% {
-    transform: scale(0.8);
-    opacity: 0;
-  }
-  60% {
-    transform: scale(1.2);
-  }
-  100% {
-    transform: scale(1);
-    opacity: 1;
   }
 }
 
 @keyframes shake {
-  0% {
-    transform: translateX(-5px);
-  }
-  25% {
-    transform: translateX(5px);
-  }
-  50% {
-    transform: translateX(-5px);
-  }
-  75% {
-    transform: translateX(5px);
-  }
-  100% {
-    transform: translateX(0);
-  }
+  0%, 100% { transform: translateX(0); }
+  10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+  20%, 40%, 60%, 80% { transform: translateX(5px); }
 }
 
-/* Diseño responsivo */
-@media (max-width: 768px) {
-  .login-form {
-    max-width: 90%;
-  }
-}
-
+/* Estilos responsivos */
 @media (max-width: 480px) {
   .login-form {
-    padding: 1.5rem;
+    padding: 20px;
   }
-
+  
+  .brand h1 {
+    font-size: 24px; /* Texto más compacto en móviles */
+  }
+  
+  .logo {
+    width: 80px;
+    height: 80px;
+  }
+  
   h2 {
     font-size: 20px;
   }
-
-  input {
-    padding: 10px;
+  
+  .form-group input,
+  button {
+    padding: 12px;
+    font-size: 14px;
   }
-
+  
   .additional-options {
     flex-direction: column;
     align-items: center;
     gap: 10px;
   }
+
+  .google-logo {
+    width: 20px;
+    height: 20px;
+  }
+}
+.input-icon i {
+  position: absolute;
+  left: 12px;
+  color: #888;
+  font-size: 20px;
+  z-index: 2; /* Asegura que el ícono esté sobre el input */
+  pointer-events: none; /* Permite hacer clic a través del ícono */
+}
+
+.form-group input {
+  width: 100%;
+  padding: 14px 14px 14px 45px; /* Más espacio a la izquierda */
+  /* ... (mantén el resto de propiedades) */
+}
+
+/* Corrección específica para móviles */
+@media (max-width: 480px) {
+  .input-icon i {
+    font-size: 18px; /* Reduce tamaño de íconos */
+    left: 10px;
+  }
+  
+  .form-group input {
+    padding: 12px 12px 12px 40px; /* Ajuste de padding para móviles */
+    font-size: 14px;
+  }
+}
+
+/* Corrección logo de Google */
+.google-logo {
+  width: 24px;
+  height: 24px;
+  object-fit: contain;
+  display: block; /* Asegura que la imagen se muestre */
 }

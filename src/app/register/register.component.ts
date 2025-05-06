@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { RouterModule, Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { NgIf } from '@angular/common';
@@ -16,17 +16,32 @@ import Swal from 'sweetalert2';
   templateUrl: './register.component.html',
   styleUrls: ['./register.component.css']
 })
-export class RegisterComponent {
+export class RegisterComponent implements OnInit {
   name = '';
   email = '';
   password = '';
   confirmPassword = '';
   errorMessage = '';
+  loading = true;
 
   constructor(
     private authService: AuthService,
     private router: Router
   ) {}
+
+  ngOnInit() {
+    // Verificar si ya hay sesión activa al cargar el componente
+    this.authService.initAuthListener();
+    
+    // Suscribirse al estado de autenticación
+    this.authService.user$.subscribe(user => {
+      this.loading = false;
+      if (user) {
+        console.log('Usuario ya autenticado, redirigiendo a home');
+        this.router.navigate(['/home']);
+      }
+    });
+  }
 
   async onSubmit() {
     this.errorMessage = '';
@@ -47,7 +62,7 @@ export class RegisterComponent {
           text: 'Ahora puedes iniciar sesión',
           confirmButtonText: 'OK'
         });
-        this.router.navigate(['/login']);
+        this.router.navigate(['/home']);
       } else {
         this.errorMessage = 'Error al registrar el usuario';
       }

@@ -1,41 +1,55 @@
 <div class="login-container">
   <form (ngSubmit)="onSubmit()" class="login-form">
-    <h1>Vitality <span>Go</span></h1>
-
-    <img [src]="logoUrl" alt="Login-icon" class="logo">
+    <div class="brand">
+      <h1>Vitality <span>Go</span></h1>
+      <img src="assets/images/logo.png" alt="Vitality Go logo" class="logo">
+    </div>
 
     <h2>Iniciar Sesión</h2>
 
     <div class="form-group">
-      <input 
-        type="email" 
-        [(ngModel)]="email" 
-        name="email" 
-        placeholder="Email"
-        required>
+      <div class="input-icon">
+        <i class="material-icons">email</i>
+        <input 
+          type="email" 
+          [(ngModel)]="email" 
+          name="email" 
+          placeholder="Email"
+          required>
+      </div>
     </div>
 
     <div class="form-group">
-      <input 
-        type="password" 
-        [(ngModel)]="password" 
-        name="password" 
-        placeholder="Password"
-        required>
+      <div class="input-icon">
+        <i class="material-icons">lock</i>
+        <input 
+          type="password" 
+          [(ngModel)]="password" 
+          name="password" 
+          placeholder="Password"
+          required>
+      </div>
     </div>
 
     <div *ngIf="errorMessage" class="error-message">
+      <i class="material-icons">error_outline</i>
       {{ errorMessage }}
     </div>
 
-    <button type="submit">Iniciar Sesión</button>
+    <button type="submit">
+      <i class="material-icons">login</i>
+      Iniciar Sesión
+    </button>
 
-    <div class="google-login">
-      <p>O ingresa con:</p> 
-      <img src="../../assets/logoG.png"
-        alt="Google Sign-In" 
-        class="google-logo" 
-        (click)="loginWithGoogle()">
+    <div class="separator">
+      <span>O ingresa con</span>
+    </div>
+
+    <div class="social-login">
+      <button type="button" class="google-button" (click)="loginWithGoogle()">
+        <img src="../../assets/imgs/logoG.png" alt="Google" class="google-logo">
+        Continuar con Google
+      </button>
     </div>
 
     <div class="additional-options">

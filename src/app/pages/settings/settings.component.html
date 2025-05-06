@@ -5,20 +5,30 @@
     
     <div class="form-group">
       <label>{{ getTranslation(lang.SETTINGS.PROFILE.NAME) }}</label>
-      <input type="text" [(ngModel)]="userData.name" />
+      <div class="input-group">
+        <i class="icon fa fa-user"></i>
+        <input type="text" [(ngModel)]="userData.name" />
+      </div>
     </div>
 
     <div class="form-group">
       <label>{{ getTranslation(lang.SETTINGS.PROFILE.EMAIL) }}</label>
-      <input type="email" [ngModel]="currentUser?.email" disabled />
+      <div class="input-group">
+        <i class="icon fa fa-envelope"></i>
+        <input type="email" [ngModel]="currentUser?.email" disabled />
+      </div>
     </div>
 
     <div class="form-group">
       <label>{{ getTranslation(lang.SETTINGS.PROFILE.CHANGE_PHOTO) }}</label>
-      <input type="text" [(ngModel)]="userData.profileImage" placeholder="Image URL" />
+      <div class="input-group">
+        <i class="icon fa fa-image"></i>
+        <input type="text" [(ngModel)]="userData.profileImage" placeholder="Image URL" />
+      </div>
     </div>
 
     <button class="save-button" (click)="saveProfile()">
+      <i class="fa fa-save"></i>
       {{ getTranslation(lang.SETTINGS.PROFILE.SAVE_BUTTON) }}
     </button>
   </div>
@@ -28,29 +38,39 @@
     <h2>{{ getTranslation(lang.SETTINGS.APP_CONFIG.TITLE) }}</h2>
     
     <div class="form-group">
-      <label>
-        <input type="checkbox" [(ngModel)]="appConfig.notifications" />
-        {{ getTranslation(lang.SETTINGS.APP_CONFIG.NOTIFICATIONS) }}
-      </label>
+      <div class="toggle-container">
+        <label>{{ getTranslation(lang.SETTINGS.APP_CONFIG.NOTIFICATIONS) }}</label>
+        <div class="toggle-switch">
+          <input type="checkbox" id="notifications" [(ngModel)]="appConfig.notifications" />
+          <label for="notifications" class="switch-label"></label>
+        </div>
+      </div>
     </div>
 
     <div class="form-group">
       <label>{{ getTranslation(lang.SETTINGS.APP_CONFIG.LANGUAGE) }}</label>
-      <select [(ngModel)]="appConfig.language">
-        <option value="es">{{ getTranslation(lang.SETTINGS.APP_CONFIG.METRIC) }}</option>
-        <option value="en">English</option>
-      </select>
+      <div class="input-group">
+        <i class="icon fa fa-globe"></i>
+        <select [(ngModel)]="appConfig.language">
+          <option value="es">{{ getTranslation(lang.SETTINGS.APP_CONFIG.METRIC) }}</option>
+          <option value="en">English</option>
+        </select>
+      </div>
     </div>
 
     <div class="form-group">
       <label>{{ getTranslation(lang.SETTINGS.APP_CONFIG.UNITS) }}</label>
-      <select [(ngModel)]="appConfig.units">
-        <option value="metric">{{ getTranslation(lang.SETTINGS.APP_CONFIG.METRIC) }}</option>
-        <option value="imperial">{{ getTranslation(lang.SETTINGS.APP_CONFIG.IMPERIAL) }}</option>
-      </select>
+      <div class="input-group">
+        <i class="icon fa fa-ruler"></i>
+        <select [(ngModel)]="appConfig.units">
+          <option value="metric">{{ getTranslation(lang.SETTINGS.APP_CONFIG.METRIC) }}</option>
+          <option value="imperial">{{ getTranslation(lang.SETTINGS.APP_CONFIG.IMPERIAL) }}</option>
+        </select>
+      </div>
     </div>
 
     <button class="save-button" (click)="saveAppSettings()">
+      <i class="fa fa-save"></i>
       {{ getTranslation(lang.SETTINGS.APP_CONFIG.SAVE_BUTTON) }}
     </button>
   </div>
@@ -61,20 +81,30 @@
     
     <div class="form-group">
       <label>{{ getTranslation(lang.SETTINGS.PASSWORD.CURRENT) }}</label>
-      <input type="password" [(ngModel)]="passwordData.current" />
+      <div class="input-group">
+        <i class="icon fa fa-lock"></i>
+        <input type="password" [(ngModel)]="passwordData.current" />
+      </div>
     </div>
 
     <div class="form-group">
       <label>{{ getTranslation(lang.SETTINGS.PASSWORD.NEW) }}</label>
-      <input type="password" [(ngModel)]="passwordData.new" />
+      <div class="input-group">
+        <i class="icon fa fa-key"></i>
+        <input type="password" [(ngModel)]="passwordData.new" />
+      </div>
     </div>
 
     <div class="form-group">
       <label>{{ getTranslation(lang.SETTINGS.PASSWORD.CONFIRM) }}</label>
-      <input type="password" [(ngModel)]="passwordData.confirm" />
+      <div class="input-group">
+        <i class="icon fa fa-check-circle"></i>
+        <input type="password" [(ngModel)]="passwordData.confirm" />
+      </div>
     </div>
 
     <button class="save-button" (click)="changePassword()">
+      <i class="fa fa-key"></i>
       {{ getTranslation(lang.SETTINGS.PASSWORD.SAVE_BUTTON) }}
     </button>
   </div>
@@ -83,11 +113,13 @@
   <div class="settings-section danger-zone">
     <h2>{{ getTranslation(lang.SETTINGS.LOGOUT.TITLE) }}</h2>
     <button class="logout-button" (click)="logout()">
+      <i class="fa fa-sign-out-alt"></i>
       {{ getTranslation(lang.SETTINGS.LOGOUT.BUTTON) }}
     </button>
 
     <h2>{{ getTranslation(lang.SETTINGS.DELETE_ACCOUNT.TITLE) }}</h2>
     <button class="delete-button" (click)="deleteAccount()">
+      <i class="fa fa-trash"></i>
       {{ getTranslation(lang.SETTINGS.DELETE_ACCOUNT.BUTTON) }}
     </button>
   </div>

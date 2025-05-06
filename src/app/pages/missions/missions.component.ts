@@ -2,18 +2,12 @@ import { Component, OnInit, AfterViewInit } from '@angular/core';
 import * as mapboxgl from 'mapbox-gl';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { FirestoreService, UserData, MissionGroup } from '../../services/firestore.service';
+import { FirestoreService, UserData, MissionGroup, Mission } from '../../services/firestore.service';
 import { ImcService, ImcCategory } from '../../services/imc.service';
 import { AuthService } from '../../services/auth.service';
 import { Langs } from '../../../assets/i18n/en';
 import { LanguageService } from '../../services/language.service';
-import { firstValueFrom } from 'rxjs';
-
-interface Mission {
-  title: string;
-  completed: boolean;
-  manuallyCompleted?: boolean; 
-}
+import { firstValueFrom, forkJoin } from 'rxjs';
 
 @Component({
   selector: 'app-missions',
@@ -25,7 +19,8 @@ interface Mission {
 export class MissionsComponent implements OnInit, AfterViewInit {
   lang = Langs;
   currentLanguage: 'en' | 'es' = 'es';
-
+  private mapContainer?: HTMLElement;
+  private isMapInitialized = false;
   map?: mapboxgl.Map;
   userLocation?: mapboxgl.LngLat;
   userMarker?: mapboxgl.Marker;
@@ -42,6 +37,7 @@ export class MissionsComponent implements OnInit, AfterViewInit {
   userData?: UserData;
   hasChanges = false;
   followUser = true;
+  isLoading = true;
 
   constructor(
     private imcService: ImcService,
@@ -51,21 +47,52 @@ export class MissionsComponent implements OnInit, AfterViewInit {
   ) {}
 
   ngOnInit(): void {
+    // Primero obtenemos el usuario actual
+    this.userId = this.authService.getCurrentUser()?.uid ?? '';
+    if (!this.userId) {
+      console.error('No hay usuario autenticado');
+      return;
+    }
+
+    // Suscribirse al cambio de idioma
     this.languageService.currentLang$.subscribe(lang => {
       this.currentLanguage = lang;
     });
 
-    this.userId = this.authService.getCurrentUser()?.uid ?? '';
-    if (!this.userId) return;
-
-    this.imcService.currentImc$.subscribe(async imc => {
+    // Obtener los datos del IMC y usuario
+    this.imcService.currentImc$.subscribe(imc => {
       this.imc = imc;
-      await this.loadUserDataAndMissions();
+      this.loadInitialData();
     });
   }
 
   ngAfterViewInit(): void {
     this.initializeMap();
+  }
+
+  // Método para cargar la información inicial
+  private async loadInitialData(): Promise<void> {
+    try {
+      // Primero obtenemos los datos del usuario
+      const userData = await firstValueFrom(
+        this.firestoreService.getUserData(this.userId)
+      );
+      
+      if (userData) {
+        this.userData = userData;
+        
+        // Luego cargamos las misiones según el IMC
+        await this.loadUserDataAndMissions();
+      } else {
+        console.error('No se encontraron datos de usuario');
+      }
+    } 
+    catch (error) {
+      console.error('Error al cargar datos iniciales:', error);
+    }
+    finally {
+      this.isLoading = false;
+    }
   }
 
   getTranslation(pair: { en: string; es: string }): string {
@@ -74,24 +101,33 @@ export class MissionsComponent implements OnInit, AfterViewInit {
 
   private async loadUserDataAndMissions(): Promise<void> {
     try {
-      this.userData = await firstValueFrom(
-        this.firestoreService.getUserData(this.userId)
-      ) || undefined;
-
+      // Obtener misiones según la categoría de IMC actual
       const currentImc = this.imc.category;
-      const mg: MissionGroup = await firstValueFrom(
+      console.log('Cargando misiones para IMC:', currentImc);
+      
+      const mg = await firstValueFrom(
         this.firestoreService.getMissions(this.userId, currentImc)
       );
 
-      this.dailyMissions = mg.dailyMissions;
-      this.weeklyMissions = mg.weeklyMissions;
-      this.specialMissions = mg.specialMissions;
-
-      if (
-        this.dailyMissions.length === 0 &&
-        this.weeklyMissions.length === 0 &&
-        this.specialMissions.length === 0
-      ) {
+      // Verificar que obtenemos datos válidos
+      console.log('Misiones obtenidas:', mg);
+      
+      if (mg) {
+        this.dailyMissions = mg.dailyMissions || [];
+        this.weeklyMissions = mg.weeklyMissions || [];
+        this.specialMissions = mg.specialMissions || [];
+        
+        // Generar misiones nuevas solo si TODAS las listas están vacías
+        if (
+          this.dailyMissions.length === 0 &&
+          this.weeklyMissions.length === 0 &&
+          this.specialMissions.length === 0
+        ) {
+          console.log('No hay misiones, creando misiones predeterminadas');
+          this.updateMissions();
+        }
+      } else {
+        console.log('No se encontraron misiones, creando misiones predeterminadas');
         this.updateMissions();
       }
 
@@ -121,18 +157,23 @@ export class MissionsComponent implements OnInit, AfterViewInit {
 
   onMissionChange(type: 'dailyMissions' | 'weeklyMissions' | 'specialMissions', idx: number): void {
     const arr = this.getMissionsArray(type);
-    arr[idx].manuallyCompleted = arr[idx].completed;
-    if (idx === 2) {
-      arr[idx].completed = !arr[idx].completed;
+    if (arr && arr[idx]) {
+      arr[idx].manuallyCompleted = arr[idx].completed;
+      this.hasChanges = true;
+      this.saveMissionsToFirestore();
     }
-    this.hasChanges = true;
-    this.saveMissionsToFirestore();
   }
 
   private updateMissions(): void {
-    const steps = this.userData?.steps ?? 0;
-    const waterIntake = this.userData?.waterIntake ?? 0;
-    // Lógica de inicialización según IMC...
+    console.log('Actualizando misiones para el usuario');
+    
+    // Utilizamos el servicio para obtener las misiones predeterminadas según el IMC
+    const defaultMissions = this.firestoreService.createDefaultMissions(this.imc.category);
+    
+    this.dailyMissions = defaultMissions.dailyMissions || [];
+    this.weeklyMissions = defaultMissions.weeklyMissions || [];
+    this.specialMissions = defaultMissions.specialMissions || [];
+    
     this.preserveManualCompletionState();
     this.saveMissionsToFirestore();
   }
@@ -140,7 +181,7 @@ export class MissionsComponent implements OnInit, AfterViewInit {
   private preserveManualCompletionState(): void {
     ['dailyMissions', 'weeklyMissions', 'specialMissions'].forEach(type => {
       const arr = this.getMissionsArray(type as any);
-      if (arr[2]?.manuallyCompleted) {
+      if (arr && arr.length > 2 && arr[2]?.manuallyCompleted) {
         arr[2].completed = true;
       }
     });
@@ -152,7 +193,11 @@ export class MissionsComponent implements OnInit, AfterViewInit {
     let updated = false;
 
     [this.dailyMissions, this.weeklyMissions, this.specialMissions].forEach(missions => {
+      if (!missions) return;
+      
       missions.forEach((m, i) => {
+        if (!m) return;
+        
         let should = m.completed;
         if (i < 2) {
           if (m.title.match(/\d+(\.\d+)?\s*km/i)) {
@@ -239,8 +284,18 @@ export class MissionsComponent implements OnInit, AfterViewInit {
   }
 
   private initializeMap(): void {
-    if (!navigator.geolocation) return;
-
+    if (!navigator.geolocation) {
+      console.error('Geolocalización no soportada');
+      return;
+    }
+    const createCustomMarker = (color: string): HTMLElement => {
+      const el = document.createElement('div');
+      el.className = 'custom-marker';
+      el.style.backgroundColor = color;
+      // Elimina todas las asignaciones de estilo del TS
+      // Solo conserva la clase CSS
+      return el;
+    };
     navigator.geolocation.getCurrentPosition(pos => {
       this.userLocation = new mapboxgl.LngLat(pos.coords.longitude, pos.coords.latitude);
       this.fixedLocation = new mapboxgl.LngLat(
@@ -248,18 +303,28 @@ export class MissionsComponent implements OnInit, AfterViewInit {
         this.userLocation.lat + 0.002
       );
 
+      // Asegúrate de tener un token válido de Mapbox
+      const mapboxToken = 'pk.eyJ1Ijoidml0YWxpdHlnbyIsImEiOiJjbTdjY3NsbDgwZXRzMmtxNzFqOHNpNHliIn0.du6tpdCZjbKh5H_JxCQsjw'; // Reemplaza esto con tu token
+      
       this.map = new mapboxgl.Map({
         container: 'map',
         style: 'mapbox://styles/mapbox/streets-v11',
         center: [this.userLocation.lng, this.userLocation.lat],
         zoom: 14,
-        accessToken: 'TU_MAPBOX_TOKEN'
+        accessToken: 'pk.eyJ1Ijoidml0YWxpdHlnbyIsImEiOiJjbTdjY3NsbDgwZXRzMmtxNzFqOHNpNHliIn0.du6tpdCZjbKh5H_JxCQsjw'
       });
 
-      this.userMarker = new mapboxgl.Marker({ color: '#F00' })
-        .setLngLat(this.userLocation).addTo(this.map);
-      this.fixedMarker = new mapboxgl.Marker({ color: '#CC0' })
-        .setLngLat(this.fixedLocation).addTo(this.map);
+      this.userMarker = new mapboxgl.Marker({
+        element: createCustomMarker('#ff0000'),
+        anchor: 'center',  // Cambia a center
+        offset: [0, -14]   // Añade este offset
+      }).setLngLat(this.userLocation).addTo(this.map);
+      
+      this.fixedMarker = new mapboxgl.Marker({
+        element: createCustomMarker('#ffcc00'),
+        anchor: 'center',   // Cambia a center
+        offset: [0, 0]    // Añade este offset
+      }).setLngLat(this.fixedLocation).addTo(this.map);
       new mapboxgl.Popup({ closeButton: false, closeOnClick: false })
         .setLngLat(this.fixedLocation).setHTML('<p>Punto destino</p>').addTo(this.map);
 
@@ -281,6 +346,8 @@ export class MissionsComponent implements OnInit, AfterViewInit {
   }
 
   private checkDistanceMissions(loc: mapboxgl.LngLat): void {
+    if (!this.specialMissions || !this.map) return;
+    
     let updated = false;
     this.specialMissions.forEach((m, i) => {
       if (i === 2 && !m.manuallyCompleted) {

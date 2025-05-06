@@ -12,8 +12,8 @@ import {
   getDocs,
   DocumentData
 } from '@angular/fire/firestore';
-import { BehaviorSubject, from, Observable } from 'rxjs';
-import { switchMap } from 'rxjs/operators';
+import { BehaviorSubject, from, Observable, of } from 'rxjs';
+import { switchMap, map, catchError } from 'rxjs/operators';
 
 export interface Mission {
   title: string;
@@ -52,44 +52,61 @@ export interface UserData {
   providedIn: 'root'
 })
 export class FirestoreService {
-  clearUserData() {
-    throw new Error('Method not implemented.');
-  }
   private userDataSubject = new BehaviorSubject<UserData | null>(null);
   userData$ = this.userDataSubject.asObservable();
 
   constructor(private firestore: Firestore) {}
 
+  clearUserData() {
+    this.userDataSubject.next(null);
+  }
+
   // ========== User Data Operations ==========
 
-/**
+  /**
    * Get user data from Firestore
    * @param userId User ID (UID)
    * @returns Observable with user data or null
    */
-getUserData(userId: string): Observable<UserData | null> {
-  const userDocRef = doc(this.firestore, 'users', userId);
-  return from(getDoc(userDocRef)).pipe(
-    switchMap((docSnap) => {
-      const data = docSnap.exists() ? docSnap.data() as UserData : null;
-      this.userDataSubject.next(data);
-      return [data];
-    })
-  );
-}
+  getUserData(userId: string): Observable<UserData | null> {
+    const userDocRef = doc(this.firestore, 'users', userId);
+    return from(getDoc(userDocRef)).pipe(
+      map(docSnap => {
+        if (docSnap.exists()) {
+          const data = { ...docSnap.data(), uid: userId } as UserData;
+          this.userDataSubject.next(data);
+          return data;
+        }
+        return null;
+      }),
+      catchError(error => {
+        console.error("Error getting user data:", error);
+        return of(null);
+      })
+    );
+  }
 
-/**
- * Get user data synchronously (as a Promise)
- * @param userId User ID (UID)
- * @returns Promise with user data or null
- */
-async getUserDataAsync(userId: string): Promise<UserData | null> {
-  const userDocRef = doc(this.firestore, 'users', userId);
-  const docSnap = await getDoc(userDocRef);
-  const data = docSnap.exists() ? docSnap.data() as UserData : null;
-  this.userDataSubject.next(data);
-  return data;
-}
+  /**
+   * Get user data synchronously (as a Promise)
+   * @param userId User ID (UID)
+   * @returns Promise with user data or null
+   */
+  async getUserDataAsync(userId: string): Promise<UserData | null> {
+    try {
+      const userDocRef = doc(this.firestore, 'users', userId);
+      const docSnap = await getDoc(userDocRef);
+      if (docSnap.exists()) {
+        const data = { ...docSnap.data(), uid: userId } as UserData;
+        this.userDataSubject.next(data);
+        return data;
+      }
+      return null;
+    } catch (error) {
+      console.error("Error getting user data async:", error);
+      return null;
+    }
+  }
+  
   /**
    * Create or update user data in Firestore
    * @param userId User ID (UID)
@@ -167,16 +184,23 @@ async getUserDataAsync(userId: string): Promise<UserData | null> {
    * @returns Observable with MissionGroup
    */
   getMissions(userId: string, imcCategory: string): Observable<MissionGroup> {
+    console.log(`Getting missions for user ${userId} with IMC ${imcCategory}`);
     const missionDocRef = doc(this.firestore, 'missions', `${userId}_${imcCategory}`);
+    
     return from(getDoc(missionDocRef)).pipe(
-      switchMap((docSnap) => {
+      map(docSnap => {
         if (docSnap.exists()) {
-          return [docSnap.data() as MissionGroup];
+          console.log('Missions found:', docSnap.data());
+          return docSnap.data() as MissionGroup;
         } else {
+          console.log('No missions found, creating default');
           // Return default missions if document doesn't exist
-          const defaultMissions = this.createDefaultMissions(imcCategory);
-          return [defaultMissions];
+          return this.createDefaultMissions(imcCategory);
         }
+      }),
+      catchError(error => {
+        console.error('Error getting missions:', error);
+        return of(this.createDefaultMissions(imcCategory));
       })
     );
   }
@@ -210,7 +234,9 @@ async getUserDataAsync(userId: string): Promise<UserData | null> {
    * @param imcCategory IMC category
    * @returns MissionGroup with default missions
    */
-  private createDefaultMissions(imcCategory: string): MissionGroup {
+  createDefaultMissions(imcCategory: string): MissionGroup {
+    console.log(`Creating default missions for IMC category: ${imcCategory}`);
+    
     switch (imcCategory) {
       case 'bajo':
         return {

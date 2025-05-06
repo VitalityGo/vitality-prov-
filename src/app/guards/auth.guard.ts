@@ -9,6 +9,9 @@ export class AuthGuard implements CanActivate {
   constructor(private authService: AuthService, private router: Router) {}
 
   canActivate(): boolean {
+    // Inicializar el listener de autenticación si aún no está inicializado
+    this.authService.initAuthListener();
+    
     if (this.authService.checkAuthStatus()) {
       return true;
     } else {

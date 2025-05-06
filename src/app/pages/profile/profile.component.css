@@ -1,88 +1,110 @@
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap');
-
-body {
-  font-family: 'Poppins', sans-serif;
-  background: #121212;
-  color: #fff;
-  margin: 0;
-  padding: 0;
-}
-
-/* Contenedor principal */
 .container {
-  max-width: 700px;
-  margin: 40px auto;
-  padding: 30px;
-  border-radius: 16px;
-  background: linear-gradient(135deg, #1f1f1f, #292929);
-  box-shadow: 0 8px 24px rgba(255, 255, 255, 0.1);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-/* Efecto hover */
-.container:hover {
-  transform: scale(1.03);
-  box-shadow: 0 10px 30px rgba(255, 255, 255, 0.15);
-}
-
-/* Títulos */
-.container h2 {
-  font-size: 2.2em;
-  margin-bottom: 25px;
-  color: #ffcc00;
-  font-weight: 700;
-  text-align: center;
-}
-
-/* Etiquetas */
-.container label {
-  display: block;
-  margin-bottom: 10px;
-  font-weight: 600;
-  color: #fff;
-}
-
-/* Inputs */
-.container input[type="text"],
-.container input[type="number"] {
-  width: 100%;
-  padding: 14px;
-  margin-bottom: 20px;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  border-radius: 10px;
-  font-size: 16px;
-  background: rgba(255, 255, 255, 0.1);
-  color: #fff;
-  transition: border-color 0.3s ease, box-shadow 0.3s ease;
-}
-
-/* Estilo en foco */
-.container input:focus {
-  border-color: #ffcc00;
-  box-shadow: 0 0 8px rgba(255, 204, 0, 0.5);
-}
-
-/* Botones */
-button {
-  background: linear-gradient(135deg, #ffcc00, #ff9900);
-  color: #121212;
-  border: none;
-  padding: 14px 30px;
-  border-radius: 12px;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  gap: 15px;
+  max-width: 600px;
   margin: 0 auto;
-  transition: background 0.3s, transform 0.3s;
-  font-size: 18px;
-  font-weight: 600;
-  box-shadow: 0 4px 12px rgba(255, 204, 0, 0.4);
+  padding: 16px;
 }
 
-button:hover {
-  background: linear-gradient(135deg, #ff9900, #ff6600);
-  transform: translateY(-3px);
-  box-shadow: 0 6px 16px rgba(255, 153, 0, 0.5);
+.card {
+  background-color: rgba(26, 26, 26, 0.9);
+  border-radius: 12px;
+  padding: 24px 20px;
+  margin-bottom: 24px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.card h2 {
+  color: #f3b71b;
+  font-size: 1.75rem;
+  font-weight: bold;
+  text-align: center;
+  margin-bottom: 24px;
+}
+
+.input-group {
+  margin-bottom: 16px;
+}
+
+.input-group label {
+  display: block;
+  color: white;
+  font-size: 1rem;
+  margin-bottom: 8px;
+}
+
+.input-group input {
+  width: 100%;
+  padding: 12px;
+  border-radius: 6px;
+  border: none;
+  background-color: rgba(40, 40, 40, 0.9);
+  color: white;
+  font-size: 1rem;
+}
+
+.save-button {
+  background-color: #f3b71b;
+  color: black;
+  font-weight: bold;
+  padding: 12px 24px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 1rem;
+  display: block;
+  margin: 24px auto 8px;
+  min-width: 160px;
+  transition: background-color 0.2s;
+}
+
+.save-button:hover {
+  background-color: #d9a116;
+}
+
+.result-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 12px 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.result-item:last-child {
+  border-bottom: none;
+}
+
+.result-item .label {
+  color: white;
+  font-size: 1rem;
+}
+
+.result-item .value {
+  color: #f3b71b;
+  font-size: 1rem;
+  font-weight: bold;
+}
+
+/* Responsive adjustments */
+@media (max-width: 480px) {
+  .container {
+    padding: 12px;
+  }
+  
+  .card {
+    padding: 16px;
+  }
+  
+  .card h2 {
+    font-size: 1.5rem;
+  }
+  
+  .input-group label,
+  .input-group input,
+  .result-item .label,
+  .result-item .value {
+    font-size: 0.9rem;
+  }
+  
+  .save-button {
+    width: 100%;
+    padding: 10px;
+  }
 }

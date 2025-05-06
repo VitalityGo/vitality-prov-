@@ -1,5 +1,5 @@
 import { NgIf } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterLink, RouterLinkWithHref } from '@angular/router';
 import { AuthService } from '../services/auth.service';
@@ -11,16 +11,31 @@ import { AuthService } from '../services/auth.service';
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css']
 })
-export class LoginComponent {
+export class LoginComponent implements OnInit {
   email: string = '';
   password: string = '';
   errorMessage: string = '';
-  logoUrl: string = 'assets/logo.png'; // Asegúrate de que la ruta sea correcta
+  loading: boolean = true;
 
   constructor(
     private authService: AuthService,
     private router: Router
   ) {}
+
+  ngOnInit() {
+    // Verificar si ya hay sesión activa al cargar el componente
+    this.authService.initAuthListener();
+    
+    // Suscribirse al estado de autenticación
+    this.authService.user$.subscribe(user => {
+      this.loading = false;
+      if (user) {
+        console.log('Usuario ya autenticado, redirigiendo a home');
+        this.router.navigate(['/home']);
+      }
+    });
+  }
+
   async onSubmit() {
     if (!this.email || !this.password) {
       this.errorMessage = 'Por favor, complete todos los campos';
