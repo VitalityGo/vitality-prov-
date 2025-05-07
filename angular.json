@@ -24,7 +24,7 @@
               {
                 "glob": "**/*",
                 "input": "resources",
-                "otput": "resources" 
+                "output": "resources" 
               }
             ],
             "styles": [
