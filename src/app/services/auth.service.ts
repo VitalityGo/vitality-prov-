@@ -17,7 +17,7 @@ import {
 import { FirestoreService, UserData } from './firestore.service';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { Router } from '@angular/router';
-import { setPersistence, browserLocalPersistence } from 'firebase/auth';
+import { setPersistence, browserLocalPersistence, getAuth } from 'firebase/auth';
 import { sendPasswordResetEmail } from 'firebase/auth'; 
 import { Platform } from '@ionic/angular';
 
@@ -268,9 +268,14 @@ export class AuthService {
    * Elimina la cuenta de Auth y el perfil en Firestore.
    */
   async deleteUserAccount(): Promise<void> {
-    const user = this.auth.currentUser;
-    if (!user) throw new Error('No hay usuario autenticado');
+    const auth = getAuth();
+    const user = auth.currentUser;
     
+    // Verificar que el usuario esté autenticado
+    if (!user) {
+      throw new Error('No hay usuario autenticado');
+    }
+
     try {
       // Primero eliminamos los datos del usuario en Firestore
       await this.firestoreService.deleteUserData(user.uid);
@@ -278,6 +283,7 @@ export class AuthService {
       // Luego eliminamos la cuenta de autenticación
       await deleteUser(user);
       
+      // Redirigimos al login después de eliminar la cuenta
       this.router.navigate(['/login']);
     } catch (error: any) {
       console.error('Error al eliminar cuenta:', error);
@@ -287,6 +293,7 @@ export class AuthService {
         throw new Error('Por seguridad, debes volver a iniciar sesión antes de eliminar tu cuenta');
       }
       
+      // Re-lanzar el error para manejarlo en el componente o servicio llamante
       throw error;
     }
   }

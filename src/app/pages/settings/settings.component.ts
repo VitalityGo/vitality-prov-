@@ -157,53 +157,42 @@ export class SettingsComponent implements OnInit {
 
     if (result.isConfirmed) {
       try {
-        // Para operaciones sensibles como eliminar cuenta, se recomienda primero reautenticar
-        // Solicitar contraseña para reautenticar
         const { value: password } = await Swal.fire({
           title: 'Confirma tu identidad',
           input: 'password',
-          inputLabel: 'Ingresa tu contraseña para confirmar',
+          inputLabel: 'Ingresa tu contraseña actual',
           inputPlaceholder: 'Contraseña',
           showCancelButton: true,
-          inputValidator: (value) => {
-            if (!value) {
-              return 'Debes ingresar tu contraseña';
-            }
-            return null;
-          }
+          inputValidator: (value) => !value ? 'Debes ingresar tu contraseña' : null
         });
-        
+  
         if (password) {
-          // Reautenticar al usuario
-          const reauth = await this.authService.reauthenticateUser(password);
-          if (!reauth) {
-            throw new Error('La contraseña es incorrecta');
+          // 👇 Añade logs para depuración
+          console.log('Reautenticando con UID:', this.currentUser?.uid);
+          const reauthSuccess = await this.authService.reauthenticateUser(password);
+          console.log('Resultado reautenticación:', reauthSuccess);
+  
+          if (!reauthSuccess) {
+            throw new Error('La contraseña es incorrecta o el usuario no tiene proveedor de email');
           }
+  
+          // Eliminar datos de Firestore
+          await this.firestoreService.deleteUserData(this.currentUser.uid);
           
-          // Si la reautenticación es exitosa, eliminar los datos de Firestore primero
-          if (this.currentUser?.uid) {
-            await this.firestoreService.deleteUserData(this.currentUser.uid);
-          }
-          
-          // Luego eliminar la cuenta de autenticación
+          // Eliminar cuenta de Auth
           await this.authService.deleteUserAccount();
           
-          // Mostrar mensaje de éxito
-          await Swal.fire({
-            icon: 'success',
-            title: 'Cuenta eliminada',
-            text: 'Tu cuenta ha sido eliminada correctamente'
-          });
+          await Swal.fire('¡Cuenta eliminada!', '', 'success');
         }
       } catch (error) {
-        console.error('Error deleting account:', error);
+        console.error('Error completo:', error); // 👈 Log detallado
         let errorMessage = 'Error al eliminar la cuenta';
-        
         if (error instanceof Error) {
-          errorMessage = error.message;
+          errorMessage = error.message.includes('permission') 
+            ? 'No tienes permisos. ¿Iniciaste sesión recientemente?' 
+            : error.message;
         }
-        
-        await this.showError(errorMessage);
+        await Swal.fire('Error', errorMessage, 'error');
       }
     }
   }
