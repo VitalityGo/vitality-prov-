@@ -157,16 +157,53 @@ export class SettingsComponent implements OnInit {
 
     if (result.isConfirmed) {
       try {
-        // Eliminar datos de Firestore primero
-        if (this.currentUser?.uid) {
-          await this.firestoreService.deleteUserData(this.currentUser.uid);
-        }
+        // Para operaciones sensibles como eliminar cuenta, se recomienda primero reautenticar
+        // Solicitar contraseña para reautenticar
+        const { value: password } = await Swal.fire({
+          title: 'Confirma tu identidad',
+          input: 'password',
+          inputLabel: 'Ingresa tu contraseña para confirmar',
+          inputPlaceholder: 'Contraseña',
+          showCancelButton: true,
+          inputValidator: (value) => {
+            if (!value) {
+              return 'Debes ingresar tu contraseña';
+            }
+            return null;
+          }
+        });
         
-        // Luego eliminar la cuenta de autenticación
-        await this.authService.deleteUserAccount();
+        if (password) {
+          // Reautenticar al usuario
+          const reauth = await this.authService.reauthenticateUser(password);
+          if (!reauth) {
+            throw new Error('La contraseña es incorrecta');
+          }
+          
+          // Si la reautenticación es exitosa, eliminar los datos de Firestore primero
+          if (this.currentUser?.uid) {
+            await this.firestoreService.deleteUserData(this.currentUser.uid);
+          }
+          
+          // Luego eliminar la cuenta de autenticación
+          await this.authService.deleteUserAccount();
+          
+          // Mostrar mensaje de éxito
+          await Swal.fire({
+            icon: 'success',
+            title: 'Cuenta eliminada',
+            text: 'Tu cuenta ha sido eliminada correctamente'
+          });
+        }
       } catch (error) {
         console.error('Error deleting account:', error);
-        await this.showError('Error deleting account');
+        let errorMessage = 'Error al eliminar la cuenta';
+        
+        if (error instanceof Error) {
+          errorMessage = error.message;
+        }
+        
+        await this.showError(errorMessage);
       }
     }
   }

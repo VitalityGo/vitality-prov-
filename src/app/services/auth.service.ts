@@ -11,13 +11,15 @@ import {
   EmailAuthProvider,
   reauthenticateWithCredential,
   GoogleAuthProvider,
-  signInWithPopup
+  signInWithRedirect,
+  getRedirectResult
 } from '@angular/fire/auth';
 import { FirestoreService, UserData } from './firestore.service';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { Router } from '@angular/router';
 import { setPersistence, browserLocalPersistence } from 'firebase/auth';
 import { sendPasswordResetEmail } from 'firebase/auth'; 
+import { Platform } from '@ionic/angular';
 
 export interface AppUser {
   uid: string;
@@ -34,14 +36,19 @@ export class AuthService {
   public user$: Observable<AppUser | null> = this.userSubject.asObservable();
   private authInitialized = false;
   private authStateInitialized = false;
+  private processingRedirect = false;
 
   constructor(
     private auth: Auth,
     private firestoreService: FirestoreService,
-    private router: Router
+    private router: Router,
+    private platform: Platform
   ) {
     // Configuramos la persistencia al inicializar el servicio
     this.setupPersistence();
+    
+    // Verificar resultados de redirección al iniciar
+    this.checkRedirectResult();
   }
 
   // Configurar la persistencia localmente
@@ -51,6 +58,23 @@ export class AuthService {
       console.log('Persistencia configurada correctamente');
     } catch (error) {
       console.error('Error al configurar la persistencia:', error);
+    }
+  }
+
+  // Verificar resultados de redirección (importante para OAuth)
+  private async checkRedirectResult() {
+    try {
+      this.processingRedirect = true;
+      const result = await getRedirectResult(this.auth);
+      if (result) {
+        console.log('Redirección completada con éxito:', result.user);
+        // Asegurar perfil en Firestore
+        await this.ensureUserProfile(result.user);
+      }
+    } catch (error) {
+      console.error('Error al procesar resultado de redirección:', error);
+    } finally {
+      this.processingRedirect = false;
     }
   }
 
@@ -74,17 +98,7 @@ export class AuthService {
         this.userSubject.next(appUser);
 
         // Asegurar perfil en Firestore
-        const existing = await this.firestoreService.getUserDataAsync(firebaseUser.uid);
-        if (!existing) {
-          const newUserData: UserData = {
-            uid: firebaseUser.uid,
-            email: firebaseUser.email ?? '',
-            name: firebaseUser.displayName ?? '',
-            createdAt: new Date(),
-            updatedAt: new Date()
-          };
-          await this.firestoreService.setUserData(firebaseUser.uid, newUserData);
-        }
+        await this.ensureUserProfile(firebaseUser);
 
         // Si estamos en la página de login o register, redirigir a home
         const currentUrl = this.router.url;
@@ -95,9 +109,9 @@ export class AuthService {
       } else {
         this.userSubject.next(null);
         
-        // Si NO estamos en login o register, redirigir a login
+        // Si NO estamos en login o register y no estamos procesando una redirección, redirigir a login
         const publicRoutes = ['/login', '/register', '/forgot-password'];
-        if (!publicRoutes.includes(this.router.url)) {
+        if (!publicRoutes.includes(this.router.url) && !this.processingRedirect) {
           console.log('Redirigiendo a /login desde:', this.router.url);
           this.router.navigate(['/login']);
         }
@@ -105,6 +119,31 @@ export class AuthService {
       
       this.authStateInitialized = true;
     });
+  }
+
+  // Nuevo método para asegurar que el perfil existe en Firestore
+  private async ensureUserProfile(firebaseUser: any): Promise<void> {
+    try {
+      // Verificar si el usuario ya existe en Firestore
+      const existing = await this.firestoreService.getUserDataAsync(firebaseUser.uid);
+      
+      if (!existing) {
+        console.log('Creando nuevo perfil en Firestore para:', firebaseUser.uid);
+        // Crear nuevo perfil si no existe
+        const newUserData: UserData = {
+          uid: firebaseUser.uid,
+          email: firebaseUser.email ?? '',
+          name: firebaseUser.displayName ?? '',
+          createdAt: new Date(),
+          updatedAt: new Date()
+        };
+        await this.firestoreService.setUserData(firebaseUser.uid, newUserData);
+      } else {
+        console.log('Perfil existente encontrado en Firestore');
+      }
+    } catch (error) {
+      console.error('Error al asegurar perfil de usuario:', error);
+    }
   }
 
   /**
@@ -170,14 +209,33 @@ export class AuthService {
   async loginWithGoogle(): Promise<boolean> {
     try {
       const provider = new GoogleAuthProvider();
-      await signInWithPopup(this.auth, provider);
-      return true;
+      // En dispositivos móviles, usar signInWithRedirect en lugar de popup
+      if (this.platform.is('capacitor') || this.platform.is('cordova') || this.platform.is('mobile')) {
+        console.log('Usando signInWithRedirect para móvil');
+        this.processingRedirect = true;
+        await signInWithRedirect(this.auth, provider);
+        // No redirigimos aquí, ya que la redirección manejará el flujo
+        return true;
+      } else {
+        // Para navegadores web
+        console.log('Usando signInWithRedirect para web');
+        await signInWithRedirect(this.auth, provider);
+        return true;
+      }
     } catch (err) {
       console.error('Error en loginWithGoogle():', err);
+      this.processingRedirect = false;
       return false;
     }
   }
-
+  async changePassword(currentPassword: string, newPassword: string): Promise<void> {
+    const user = this.auth.currentUser;
+    if (!user || !user.email) throw new Error('No hay usuario autenticado');
+    const cred = EmailAuthProvider.credential(user.email, currentPassword);
+    await reauthenticateWithCredential(user, cred);
+    // Aquí iría updatePassword(user, newPassword) si lo habilitas
+    // await updatePassword(user, newPassword);
+  }
   /**
    * Cierra la sesión y redirige a login.
    */
@@ -207,27 +265,47 @@ export class AuthService {
   }
 
   /**
-   * Cambia la contraseña.
-   * Requiere reautenticación.
-   */
-  async changePassword(currentPassword: string, newPassword: string): Promise<void> {
-    const user = this.auth.currentUser;
-    if (!user || !user.email) throw new Error('No hay usuario autenticado');
-    const cred = EmailAuthProvider.credential(user.email, currentPassword);
-    await reauthenticateWithCredential(user, cred);
-    // Aquí iría updatePassword(user, newPassword) si lo habilitas
-    // await updatePassword(user, newPassword);
-  }
-
-  /**
    * Elimina la cuenta de Auth y el perfil en Firestore.
    */
   async deleteUserAccount(): Promise<void> {
     const user = this.auth.currentUser;
     if (!user) throw new Error('No hay usuario autenticado');
-    await deleteUser(user);
-    await this.firestoreService.deleteUserData(user.uid);
-    this.router.navigate(['/login']);
+    
+    try {
+      // Primero eliminamos los datos del usuario en Firestore
+      await this.firestoreService.deleteUserData(user.uid);
+      
+      // Luego eliminamos la cuenta de autenticación
+      await deleteUser(user);
+      
+      this.router.navigate(['/login']);
+    } catch (error: any) {
+      console.error('Error al eliminar cuenta:', error);
+      
+      // Si el error es por autenticación antigua, informar al usuario
+      if (error.code === 'auth/requires-recent-login') {
+        throw new Error('Por seguridad, debes volver a iniciar sesión antes de eliminar tu cuenta');
+      }
+      
+      throw error;
+    }
+  }
+
+  /**
+   * Reautenticar al usuario antes de operaciones sensibles
+   */
+  async reauthenticateUser(password: string): Promise<boolean> {
+    try {
+      const user = this.auth.currentUser;
+      if (!user || !user.email) return false;
+      
+      const credential = EmailAuthProvider.credential(user.email, password);
+      await reauthenticateWithCredential(user, credential);
+      return true;
+    } catch (error) {
+      console.error('Error al reautenticar:', error);
+      return false;
+    }
   }
 
   /**
@@ -257,6 +335,7 @@ export class AuthService {
   isAuthInitialized(): boolean {
     return this.authStateInitialized;
   }
+  
   async resetPassword(email: string): Promise<boolean> {
     try {
       await sendPasswordResetEmail(this.auth, email);
