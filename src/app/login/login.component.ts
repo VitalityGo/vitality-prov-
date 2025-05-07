@@ -54,14 +54,13 @@ export class LoginComponent implements OnInit {
   async loginWithGoogle() {
     try {
       const success = await this.authService.loginWithGoogle();
-      if (success) {
-        this.router.navigate(['/home']);
-      } else {
+      if (!success) {
         this.errorMessage = 'Error al iniciar sesión con Google';
       }
+      // ❌ No hagas la redirección aquí
     } catch (error) {
       this.errorMessage = 'Error al iniciar sesión con Google';
       console.error(error);
     }
-  }
+  }  
 }

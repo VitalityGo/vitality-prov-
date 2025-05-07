@@ -17,6 +17,7 @@ import { FirestoreService, UserData } from './firestore.service';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { Router } from '@angular/router';
 import { setPersistence, browserLocalPersistence } from 'firebase/auth';
+import { sendPasswordResetEmail } from 'firebase/auth'; 
 
 export interface AppUser {
   uid: string;
@@ -255,5 +256,15 @@ export class AuthService {
    */
   isAuthInitialized(): boolean {
     return this.authStateInitialized;
+  }
+  async resetPassword(email: string): Promise<boolean> {
+    try {
+      await sendPasswordResetEmail(this.auth, email);
+      console.log('Correo de restablecimiento enviado a:', email);
+      return true;
+    } catch (err) {
+      console.error('Error en resetPassword():', err);
+      return false;
+    }
   }
 }

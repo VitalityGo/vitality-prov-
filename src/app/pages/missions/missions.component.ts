@@ -8,6 +8,7 @@ import { AuthService } from '../../services/auth.service';
 import { Langs } from '../../../assets/i18n/en';
 import { LanguageService } from '../../services/language.service';
 import { firstValueFrom, forkJoin } from 'rxjs';
+import { Geolocation } from '@capacitor/geolocation';
 
 @Component({
   selector: 'app-missions',
@@ -26,6 +27,9 @@ export class MissionsComponent implements OnInit, AfterViewInit {
   userMarker?: mapboxgl.Marker;
   fixedMarker?: mapboxgl.Marker;
   fixedLocation?: mapboxgl.LngLat;
+  latitude: number | null = null;
+  longitude: number | null = null;
+  locationError: string = '';
 
   imc: ImcCategory = { category: 'normal', description: 'Peso saludable' };
 
@@ -65,8 +69,29 @@ export class MissionsComponent implements OnInit, AfterViewInit {
       this.loadInitialData();
     });
   }
-
-  ngAfterViewInit(): void {
+  async getUserLocation(): Promise<void> {
+    try {
+      const permission = await Geolocation.checkPermissions();
+      if (permission.location === 'denied') {
+        const request = await Geolocation.requestPermissions();
+        if (request.location === 'denied') {
+          this.locationError = 'Permiso de ubicación denegado.';
+          return;
+        }
+      }
+  
+      const position = await Geolocation.getCurrentPosition();
+      this.latitude = position.coords.latitude;
+      this.longitude = position.coords.longitude;
+      this.userLocation = new mapboxgl.LngLat(this.longitude, this.latitude);
+      console.log('Ubicación del usuario:', this.userLocation);
+    } catch (err) {
+      this.locationError = 'No se pudo obtener la ubicación del usuario.';
+      console.error(err);
+    }
+  }
+  async ngAfterViewInit(): Promise<void> {
+    await this.getUserLocation();
     this.initializeMap();
   }
 
@@ -283,56 +308,69 @@ export class MissionsComponent implements OnInit, AfterViewInit {
     } as Record<string, Mission[]>)[type];
   }
 
-  private initializeMap(): void {
-    if (!navigator.geolocation) {
-      console.error('Geolocalización no soportada');
-      return;
-    }
-    const createCustomMarker = (color: string): HTMLElement => {
-      const el = document.createElement('div');
-      el.className = 'custom-marker';
-      el.style.backgroundColor = color;
-      // Elimina todas las asignaciones de estilo del TS
-      // Solo conserva la clase CSS
-      return el;
-    };
-    navigator.geolocation.getCurrentPosition(pos => {
+  private async initializeMap(): Promise<void> {
+    try {
+      // Verificar y solicitar permisos si es necesario
+      const permission = await Geolocation.checkPermissions();
+      if (permission.location === 'denied') {
+        const request = await Geolocation.requestPermissions();
+        if (request.location === 'denied') {
+          console.error('Permiso de ubicación denegado');
+          return;
+        }
+      }
+      // Obtener ubicación actual
+      const pos = await Geolocation.getCurrentPosition();
       this.userLocation = new mapboxgl.LngLat(pos.coords.longitude, pos.coords.latitude);
       this.fixedLocation = new mapboxgl.LngLat(
         this.userLocation.lng + 0.002,
         this.userLocation.lat + 0.002
       );
+      const mapboxToken = 'pk.eyJ1Ijoidml0YWxpdHlnbyIsImEiOiJjbTdjY3NsbDgwZXRzMmtxNzFqOHNpNHliIn0.du6tpdCZjbKh5H_JxCQsjw';
+      const createCustomMarker = (color: string): HTMLElement => {
+        const el = document.createElement('div');
+        el.className = 'custom-marker';
+        el.style.backgroundColor = color;
+        return el;
+      };
 
-      // Asegúrate de tener un token válido de Mapbox
-      const mapboxToken = 'pk.eyJ1Ijoidml0YWxpdHlnbyIsImEiOiJjbTdjY3NsbDgwZXRzMmtxNzFqOHNpNHliIn0.du6tpdCZjbKh5H_JxCQsjw'; // Reemplaza esto con tu token
-      
+      // Inicializar mapa
       this.map = new mapboxgl.Map({
         container: 'map',
         style: 'mapbox://styles/mapbox/streets-v11',
         center: [this.userLocation.lng, this.userLocation.lat],
         zoom: 14,
-        accessToken: 'pk.eyJ1Ijoidml0YWxpdHlnbyIsImEiOiJjbTdjY3NsbDgwZXRzMmtxNzFqOHNpNHliIn0.du6tpdCZjbKh5H_JxCQsjw'
+        accessToken: mapboxToken
       });
-
+  
+      // Agregar marcador del usuario
       this.userMarker = new mapboxgl.Marker({
         element: createCustomMarker('#ff0000'),
-        anchor: 'center',  // Cambia a center
-        offset: [0, -14]   // Añade este offset
+        anchor: 'center',
+        offset: [0, -14]
       }).setLngLat(this.userLocation).addTo(this.map);
-      
+  
+      // Agregar marcador fijo
       this.fixedMarker = new mapboxgl.Marker({
         element: createCustomMarker('#ffcc00'),
-        anchor: 'center',   // Cambia a center
-        offset: [0, 0]    // Añade este offset
+        anchor: 'center',
+        offset: [0, 0]
       }).setLngLat(this.fixedLocation).addTo(this.map);
+  
+      // Popup en destino
       new mapboxgl.Popup({ closeButton: false, closeOnClick: false })
         .setLngLat(this.fixedLocation).setHTML('<p>Punto destino</p>').addTo(this.map);
-
+  
+      // Si el usuario mueve el mapa, dejamos de seguir su posición
       this.map.on('dragstart', () => this.followUser = false);
+  
+      // (Opcional) Seguir la ubicación del usuario en tiempo real
       this.trackUserLocation();
-    }, err => console.error('Error al obtener ubicación:', err));
+  
+    } catch (err) {
+      console.error('Error al inicializar el mapa o ubicación:', err);
+    }
   }
-
   private trackUserLocation(): void {
     navigator.geolocation.watchPosition(pos => {
       const loc = new mapboxgl.LngLat(pos.coords.longitude, pos.coords.latitude);

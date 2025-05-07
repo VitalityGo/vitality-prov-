@@ -8,10 +8,13 @@ import { StatsComponent } from './pages/stats/stats.component';
 import { SettingsComponent } from './pages/settings/settings.component'; // Asegúrate de importar el componente
 import { AppLayoutComponent } from './app-layout/app-layout.component';
 import { AuthGuard } from './guards/auth.guard';
+import { ForgotPasswordComponent } from './forgot-password/forgot-password.component'; // importar
 
 export const routes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
+  { path: 'forgot-password', component: ForgotPasswordComponent }, // nueva ruta
+
   {
     path: '',
     component: AppLayoutComponent,
@@ -21,7 +24,7 @@ export const routes: Routes = [
       { path: 'profile', component: ProfileComponent },
       { path: 'missions', component: MissionsComponent },
       { path: 'stats', component: StatsComponent },
-      { path: 'settings', component: SettingsComponent }, // Añadir ruta para Settings
+      { path: 'settings', component: SettingsComponent },
       { path: '', redirectTo: 'home', pathMatch: 'full' }
     ]
   },
