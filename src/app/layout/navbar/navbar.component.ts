@@ -22,6 +22,7 @@ export class NavbarComponent implements OnInit {
   userData$: Observable<UserData | null>;
   currentRoute = '';
 
+  
   constructor(
     private router: Router,
     private authService: AuthService,

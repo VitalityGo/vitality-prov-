@@ -7,14 +7,14 @@
     </div>
 
     <!-- Info de usuario -->
-    <div class="user-info" *ngIf="userData$ | async as user">
-      <img
-        [src]="user.profileImage || '../../assets/imgs/persona.png'"
-        alt="Perfil"
-        class="avatar"
-      >
-      <span class="username">{{ user.name || 'Usuario' }}</span>
-    </div>
+    <!-- Info de usuario -->
+<div class="user-info" *ngIf="userData$ | async as user">
+  <span class="material-icons avatar">
+    {{ user.profileImage ? 'account_circle' : 'person' }}
+  </span>
+  <span class="username">{{ user.name || 'Usuario' }}</span>
+</div>
+
   </div>
 
   <!-- Icono Settings (tuerca) -->
