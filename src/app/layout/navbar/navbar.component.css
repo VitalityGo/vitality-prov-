@@ -1,80 +1,110 @@
 /* Navbar - Premium Dark Theme */
 .navbar {
   display: flex;
-  align-items: center;
   justify-content: space-between;
+  align-items: center;
   padding: 0.75rem 1.5rem;
-  background: linear-gradient(135deg, #1a1a1a, #222222);
-  box-shadow: 0 4px 12px rgba(255, 255, 255, 0.08);
-  border-radius: 0 0 12px 12px;
+  background-color: #121212;
+  color: #ffffff;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+/* Logo y user info agrupados a la izquierda */
+.left-content {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
 }
 
 /* Logo / Brand */
+.brand {
+  margin-bottom: 0.3rem;
+}
+
 .brand a {
   font-size: 1.5rem;
-  font-weight: 700;
+  font-weight: 800;
   color: #ffcc00;
   text-decoration: none;
+  letter-spacing: -0.5px;
 }
 
-/* Settings Gear Button */
-.btn-settings {
-  background: none;
-  border: none;
-  padding: 0.25rem;
-  margin-left: 1rem;
-  cursor: pointer;
-  color: #ffcc00;
-  transition: color 0.2s ease, transform 0.2s ease;
-}
-.btn-settings:hover {
-  color: #ffd633;
-  transform: scale(1.1);
-}
-
-/* User Info Container */
+/* User Info Container - debajo del logo y alineado a la izquierda */
 .user-info {
   display: flex;
   align-items: center;
-  margin-left: auto;
+  margin-top: 0.2rem;
 }
 
 /* Avatar Image */
 .avatar {
-  width: 40px;
-  height: 40px;
+  width: 32px;
+  height: 32px;
   border-radius: 50%;
   object-fit: cover;
   border: 2px solid #ffcc00;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-}
-.avatar:hover {
-  transform: scale(1.1);
-  box-shadow: 0 0 8px rgba(255, 204, 0, 0.6);
+  box-shadow: 0 0 4px rgba(255, 204, 0, 0.4);
 }
 
 /* Username Text */
 .username {
   color: #ffffff;
-  font-weight: 600;
-  margin-left: 0.75rem;
-  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+  font-weight: 500;
+  margin-left: 0.5rem;
+  font-size: 0.9rem;
 }
 
-/* Responsive Breakpoints */
-@media (max-width: 600px) {
+.btn-settings {
+  background: rgba(255, 204, 0, 0.15);
+  border: none;
+  border-radius: 50%;
+  width: 64px;
+  height: 64px;
+  padding: 10px;
+  cursor: pointer;
+  color: #ffcc00;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  box-shadow: 0 0 12px rgba(255, 204, 0, 0.25);
+  margin-left: auto;
+}
+
+.btn-settings svg {
+  width: 44px;
+  height: 44px;
+  fill: #ffcc00;
+}
+
+.btn-settings:hover {
+  background: rgba(255, 204, 0, 0.25);
+  transform: rotate(30deg);
+  box-shadow: 0 0 20px rgba(255, 204, 0, 0.7);
+}
+
+.btn-settings:active {
+  transform: rotate(90deg) scale(0.95);
+}
+
+/* Responsive Breakpoints - manteniendo el icono grande en móvil */
+@media (max-width: 480px) {
   .navbar {
-    flex-direction: column;
-    align-items: flex-start;
+    padding: 0.75rem 1rem;
   }
+  
+  .brand a {
+    font-size: 1.3rem;
+  }
+  
   .btn-settings {
-    position: absolute;
-    top: 0.75rem;
-    right: 1rem;
+    width: 56px;
+    height: 56px;
+    padding: 8px;
   }
-  .user-info {
-    margin-top: 0.5rem;
-    width: 100%;
-    justify-content: flex-end;
+  
+  .btn-settings svg {
+    width: 40px;
+    height: 40px;
   }
 }

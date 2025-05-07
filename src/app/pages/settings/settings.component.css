@@ -118,13 +118,22 @@
   }
   
   .toggle-container {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 0.5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 0.5rem 0;
   }
   
   .toggle-switch {
-    align-self: flex-start;
+    position: relative;
+    width: 56px;
+    height: 28px;
+  }
+  
+  .toggle-switch input[type="checkbox"] {
+    opacity: 0;
+    width: 0;
+    height: 0;
   }
   
   .save-button,
@@ -134,26 +143,6 @@
     font-size: 0.95rem;
   }
 }
-
-/* Toggle Switch para notificaciones */
-.toggle-container {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.toggle-switch {
-  position: relative;
-  width: 50px;
-  height: 24px;
-}
-
-.toggle-switch input[type="checkbox"] {
-  opacity: 0;
-  width: 0;
-  height: 0;
-}
-
 .switch-label {
   position: absolute;
   cursor: pointer;
@@ -161,31 +150,52 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: #444;
-  border-radius: 24px;
-  transition: .4s;
+  background-color: rgba(50, 50, 50, 0.8);
+  border-radius: 28px;
+  transition: all 0.3s ease;
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.4);
 }
 
 .switch-label:before {
   position: absolute;
   content: "";
-  height: 18px;
-  width: 18px;
+  height: 22px;
+  width: 22px;
   left: 3px;
   bottom: 3px;
   background-color: white;
   border-radius: 50%;
-  transition: .4s;
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
 }
 
 input[type="checkbox"]:checked + .switch-label {
   background-color: #f3b71b;
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.2);
 }
 
 input[type="checkbox"]:checked + .switch-label:before {
-  transform: translateX(26px);
+  transform: translateX(28px);
 }
 
+input[type="checkbox"]:focus + .switch-label {
+  box-shadow: 0 0 0 2px rgba(243, 183, 27, 0.25), inset 0 1px 3px rgba(0, 0, 0, 0.4);
+}
+
+/* Efecto hover */
+.switch-label:hover:before {
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.4);
+}
+
+/* Estado deshabilitado */
+input[type="checkbox"]:disabled + .switch-label {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+input[type="checkbox"]:disabled + .switch-label:before {
+  background-color: #ccc;
+}
 /* Botones */
 .save-button,
 .logout-button,

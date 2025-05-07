@@ -52,7 +52,7 @@
       <div class="input-group">
         <i class="icon fa fa-globe"></i>
         <select [(ngModel)]="appConfig.language">
-          <option value="es">{{ getTranslation(lang.SETTINGS.APP_CONFIG.METRIC) }}</option>
+          <option value="es">Español</option>
           <option value="en">English</option>
         </select>
       </div>
@@ -115,12 +115,6 @@
     <button class="logout-button" (click)="logout()">
       <i class="fa fa-sign-out-alt"></i>
       {{ getTranslation(lang.SETTINGS.LOGOUT.BUTTON) }}
-    </button>
-
-    <h2>{{ getTranslation(lang.SETTINGS.DELETE_ACCOUNT.TITLE) }}</h2>
-    <button class="delete-button" (click)="deleteAccount()">
-      <i class="fa fa-trash"></i>
-      {{ getTranslation(lang.SETTINGS.DELETE_ACCOUNT.BUTTON) }}
     </button>
   </div>
 </div>
