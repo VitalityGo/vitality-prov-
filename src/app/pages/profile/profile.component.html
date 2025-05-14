@@ -49,7 +49,13 @@
       {{ getTranslation(lang.PROFILE.SAVE_BUTTON) }}
     </button>
   </div>
-
+<button 
+      *ngIf="isAdmin"
+      class="admin-button"
+      (click)="goToAdminPanel()"
+    >
+      {{ getTranslation(lang.PROFILE.ADMIN_BUTTON) }}
+    </button>
   <!-- BMI Results Section -->
   <div class="card">
     <h2>{{ getTranslation(lang.PROFILE.RESULTS) }}</h2>

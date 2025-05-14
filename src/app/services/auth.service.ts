@@ -12,10 +12,11 @@ import {
   reauthenticateWithCredential,
   GoogleAuthProvider,
   signInWithRedirect,
-  getRedirectResult
+  getRedirectResult,
+  user
 } from '@angular/fire/auth';
 import { FirestoreService, UserData } from './firestore.service';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject, Observable, map, distinctUntilChanged } from 'rxjs';
 import { Router } from '@angular/router';
 import { setPersistence, browserLocalPersistence, getAuth } from 'firebase/auth';
 import { sendPasswordResetEmail } from 'firebase/auth'; 
@@ -26,6 +27,7 @@ export interface AppUser {
   email: string;
   name?: string;
   profileImage?: string;
+  isAdmin?: boolean;
 }
 
 @Injectable({
@@ -37,6 +39,7 @@ export class AuthService {
   private authInitialized = false;
   private authStateInitialized = false;
   private processingRedirect = false;
+  private readonly ADMIN_EMAIL = 'vitalitygo5@gmail.com';
 
   constructor(
     private auth: Auth,
@@ -60,7 +63,11 @@ export class AuthService {
       console.error('Error al configurar la persistencia:', error);
     }
   }
-
+  isAdmin(): Observable<boolean> {
+    return this.user$.pipe(
+      map(user => user?.email === this.ADMIN_EMAIL)
+    );
+  }
   // Verificar resultados de redirección (importante para OAuth)
   private async checkRedirectResult() {
     try {
@@ -77,14 +84,11 @@ export class AuthService {
       this.processingRedirect = false;
     }
   }
-
-  // Método para inicializar el listener de autenticación y manejar redirecciones
   initAuthListener() {
     if (this.authInitialized) return;
     
     this.authInitialized = true;
     
-    // Observar cambios de estado en Firebase Auth
     onAuthStateChanged(this.auth, async (firebaseUser) => {
       console.log('Estado de autenticación cambiado:', firebaseUser ? 'Usuario autenticado' : 'No autenticado');
       
@@ -93,14 +97,13 @@ export class AuthService {
           uid: firebaseUser.uid,
           email: firebaseUser.email ?? '',
           name: firebaseUser.displayName ?? '',
-          profileImage: firebaseUser.photoURL ?? ''
+          profileImage: firebaseUser.photoURL ?? '',
+          isAdmin: firebaseUser.email === this.ADMIN_EMAIL // Añade esta línea
         };
         this.userSubject.next(appUser);
-
-        // Asegurar perfil en Firestore
+  
         await this.ensureUserProfile(firebaseUser);
-
-        // Si estamos en la página de login o register, redirigir a home
+  
         const currentUrl = this.router.url;
         if (currentUrl === '/login' || currentUrl === '/register' || currentUrl === '/') {
           console.log('Redirigiendo a /home desde:', currentUrl);
@@ -109,7 +112,6 @@ export class AuthService {
       } else {
         this.userSubject.next(null);
         
-        // Si NO estamos en login o register y no estamos procesando una redirección, redirigir a login
         const publicRoutes = ['/login', '/register', '/forgot-password'];
         if (!publicRoutes.includes(this.router.url) && !this.processingRedirect) {
           console.log('Redirigiendo a /login desde:', this.router.url);
@@ -120,7 +122,6 @@ export class AuthService {
       this.authStateInitialized = true;
     });
   }
-
   // Nuevo método para asegurar que el perfil existe en Firestore
   private async ensureUserProfile(firebaseUser: any): Promise<void> {
     try {
@@ -195,7 +196,18 @@ export class AuthService {
    */
   async login(email: string, password: string): Promise<boolean> {
     try {
-      await signInWithEmailAndPassword(this.auth, email, password);
+      const userCredential = await signInWithEmailAndPassword(this.auth, email, password);
+      
+      // Actualización del usuario con estado de admin (nueva parte)
+      const firebaseUser = userCredential.user;
+      const appUser: AppUser = {
+        uid: firebaseUser.uid,
+        email: firebaseUser.email ?? '',
+        name: firebaseUser.displayName ?? '',
+        profileImage: firebaseUser.photoURL ?? '',
+        isAdmin: firebaseUser.email === this.ADMIN_EMAIL
+      };
+      this.userSubject.next(appUser);
       return true;
     } catch (err) {
       console.error('Error en login():', err);

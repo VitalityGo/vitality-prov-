@@ -18,6 +18,10 @@ export class LoginComponent implements OnInit {
   errorMessage: string = '';
   loading: boolean = true;
   isMobile: boolean = false;
+  
+  // Credenciales de administrador
+  private adminEmail: string = 'vitalitygo5@gmail.com';
+  private adminPassword: string = 'vitalitygo123';
 
   constructor(
     private authService: AuthService,
@@ -34,8 +38,8 @@ export class LoginComponent implements OnInit {
     this.authService.user$.subscribe(user => {
       this.loading = false;
       if (user) {
-        console.log('Usuario autenticado, redirigiendo a /home');
-        this.router.navigate(['/home']);
+        // La redirección se maneja en onSubmit para verificar si es admin
+        console.log('Usuario autenticado');
       } else {
         console.log('No hay usuario autenticado');
       }
@@ -50,12 +54,25 @@ export class LoginComponent implements OnInit {
 
     try {
       console.log('Intentando iniciar sesión con email:', this.email);
-      const success = await this.authService.login(this.email, this.password);
-      if (success) {
-        console.log('Inicio de sesión exitoso, redirigiendo a /home');
-        this.router.navigate(['/home']);
+      
+      // Verificar si son las credenciales de administrador
+      if (this.email === this.adminEmail && this.password === this.adminPassword) {
+        const success = await this.authService.login(this.email, this.password);
+        if (success) {
+          console.log('Inicio de sesión de administrador exitoso, redirigiendo a /admin');
+          this.router.navigate(['/admin']);
+        } else {
+          this.errorMessage = 'Error al iniciar sesión como administrador';
+        }
       } else {
-        this.errorMessage = 'Email o contraseña incorrectos';
+        // Caso de usuario normal
+        const success = await this.authService.login(this.email, this.password);
+        if (success) {
+          console.log('Inicio de sesión exitoso, redirigiendo a /home');
+          this.router.navigate(['/home']);
+        } else {
+          this.errorMessage = 'Email o contraseña incorrectos';
+        }
       }
     } catch (error) {
       console.error('Error al iniciar sesión:', error);

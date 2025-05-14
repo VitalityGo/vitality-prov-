@@ -1,0 +1,64 @@
+<div class="admin-container">
+    <h1>Panel de Administración</h1>
+    <p class="date">{{ today | date:'dd/MM/yyyy' }}</p>
+    
+    <div class="stats-summary">
+      <div class="stat-card">
+        <h3>Pasos Promedio</h3>
+        <p class="stat-value">{{ stepsAverage | number }}</p>
+      </div>
+      
+      <div class="stat-card">
+        <h3>Agua Bebida (ml)</h3>
+        <p class="stat-value">{{ waterAverage | number }}</p>
+      </div>
+      
+      <div class="stat-card">
+        <h3>Ingresos a la App</h3>
+        <p class="stat-value">{{ appLogins | number }}</p>
+      </div>
+      
+      <div class="stat-card">
+        <h3>Pesos Registrados</h3>
+        <p class="stat-value">{{ weightEntries | number }}</p>
+      </div>
+    </div>
+    
+    <div class="charts-container">
+      <div class="chart-box">
+        <canvas baseChart
+          [type]="chartType"
+          [data]="stepsChartData"
+          [options]="stepsChartOptions">
+        </canvas>
+      </div>
+      
+      <div class="chart-box">
+        <canvas baseChart
+          [type]="chartType"
+          [data]="waterChartData"
+          [options]="waterChartOptions">
+        </canvas>
+      </div>
+      
+      <div class="chart-box">
+        <canvas baseChart
+          [type]="chartType"
+          [data]="loginsChartData"
+          [options]="loginsChartOptions">
+        </canvas>
+      </div>
+      
+      <div class="chart-box">
+        <canvas baseChart
+          [type]="chartType"
+          [data]="weightChartData"
+          [options]="weightChartOptions">
+        </canvas>
+      </div>
+    </div>
+    
+    <div class="update-info">
+      <p>Datos actualizados cada 5 minutos automáticamente</p>
+    </div>
+  </div>

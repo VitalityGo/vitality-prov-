@@ -83,66 +83,26 @@
   cursor: not-allowed;
 }
 
-/* Estilos responsivos */
-@media (max-width: 768px) {
-  .settings-container {
-    padding: 1rem;
-  }
-  
-  .settings-section {
-    padding: 1.25rem;
-    margin-bottom: 1.5rem;
-  }
-  
-  .settings-section h2 {
-    font-size: 1.2rem;
-  }
-  
-  .form-group input[type="text"],
-  .form-group input[type="email"],
-  .form-group input[type="password"],
-  .form-group select {
-    padding: 0.6rem 0.6rem 0.6rem 2.25rem;
-    font-size: 0.9rem;
-  }
+/* Estilos para la sección de notificaciones */
+.toggle-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 0.5rem 0;
 }
 
-@media (max-width: 480px) {
-  .settings-container {
-    padding: 0.75rem;
-  }
-  
-  .settings-section {
-    padding: 1rem;
-    margin-bottom: 1rem;
-  }
-  
-  .toggle-container {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin: 0.5rem 0;
-  }
-  
-  .toggle-switch {
-    position: relative;
-    width: 56px;
-    height: 28px;
-  }
-  
-  .toggle-switch input[type="checkbox"] {
-    opacity: 0;
-    width: 0;
-    height: 0;
-  }
-  
-  .save-button,
-  .logout-button,
-  .delete-button {
-    padding: 0.6rem 0.75rem;
-    font-size: 0.95rem;
-  }
+.toggle-switch {
+  position: relative;
+  width: 56px; /* Ancho ajustado */
+  height: 28px; /* Alto ajustado */
 }
+
+.toggle-switch input[type="checkbox"] {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
 .switch-label {
   position: absolute;
   cursor: pointer;
@@ -154,6 +114,8 @@
   border-radius: 28px;
   transition: all 0.3s ease;
   box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.4);
+  width: 56px; /* Ajustar el ancho */
+  height: 28px; /* Ajustar la altura */
 }
 
 .switch-label:before {
@@ -182,12 +144,10 @@ input[type="checkbox"]:focus + .switch-label {
   box-shadow: 0 0 0 2px rgba(243, 183, 27, 0.25), inset 0 1px 3px rgba(0, 0, 0, 0.4);
 }
 
-/* Efecto hover */
 .switch-label:hover:before {
   box-shadow: 0 3px 8px rgba(0, 0, 0, 0.4);
 }
 
-/* Estado deshabilitado */
 input[type="checkbox"]:disabled + .switch-label {
   opacity: 0.6;
   cursor: not-allowed;
@@ -196,6 +156,7 @@ input[type="checkbox"]:disabled + .switch-label {
 input[type="checkbox"]:disabled + .switch-label:before {
   background-color: #ccc;
 }
+
 /* Botones */
 .save-button,
 .logout-button,

@@ -76,6 +76,7 @@ interface HomeSection {
 }
 
 interface ProfileSection {
+ADMIN_BUTTON: { en: string; es: string; };
   TITLE: TranslationPair;
   NAME: TranslationPair;
   WEIGHT: TranslationPair;
@@ -196,7 +197,11 @@ export const Langs: LangsInterface = {
     RESULTS: { en: "Results", es: "Resultados" },
     BMI: { en: "BMI:", es: "IMC:" },
     STATUS: { en: "Status:", es: "Estado:" },
-    SAVE_BUTTON: { en: "Save Profile", es: "Guardar Perfil" }
+    SAVE_BUTTON: { en: "Save Profile", es: "Guardar Perfil" },
+    ADMIN_BUTTON: {
+      en: "Panel de administración",
+      es: "Panel de administración"
+    }
   },
   MISSIONS: {
     MAP: {

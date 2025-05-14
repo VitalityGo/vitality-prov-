@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { Router } from '@angular/router'; // Añadir esta importación
 import { FirestoreService } from '../../services/firestore.service';
 import { AuthService } from '../../services/auth.service';
 import { ImcService, ImcCategory } from '../../services/imc.service';
@@ -19,6 +20,7 @@ import { firstValueFrom } from 'rxjs';
 export class ProfileComponent implements OnInit {
   lang = Langs;
   currentLanguage: 'en' | 'es' = 'es';
+  isAdmin = false; // Nueva propiedad para controlar la visibilidad del botón
 
   userId: string | null = null;
   name = '';
@@ -32,7 +34,8 @@ export class ProfileComponent implements OnInit {
     private firestoreService: FirestoreService,
     private authService: AuthService,
     private imcService: ImcService,
-    private languageService: LanguageService
+    private languageService: LanguageService,
+    private router: Router // Inyectar Router
   ) {}
 
   ngOnInit() {
@@ -44,8 +47,17 @@ export class ProfileComponent implements OnInit {
     if (this.userId) {
       this.loadUserData();
     }
+
+    // Verificar si es admin
+    this.authService.isAdmin().subscribe(isAdmin => {
+      this.isAdmin = isAdmin;
+    });
   }
 
+  // Método para navegar al panel de admin
+  goToAdminPanel() {
+    this.router.navigate(['/admin']);
+  }
   getTranslation(pair: { en: string; es: string }): string {
     return pair[this.currentLanguage];
   }

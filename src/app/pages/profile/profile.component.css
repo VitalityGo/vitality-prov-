@@ -108,3 +108,33 @@
     padding: 10px;
   }
 }
+.admin-button {
+  background-color: #1a1a1a; /* Fondo oscuro como las cards */
+  color: #ff5722; /* Color naranja para destacar */
+  border: 2px solid #ff5722; /* Borde naranja */
+  font-weight: bold;
+  padding: 12px 24px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 1rem;
+  display: block;
+  margin: 16px auto 8px;
+  min-width: 160px;
+  width: 100%;
+  transition: all 0.3s ease;
+  text-align: center;
+}
+
+.admin-button:hover {
+  background-color: #ff5722; /* Fondo naranja al hover */
+  color: white; /* Texto blanco al hover */
+  box-shadow: 0 2px 8px rgba(255, 87, 34, 0.4); /* Sutil sombra naranja */
+}
+
+/* Ajustes responsive para el botón de admin */
+@media (max-width: 480px) {
+  .admin-button {
+    padding: 10px;
+    font-size: 0.9rem;
+  }
+}
